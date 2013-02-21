@@ -1,0 +1,5 @@
+c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\obj\Release\GestureRecognizer.csprojResolveAssemblyReference.cache
+c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\bin\Release\GestureRecognizer.dll
+c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\bin\Release\GestureRecognizer.pdb
+c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\obj\Release\GestureRecognizer.dll
+c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\obj\Release\GestureRecognizer.pdb

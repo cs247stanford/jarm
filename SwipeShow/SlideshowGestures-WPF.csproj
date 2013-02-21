@@ -91,6 +91,12 @@
   <ItemGroup>
     <Resource Include="Images\Status.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GestureRecognizer\GestureRecognizer\GestureRecognizer.csproj">
+      <Project>{78e49c6f-924e-4f36-8220-add964e537a7}</Project>
+      <Name>GestureRecognizer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

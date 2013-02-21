@@ -19,8 +19,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
     using System.Windows.Controls;
     using Microsoft.Kinect;
     using Microsoft.Samples.Kinect.SwipeGestureRecognizer;
-    /*using System.Drawing
+    using GestureRecognizer;
+    using System.Drawing;
     
+    /*
      * public form1() { InitializeComponent();}
      * 
      * private void button(object sender, EventArgs e) {
@@ -34,10 +36,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
         /// <summary>
         /// The recognizer being used.
         /// </summary>
-        private readonly Recognizer activeRecognizer;
+        //private readonly Recognizer activeRecognizer;
+        GestureRecognitionEngine recognitionEngine;
 
         /// <summary>
         /// The paths of the picture files.
@@ -146,10 +150,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
             InitializeComponent();
 
             // Create the gesture recognizer.
-            this.activeRecognizer = this.CreateRecognizer();
+            //this.activeRecognizer = this.CreateRecognizer();
+            recognitionEngine = new GestureRecognitionEngine();
+            recognitionEngine.GestureRecognized += new EventHandler<GestureEventArgs>(recognitionEngine_GestureRecognized);
+
 
             // Wire-up window loaded event.
             Loaded += this.OnMainWindowLoaded;
+        }
+
+        void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
+        {
+            MessageBox.Show(e.GestureType.ToString());
         }
 
         /// <summary>
@@ -692,9 +704,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         this.nearestId = newNearestId;
                     }
 
-                    // Pass skeletons to recognizer.
-                    this.activeRecognizer.Recognize(sender, frame, this.skeletons);
 
+                    // Pass skeletons to recognizer.
+                    //this.activeRecognizer.Recognize(sender, frame, this.skeletons);
+                    recognitionEngine.Skeleton = firstSkeleton;
+                    recognitionEngine.StartRecognize();
 
                     this.DrawStickMen(this.skeletons);
                 }
@@ -703,7 +717,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private int IndexFromXValue(double x)
         {
-            return x;
+            // @Melissa, I'm not sure what's going on here. I set a cast to silence the debugger. 
+            return (int)x;
             //return ((int) x) % 5;
         }
 
@@ -716,40 +731,44 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void SelectRelatedItem(double x, double y)
         {
 
-            using (Graphics g = this.CreateGraphics()) {
-
-
-            // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-            double SLIDE_WIDTH = Width / 10;
-            Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
-            
-            //List<Slide> relatedSlides = new List<Slide>;
-            //double SLIDE_PADDING
-            //int numRelatedSlides // this is mapped to a "parent" slide
-            //double WINDOW_WIDTH
-
-            
-            // given an x and y, return the slide at that position
-            // for simplicity, let's assume there is no padding between the slides         
-            int selectedSlideIndex = (int)(x - 1) / (int)SLIDE_WIDTH;
-            //Slide selectedSlide = relatedSlides[selectedSlideIndex];
- 
-
-
-            //int newIndex = IndexFromXValue(selectedSlideIndex);
-
-            Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
-            this.ParentPicture = this.Picture;
-            this.Picture = LoadPicture(selectedSlideIndex);
-            
-            // Notify world of change to Index and Picture.
-            if (this.PropertyChanged != null)
+            using (Graphics g = this.CreateGraphics())
             {
-                this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
-                this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
+
+
+                // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
+                double SLIDE_WIDTH = Width / 10;
+                Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
+
+                //List<Slide> relatedSlides = new List<Slide>;
+                //double SLIDE_PADDING
+                //int numRelatedSlides // this is mapped to a "parent" slide
+                //double WINDOW_WIDTH
+
+
+                // given an x and y, return the slide at that position
+                // for simplicity, let's assume there is no padding between the slides         
+                int selectedSlideIndex = (int)(x - 1) / (int)SLIDE_WIDTH;
+                //Slide selectedSlide = relatedSlides[selectedSlideIndex];
+
+
+
+                //int newIndex = IndexFromXValue(selectedSlideIndex);
+
+                Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
+                this.ParentPicture = this.Picture;
+                this.Picture = LoadPicture(selectedSlideIndex);
+
+                // Notify world of change to Index and Picture.
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
+                }
+
             }
 
         }
+
         /// <summary>
         /// Selects object at current x, y
         /// </summary>
