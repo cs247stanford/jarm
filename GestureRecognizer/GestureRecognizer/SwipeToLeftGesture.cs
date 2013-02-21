@@ -27,14 +27,14 @@ namespace GestureRecognizer
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
             
             if ((handRightPosition.Y < shoulderRightPosition.Y) && // rhand is above rshoulder
-                (handRightPosition.Y < elbowRightPosition.Y) && // rhand is above relbow
+                //(handRightPosition.Y < elbowRightPosition.Y) && // rhand is above relbow
                 //handLeftPosition.Y < spinePosition.Y)
-                (handLeftPosition.Y > elbowLeftPosition.Y))
+                (handLeftPosition.Y > spinePosition.Y))
             {
                 shoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
                 
                 validatePosition = skeleton.Joints[JointType.HandRight].Position;
-                //startingPosition = skeleton.Joints[JointType.HandRight].Position;
+                startingPosition = skeleton.Joints[JointType.HandRight].Position;
                 
                 System.Diagnostics.Debug.WriteLine(">>>SwipeToLeft start condition valid...");
                 System.Diagnostics.Debug.WriteLine("validatePosition: " + validatePosition);
@@ -70,7 +70,7 @@ namespace GestureRecognizer
             double distance = Math.Abs(startingPosition.X - validatePosition.X);
             float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
 
-            if (distance > SWIPE_BUFFER && currentShoulderDiff < shoulderDiff)
+            if (distance > SWIPE_BUFFER)// && currentShoulderDiff < shoulderDiff)
             {
                 System.Diagnostics.Debug.WriteLine("<<<SwipeToLeft gesture has ended...");
                 return true;
