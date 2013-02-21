@@ -20,6 +20,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
     using Microsoft.Kinect;
     using Microsoft.Samples.Kinect.SwipeGestureRecognizer;
     using GestureRecognizer;
+    using KinectPresentor;
     //using System.Drawing;
     
     /*
