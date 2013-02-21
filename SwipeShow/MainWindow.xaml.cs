@@ -41,7 +41,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// The recognizer being used.
         /// </summary>
-        //private readonly Recognizer activeRecognizer;
+        private readonly Recognizer activeRecognizer;
         GestureRecognitionEngine recognitionEngine;
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             InitializeComponent();
 
             // Create the gesture recognizer.
-            //this.activeRecognizer = this.CreateRecognizer();
+            this.activeRecognizer = this.CreateRecognizer();
             recognitionEngine = new GestureRecognitionEngine();
             recognitionEngine.GestureRecognized += new EventHandler<GestureEventArgs>(recognitionEngine_GestureRecognized);
 
@@ -186,6 +186,24 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                     var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
 
+
+                  //  Uri uri = new Uri("C:\\Pictures\\Slide1.jpg", UriKind.Absolute);
+                   // ImageSource imgSrc = new BitmapImage(uri);
+                   // Image i = new Image();
+                   // i.Source = imgSrc;
+                   // this.mainImage = i;
+                   // this.PropertyChanged(this, new PropertyChangedEventArgs("mImage"));
+
+
+
+
+    //                Image i = Resources["RelatedItem1"] as Image;
+ 
+  //                  i.Source = imgSrc;
+                    
+
+//                    i.Source = new ImageSource("C:\\Users\\RogerChen\\Documents\\GitHub\\jarm\\SwipeShow\\Images\\Slide1.jpg");
+
                     if (pullDownStoryboard != null)
                     {
                         pullDownStoryboard.Begin();
@@ -195,7 +213,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                     relatedActivated = true;
 
-                    //HighlightSkeleton(e.Skeleton);
                     break;
 
                 case "PushUp":
@@ -408,7 +425,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return value;
         }
 
-        /*
+        
         /// <summary>
         /// Create a wired-up recognizer for running the slideshow.
         /// </summary>
@@ -447,7 +464,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                           storyboard.Begin();
                       }
 
-                      HighlightSkeleton(e.Skeleton);
+                     // HighlightSkeleton(e.Skeleton);
                   }
               };
 
@@ -480,114 +497,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
                           storyboard.Begin();
                       }
 
-                      HighlightSkeleton(e.Skeleton);
+                     // HighlightSkeleton(e.Skeleton);
                   }
               };
               
 
 
-            // Wire-up swipe up to go back to the parent slide (after discussing a related slide).
-            //Will eventually be SwipeUpDetected
-            recognizer.SwipeLeftDetected += (s, e) =>
-            {
-
-                System.Diagnostics.Debug.WriteLine("Left (up) swipe detected");
-
-                if (e.Skeleton.TrackingId == nearestId)
-                {
-                    //Index++;
-                    if (this.ParentPicture != null)
-                    {
-                        this.Picture = this.ParentPicture;
-                        this.ParentPicture = null;
-                        //this.NextPicture = LoadPicture(Index + 1);
-
-                        // Notify world of change to Index and Picture.
-                        if (this.PropertyChanged != null)
-                        {
-                            //this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
-                            this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
-                        }
-
-                        var storyboard = Resources["TopAnimate"] as Storyboard;
-                        if (storyboard != null)
-                        {
-                            storyboard.Begin();
-                        }
-
-                        HighlightSkeleton(e.Skeleton);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Tried to swipe up without parent slide");
-                    }
-                }
-                };
-
-
-                //Will eventually be PullDownDetected
-                recognizer.SwipeRightDetected += (s, e) =>
-               {
-
-                   System.Diagnostics.Debug.WriteLine("Right swipe detected");
-
-                   if (e.Skeleton.TrackingId == nearestId)
-                   {
-
-                       // Setup corresponding picture if pictures are available.
-                       // Will eventually load in the correct "related slides" image
-                       this.PreviousPicture = this.Picture;
-                       this.Picture = this.NextPicture;
-                       this.NextPicture = LoadPicture(Index + 1);
-                     
-                       
-
-                       // Notify world of change to RelatedPicture.
-                       if (this.PropertyChanged != null)
-                       {
-                           this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedItems"));
-                       }
-
-                       var storyboard = Resources["TopPullDown"] as Storyboard;
-                       if (storyboard != null)
-                       {
-                           storyboard.Begin();
-                       }
-                       relatedItemsDown = true;
-                       HighlightSkeleton(e.Skeleton);
-                   }
-               };
-
-                  //Will eventually be PushUpDetected
-                   recognizer.SwipeLeftDetected += (s, e) =>
-                   {
-
-                       System.Diagnostics.Debug.WriteLine("Right swipe detected");
-
-                       if (e.Skeleton.TrackingId == nearestId)
-                       {
-
-                           // Setup corresponding picture if pictures are available.
-                          // this.NextPicture = LoadPicture(Index + 1);
-
-                           //Notify world of change to Index and Picture.
-                           //if (this.PropertyChanged != null)
-                           //{
-                           //    this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedItems"));
-                           //}
-
-                           var storyboard = Resources["TopPushUp"] as Storyboard;
-                           if (storyboard != null)
-                           {
-                               storyboard.Begin();
-                           }
-                           relatedItemsDown = false;
-                           HighlightSkeleton(e.Skeleton);
-                       }
-                   };
-
                 return recognizer;
-            }*/
+            }
 
         /// <summary>
         /// Handle insertion of Kinect sensor.
@@ -652,6 +569,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.IsDisconnected = true;
             this.DisconnectedReason = null;
         }
+
+
+        private void InitializePresentation()
+        {
+
+            Presentation p = new Presentation();
+
+            Slide one = new Slide("Images/Slide1.jpg");
+   
+
+
+        }
+
 
         /// <summary>
         /// Window loaded actions to initialize Kinect handling.
@@ -759,7 +689,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         this.MapJointsWithUIElement(firstSkeleton);
                     }
 
-                    /*
+                    
                     // Assume no nearest skeleton and that the nearest skeleton is a long way away.
                     var newNearestId = -1;
                     var nearestDistance2 = double.MaxValue;
@@ -789,11 +719,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     {
                         this.nearestId = newNearestId;
                     }
-                    */
+                    
 
 
                     // Pass skeletons to recognizer.
-                    //this.activeRecognizer.Recognize(sender, frame, this.skeletons);
+                    this.activeRecognizer.Recognize(sender, frame, this.skeletons);
                     recognitionEngine.Skeleton = firstSkeleton;
                     recognitionEngine.StartRecognize();
 

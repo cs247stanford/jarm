@@ -100,11 +100,7 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Margin="0 0 0 20">
-            <Image DockPanel.Dock="Left" Source="Images\Logo.png" Stretch="None" HorizontalAlignment="Left" Margin="0 10 0 5"/>
-            <TextBlock DockPanel.Dock="Right" Margin="0 0 -1 0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18" Text="Slide Show"/>
-            <Image Source="Images\Status.png" Stretch="None" HorizontalAlignment="Center" Margin="0 0 0 5"/>
-        </DockPanel>
+        <DockPanel Grid.Row="0" Margin="0 0 0 20"/>
         <Grid Row="1" Name="MainGrid">
             <Image x:Name="next" Source="{Binding NextPicture}" Opacity="0"/>
             <Image x:Name="previous" Source="{Binding PreviousPicture}" Opacity="0"/>
@@ -112,7 +108,8 @@
             <Image x:Name="parent" Source="{Binding ParentPicture}" Opacity="0"/>
 
             <Canvas x:Name="RelatedItems" Opacity="0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Aqua">
-                
+                <Image x:Name="mainImage" Source="C:\Pictures\Slide1.jpg" Canvas.Left="0" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage2" Source= "C:\Pictures\scenery3.jpg" Canvas.Left="210" Width ="200" Height ="200"/>
             </Canvas>
             <Image x:Name="related" Source="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" Opacity="0"/>
             <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="-2,0,0,0"/>
