@@ -18,13 +18,14 @@ namespace GestureRecognizer
         protected override bool ValidateGestureStartCondition(Skeleton skeleton)
         {
 
-            var handRightPosition = skeleton.Joints[JointType.HandRight].Position;
             var handLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
+            var handRightPosition = skeleton.Joints[JointType.HandRight].Position;
+            var rightElbow = skeleton.Joints[JointType.ElbowRight].Position;
             var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
-
+            
             if ((handRightPosition.Y < shoulderRightPosition.Y) &&
-                (handRightPosition.Y > skeleton.Joints[JointType.ElbowRight].Position.Y) &&
+                (handRightPosition.Y > rightElbow.Y) &&
                 handLeftPosition.Y < spinePosition.Y)
             {
                 shoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
