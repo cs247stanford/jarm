@@ -53,8 +53,10 @@ namespace GestureRecognizer
             var shoulderLeftPosition = skeleton.Joints[JointType.ShoulderLeft].Position;
             //var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y > shoulderRightPosition.Y) &&
-                (handLeftPosition.Y > shoulderLeftPosition.Y))
+            double leftDelta = startingLeftPosition.Y - validateLeftPosition.Y;
+            double rightDelta = startingRightPosition.Y - validateRightPosition.Y;
+
+            if (leftDelta > 0.3 && rightDelta > 0.3)
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
                 return true;
@@ -82,13 +84,15 @@ namespace GestureRecognizer
             var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
+
+
+            /*if ((handRightPosition.Y < shoulderRightPosition.Y) &&
                 (handRightPosition.Y > skeleton.Joints[JointType.ElbowRight].Position.Y) &&
                 (handLeftPosition.Y < spinePosition.Y))
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
-            }
+            }*/
 
             return false;
 
@@ -108,7 +112,9 @@ namespace GestureRecognizer
 
             validateRightPosition = currentHandRightPosition;
             validateLeftPosition = currentHandLeftPosition;
-            //System.Diagnostics.Debug.WriteLine("PullDownGesture is valid");
+            System.Diagnostics.Debug.WriteLine("PullDownGesture is valid! ValidateData are Hands(" + validateLeftPosition.Y + "," + validateRightPosition.Y + ")" );
+            System.Diagnostics.Debug.WriteLine("========================= OriignalData are Hands(" + startingLeftPosition.Y + "," + startingRightPosition.Y + ")");
+
             return true;
 
         }
