@@ -163,11 +163,39 @@ namespace Microsoft.Samples.Kinect.Slideshow
         void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
         {
 
-            //String recognizedGesture = e.GestureType.ToString();
+            String recognizedGesture = e.GestureType.ToString();
+
+            switch (recognizedGesture) {
+
+                case "PullDown":
+
+                    var storyboard = Resources["TopPullDown"] as Storyboard;
+                    
+                    if (storyboard != null)
+                    {
+                        storyboard.Begin();
+                    }
+                    
+                    relatedItemsDown = true;
+                    //HighlightSkeleton(e.Skeleton);
+                    break;
+                
+                default:
+                    break;
+
+            }
+
+            if (recognizedGesture.Equals("PullDown"))
+            {
+                
+            }
 
             //System.Diagnostics.Debug.WriteLine(recognizedGesture);
 
-            MessageBox.Show(e.GestureType.ToString());
+            
+
+
+            //MessageBox.Show(e.GestureType.ToString());
 
         }
 

@@ -32,7 +32,7 @@ namespace GestureRecognizer
         {
 
             this.gestureCollection = new List<GestureBase>();
-            this.gestureCollection.Add(new SwipeToLeftGesture());
+           // this.gestureCollection.Add(new SwipeToLeftGesture());
             this.gestureCollection.Add(new PullDownGesture());
 
         }
