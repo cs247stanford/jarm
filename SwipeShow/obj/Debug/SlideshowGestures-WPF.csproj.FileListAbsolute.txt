@@ -15,3 +15,7 @@ C:\Users\RogerChen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-W
 C:\Users\RogerChen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-WPF.g.resources
 C:\Users\RogerChen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-WPF.exe
 C:\Users\RogerChen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-WPF.pdb
+C:\Users\Roger Chen\Documents\GitHub\jarm\SwipeShow\bin\Debug\SlideshowGestures-WPF.exe.config
+C:\Users\Roger Chen\Documents\GitHub\jarm\SwipeShow\bin\Debug\RandomDecisionForest.Proposal.Harness.XML
+C:\Users\Roger Chen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-WPF.exe
+C:\Users\Roger Chen\Documents\GitHub\jarm\SwipeShow\obj\Debug\SlideshowGestures-WPF.pdb
