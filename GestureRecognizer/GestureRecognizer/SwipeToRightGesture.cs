@@ -7,10 +7,10 @@ using Microsoft.Kinect;
 
 namespace GestureRecognizer
 {
-    class SwipeToLeftGesture : GestureBase
+    class SwipeToRightGesture : GestureBase
     {
 
-        public SwipeToLeftGesture() : base(GestureType.SwipeLeft) { }
+        public SwipeToRightGesture() : base(GestureType.SwipeRight) { }
         private SkeletonPoint validatePosition;
         private SkeletonPoint startingPosition;
         private float shoulderDiff;
@@ -18,15 +18,14 @@ namespace GestureRecognizer
         protected override bool ValidateGestureStartCondition(Skeleton skeleton)
         {
 
-            var handLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
             var handRightPosition = skeleton.Joints[JointType.HandRight].Position;
-            var rightElbow = skeleton.Joints[JointType.ElbowRight].Position;
-            var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
+            var handLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
+            var shoulderLeftPosition = skeleton.Joints[JointType.ShoulderLeft].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
-            
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
-                (handRightPosition.Y > rightElbow.Y) &&
-                handLeftPosition.Y < spinePosition.Y)
+
+            if ((handLeftPosition.Y < shoulderLeftPosition.Y) &&
+                (handLeftPosition.Y > skeleton.Joints[JointType.ElbowLeft].Position.Y) &&
+                handRightPosition.Y < spinePosition.Y)
             {
                 shoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
                 validatePosition = skeleton.Joints[JointType.HandRight].Position;
@@ -42,15 +41,15 @@ namespace GestureRecognizer
         protected override bool IsGestureValid(Skeleton skeleton)
         {
 
-            var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
-            
-            if (validatePosition.X < currentHandRightPosition.X)
+            var currentHandLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
+
+            if (validatePosition.X < currentHandLeftPosition.X)
             {
                 return false;
             }
 
             System.Diagnostics.Debug.WriteLine("Gesture is valid...");
-            validatePosition = currentHandRightPosition;
+            validatePosition = currentHandLeftPosition;
             return true;
 
         }
@@ -59,7 +58,7 @@ namespace GestureRecognizer
         {
 
             double distance = Math.Abs(startingPosition.X - validatePosition.X);
-            float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
+            float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandLeft], skeleton.Joints[JointType.ShoulderRight]);
 
             if (distance > 0.1 && currentShoulderDiff < shoulderDiff)
             {
@@ -73,15 +72,15 @@ namespace GestureRecognizer
 
         protected override bool ValidateBaseCondition(Skeleton skeleton)
         {
-            
+
             var handRightPosition = skeleton.Joints[JointType.HandRight].Position;
             var handLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
-            var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
+            var shoulderLeftPosition = skeleton.Joints[JointType.ShoulderLeft].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
-                (handRightPosition.Y > skeleton.Joints[JointType.ElbowRight].Position.Y) &&
-                (handLeftPosition.Y < spinePosition.Y))
+            if ((handLeftPosition.Y < shoulderLeftPosition.Y) &&
+                (handLeftPosition.Y > skeleton.Joints[JointType.ElbowLeft].Position.Y) &&
+                (handRightPosition.Y < spinePosition.Y))
             {
                 return true;
             }

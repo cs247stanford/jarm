@@ -20,7 +20,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
     using Microsoft.Kinect;
     using Microsoft.Samples.Kinect.SwipeGestureRecognizer;
     using GestureRecognizer;
-    using System.Drawing;
+    //using System.Drawing;
     
     /*
      * public form1() { InitializeComponent();}
@@ -161,7 +161,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
         {
+
+            //String recognizedGesture = e.GestureType.ToString();
+
+            //System.Diagnostics.Debug.WriteLine(recognizedGesture);
+
             MessageBox.Show(e.GestureType.ToString());
+
         }
 
         /// <summary>
@@ -335,6 +341,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return value;
         }
 
+        /*
         /// <summary>
         /// Create a wired-up recognizer for running the slideshow.
         /// </summary>
@@ -344,7 +351,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             // Instantiate a recognizer.
             var recognizer = new Recognizer();
 
-            /*  // Wire-up swipe right to manually advance picture.
+           // Wire-up swipe right to manually advance picture.
               recognizer.SwipeRightDetected += (s, e) =>
               {
 
@@ -409,7 +416,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       HighlightSkeleton(e.Skeleton);
                   }
               };
-              */
+              
 
 
             // Wire-up swipe up to go back to the parent slide (after discussing a related slide).
@@ -462,17 +469,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                        // Setup corresponding picture if pictures are available.
                        // Will eventually load in the correct "related slides" image
-                       /*this.PreviousPicture = this.Picture;
+                       this.PreviousPicture = this.Picture;
                        this.Picture = this.NextPicture;
                        this.NextPicture = LoadPicture(Index + 1);
                      
-                       */
+                       
 
                        // Notify world of change to RelatedPicture.
-                       /*if (this.PropertyChanged != null)
+                       if (this.PropertyChanged != null)
                        {
                            this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedItems"));
-                       }*/
+                       }
 
                        var storyboard = Resources["TopPullDown"] as Storyboard;
                        if (storyboard != null)
@@ -484,7 +491,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                    }
                };
 
-                /*  //Will eventually be PushUpDetected
+                  //Will eventually be PushUpDetected
                    recognizer.SwipeLeftDetected += (s, e) =>
                    {
 
@@ -510,10 +517,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
                            relatedItemsDown = false;
                            HighlightSkeleton(e.Skeleton);
                        }
-                   };*/
+                   };
 
                 return recognizer;
-            }
+            }*/
 
         /// <summary>
         /// Handle insertion of Kinect sensor.
@@ -674,6 +681,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         this.MapJointsWithUIElement(firstSkeleton);
                     }
 
+                    /*
                     // Assume no nearest skeleton and that the nearest skeleton is a long way away.
                     var newNearestId = -1;
                     var nearestDistance2 = double.MaxValue;
@@ -703,6 +711,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     {
                         this.nearestId = newNearestId;
                     }
+                    */
 
 
                     // Pass skeletons to recognizer.
@@ -715,14 +724,15 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
         }
 
-        private int IndexFromXValue(double x)
+        /*private int IndexFromXValue(double x)
         {
             // @Melissa, I'm not sure what's going on here. I set a cast to silence the debugger. 
             return (int)x;
             //return ((int) x) % 5;
-        }
+        }*/
 
 
+        /*
         /// <summary>
         /// Uses the current y value to get the associated related item. 
         /// Then, switches to related item.
@@ -767,7 +777,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             }
 
-        }
+        }*/
 
         /// <summary>
         /// Selects object at current x, y
@@ -780,7 +790,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
-                SelectRelatedItem(x, y);
+                //SelectRelatedItem(x, y);
             }
             else
             {
@@ -800,7 +810,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Canvas.SetLeft(RightHandPointer, rightPoint.X);
             Canvas.SetTop(RightHandPointer, rightPoint.Y);
            
-            if (!isApproxSamePoint(rightPoint.X, rightPoint.Y))
+            /*if (!isApproxSamePoint(rightPoint.X, rightPoint.Y))
             {
                 currentX = rightPoint.X;
                 currentY = rightPoint.Y;
@@ -812,7 +822,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 SelectObject(rightPoint.X, rightPoint.Y);
                 stopwatch.Restart();
 
-            }
+            }*/
+
         }
 
         private Point ScalePosition(SkeletonPoint skeletonPoint)
