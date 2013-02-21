@@ -802,15 +802,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
         }
 
-        /*private int IndexFromXValue(double x)
-        {
-            // @Melissa, I'm not sure what's going on here. I set a cast to silence the debugger. 
-            return (int)x;
-            //return ((int) x) % 5;
-        }*/
+
+       
 
 
-        /*
+        
         /// <summary>
         /// Uses the current y value to get the associated related item. 
         /// Then, switches to related item.
@@ -818,14 +814,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectRelatedItem(double x, double y)
         {
-
-            using (Graphics g = this.CreateGraphics())
-            {
-
-
                 // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-                double SLIDE_WIDTH = Width / 10;
-                Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
+                double SLIDE_WIDTH = ((Grid)(this.Content)).ActualWidth / 5;
+                //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
                 //List<Slide> relatedSlides = new List<Slide>;
                 //double SLIDE_PADDING
@@ -837,8 +828,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 // for simplicity, let's assume there is no padding between the slides         
                 int selectedSlideIndex = (int)(x - 1) / (int)SLIDE_WIDTH;
                 //Slide selectedSlide = relatedSlides[selectedSlideIndex];
-
-
 
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
 
@@ -852,10 +841,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                     this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
                 }
-
-            }
-
-        }*/
+        }
 
         /// <summary>
         /// Selects object at current x, y
