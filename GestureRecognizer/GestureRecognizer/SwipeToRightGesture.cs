@@ -41,15 +41,15 @@ namespace GestureRecognizer
         protected override bool IsGestureValid(Skeleton skeleton)
         {
 
-            var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
+            var currentHandLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
 
-            if (validatePosition.X < currentHandRightPosition.X)
+            if (validatePosition.X < currentHandLeftPosition.X)
             {
                 return false;
             }
 
             System.Diagnostics.Debug.WriteLine("Gesture is valid...");
-            validatePosition = currentHandRightPosition;
+            validatePosition = currentHandLeftPosition;
             return true;
 
         }
@@ -58,7 +58,7 @@ namespace GestureRecognizer
         {
 
             double distance = Math.Abs(startingPosition.X - validatePosition.X);
-            float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
+            float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandLeft], skeleton.Joints[JointType.ShoulderRight]);
 
             if (distance > 0.1 && currentShoulderDiff < shoulderDiff)
             {
@@ -75,12 +75,12 @@ namespace GestureRecognizer
 
             var handRightPosition = skeleton.Joints[JointType.HandRight].Position;
             var handLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
-            var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
+            var shoulderLeftPosition = skeleton.Joints[JointType.ShoulderLeft].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
-                (handRightPosition.Y > skeleton.Joints[JointType.ElbowRight].Position.Y) &&
-                (handLeftPosition.Y < spinePosition.Y))
+            if ((handLeftPosition.Y < shoulderLeftPosition.Y) &&
+                (handLeftPosition.Y > skeleton.Joints[JointType.ElbowLeft].Position.Y) &&
+                (handRightPosition.Y < spinePosition.Y))
             {
                 return true;
             }
