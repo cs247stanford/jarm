@@ -14,7 +14,8 @@ namespace GestureRecognizer
         private SkeletonPoint validatePosition;
         private SkeletonPoint startingPosition;
         private float shoulderDiff;
-        private double SWIPE_BUFFER = 50; // the hand must move at least this many pixels to trigger action
+        private double HORIZONTAL_SWIPE_BUFFER = 0.35; // the hand must move at least this many pixels to trigger action
+        private double VERTICAL_SWIPE_BUFFER = 0.15; // the hand must move at least this many pixels to trigger action
 
         protected override bool ValidateGestureStartCondition(Skeleton skeleton)
         {
@@ -54,7 +55,8 @@ namespace GestureRecognizer
 
             var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
             
-            if (validatePosition.X > currentHandRightPosition.X)
+            if (validatePosition.X > currentHandRightPosition.X) && 
+                (Math.abs(validatePosition.Y - currentHandRightPosition.Y) < VERTICAL_SWIPE_BUFFER))
             {
                 System.Diagnostics.Debug.WriteLine("^^^SwipeToLeft gesture is valid...");
                 validatePosition = currentHandRightPosition;
@@ -70,7 +72,7 @@ namespace GestureRecognizer
             double distance = Math.Abs(startingPosition.X - validatePosition.X);
             float currentShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
 
-            if (distance > SWIPE_BUFFER)// && currentShoulderDiff < shoulderDiff)
+            if (distance > HORIZONTAL_SWIPE_BUFFER)// && currentShoulderDiff < shoulderDiff)
             {
                 System.Diagnostics.Debug.WriteLine("<<<SwipeToLeft gesture has ended...");
                 return true;
