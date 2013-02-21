@@ -56,13 +56,12 @@ namespace GestureRecognizer
             
             if (validatePosition.X > currentHandRightPosition.X)
             {
-                System.Diagnostics.Debug.WriteLine("<<<SwipeToLeft gesture is valid...");
+                System.Diagnostics.Debug.WriteLine("^^^SwipeToLeft gesture is valid...");
                 validatePosition = currentHandRightPosition;
                 return true;
             }
 
             return false;
-
         }
 
         protected override bool ValidateGestureEndCondition(Skeleton skeleton)
@@ -73,7 +72,7 @@ namespace GestureRecognizer
 
             if (distance > SWIPE_BUFFER && currentShoulderDiff < shoulderDiff)
             {
-                System.Diagnostics.Debug.WriteLine("SwipeToLeft gesture has ended...");
+                System.Diagnostics.Debug.WriteLine("<<<SwipeToLeft gesture has ended...");
                 return true;
             }
 
