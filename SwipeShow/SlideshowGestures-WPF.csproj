@@ -111,6 +111,10 @@
     <Resource Include="Images\Status.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\KinectPresentationObjects.csproj">
+      <Project>{5cdb0002-d093-4638-ba65-f903abc8c85d}</Project>
+      <Name>KinectPresentationObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GestureRecognizer\GestureRecognizer\GestureRecognizer.csproj">
       <Project>{78e49c6f-924e-4f36-8220-add964e537a7}</Project>
       <Name>GestureRecognizer</Name>
