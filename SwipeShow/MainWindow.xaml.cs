@@ -150,6 +150,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
             this.PreviousPicture = this.LoadPicture(this.Index - 1);
             this.Picture = this.LoadPicture(this.Index);
+           Debug.Print("INDEX: " + this.Index);
             this.NextPicture = this.LoadPicture(this.Index + 1);
             this.ParentPicture = null;
             //this.RelatedPicture = this.LoadPicture(this.Index - 1);
@@ -741,12 +742,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// Uses the current y value to get the associated related item. 
         /// Then, switches to related item.
         /// </summary>
+        /// <param name="x"></param>
         /// <param name="y"></param>
         private void SelectRelatedItem(double x, double y)
         {
                 // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-                double SLIDE_WIDTH = ((Grid)(this.Content)).ActualWidth / 5;
+                double SLIDE_WIDTH = ((Grid)(this.Content)).ActualWidth / 4;
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
+
+
+                Debug.Print("In select related item");
+
 
                 //List<Slide> relatedSlides = new List<Slide>;
                 //double SLIDE_PADDING
@@ -756,7 +762,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 // given an x and y, return the slide at that position
                 // for simplicity, let's assume there is no padding between the slides         
-                int selectedSlideIndex = (int)(x - 1) / (int)SLIDE_WIDTH;
+                int selectedSlideIndex =((int)(x) / (int)SLIDE_WIDTH)+1;
+                //if (selectedSlideIndex < 0) selectedSlideIndex = 9;
                 //Slide selectedSlide = relatedSlides[selectedSlideIndex];
 
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
@@ -780,11 +787,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectObject(double x, double y)
         {
-          
+            Debug.Print("In select object");
       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
-                //SelectRelatedItem(x, y);
+                SelectRelatedItem(x, y);
             }
             else
             {
@@ -804,7 +811,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Canvas.SetLeft(RightHandPointer, rightPoint.X);
             Canvas.SetTop(RightHandPointer, rightPoint.Y);
            
-            /*if (!isApproxSamePoint(rightPoint.X, rightPoint.Y))
+            if (!isApproxSamePoint(rightPoint.X, rightPoint.Y))
             {
                 currentX = rightPoint.X;
                 currentY = rightPoint.Y;
@@ -816,7 +823,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 SelectObject(rightPoint.X, rightPoint.Y);
                 stopwatch.Restart();
 
-            }*/
+            }
 
         }
 
