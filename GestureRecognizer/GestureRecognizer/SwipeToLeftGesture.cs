@@ -30,7 +30,6 @@ namespace GestureRecognizer
                 shoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
                 validatePosition = skeleton.Joints[JointType.HandRight].Position;
                 startingPosition = skeleton.Joints[JointType.HandRight].Position;
-                System.Diagnostics.Debug.WriteLine("Start condition validated...");
                 return true;
             }
 
@@ -48,7 +47,6 @@ namespace GestureRecognizer
                 return false;
             }
 
-            System.Diagnostics.Debug.WriteLine("Gesture is valid...");
             validatePosition = currentHandRightPosition;
             return true;
 
@@ -62,7 +60,6 @@ namespace GestureRecognizer
 
             if (distance > 0.1 && currentShoulderDiff < shoulderDiff)
             {
-                System.Diagnostics.Debug.WriteLine("Gesture has ended...");
                 return true;
             }
 
