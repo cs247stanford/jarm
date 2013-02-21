@@ -77,7 +77,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         private KinectSensor nui;
 
+        /// <summary>
+        /// Related things
+        /// </summary>
         private bool relatedActivated = false;
+        private bool relatedJustDeactivated = false;
 
         /// <summary>
         /// There is currently no connected sensor.
@@ -174,6 +178,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     if (relatedActivated)
                         break;
 
+                    if (relatedJustDeactivated)
+                    {
+                        relatedJustDeactivated = false;
+                        break;
+                    }
+
                     var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
 
                     if (pullDownStoryboard != null)
@@ -203,6 +213,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     relatedItemsDown = true;
 
                     relatedActivated = false;
+
+                    relatedJustDeactivated = true;
 
                     break;
                 
@@ -648,6 +660,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="e">The event args.</param>
         private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
         {
+
+            String path;
+            try
+            {
+                path = Directory.GetCurrentDirectory();
+                Debug.WriteLine(path);
+            }
+            catch (Exception ef) { 
+                Debug.WriteLine(ef);
+            }
+
             // Start the Kinect system, this will cause StatusChanged events to be queued.
             this.InitializeNui();
 
@@ -885,7 +908,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             DepthImagePoint depthPoint = this.nui.CoordinateMapper.MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.Resolution640x480Fps30);
-            return new Point(depthPoint.X, depthPoint.Y);
+            return new Point(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640, depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480);
 
         }
 

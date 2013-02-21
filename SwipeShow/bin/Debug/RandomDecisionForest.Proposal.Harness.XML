@@ -50,6 +50,11 @@
             The sensor we're currently tracking.
             </summary>
         </member>
+        <member name="F:Microsoft.Samples.Kinect.Slideshow.MainWindow.relatedActivated">
+            <summary>
+            Related things
+            </summary>
+        </member>
         <member name="F:Microsoft.Samples.Kinect.Slideshow.MainWindow.isDisconnectedField">
             <summary>
             There is currently no connected sensor.
