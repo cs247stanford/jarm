@@ -78,15 +78,15 @@
         <Storyboard x:Key="TopPushUp">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
                 <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+                <!-- <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>-->
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="RelatedItems">
-                <EasingThicknessKeyFrame KeyTime="0" Value="0,2000,0,-2000"/>
-                <EasingThicknessKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingThicknessKeyFrame KeyTime="0" Value="0,500,0,-500"/>
+                <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Style TargetType="{x:Type Image}">

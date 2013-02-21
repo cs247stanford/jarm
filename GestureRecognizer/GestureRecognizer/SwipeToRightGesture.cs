@@ -24,6 +24,7 @@ namespace GestureRecognizer
             var handLeftPosition = skeleton.Joints[JointType.HandRight].Position;
             var elbowRightPosition = skeleton.Joints[JointType.ElbowLeft].Position;
             var elbowLeftPosition = skeleton.Joints[JointType.ElbowRight].Position;
+            var shoulderRightPosition = skeleton.Joints[JointType.ShoulderRight].Position;
             var shoulderLeftPosition = skeleton.Joints[JointType.ShoulderRight].Position;
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
             

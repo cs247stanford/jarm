@@ -54,7 +54,7 @@ namespace GestureRecognizer
         {
 
             var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
-            
+            /*
             if (validatePosition.X > currentHandRightPosition.X) && 
                (Math.abs(validatePosition.Y - currentHandRightPosition.Y) < VERTICAL_SWIPE_BUFFER))
             {
@@ -62,6 +62,7 @@ namespace GestureRecognizer
                 validatePosition = currentHandRightPosition;
                 return true;
             }
+             */
 
             return false;
         }

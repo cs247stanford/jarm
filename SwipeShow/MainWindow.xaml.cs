@@ -77,6 +77,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         private KinectSensor nui;
 
+        private bool relatedActivated = false;
+
         /// <summary>
         /// There is currently no connected sensor.
         /// </summary>
@@ -169,15 +171,39 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "PullDown":
 
-                    var storyboard = Resources["TopPullDown"] as Storyboard;
-                    
-                    if (storyboard != null)
+                    if (relatedActivated)
+                        break;
+
+                    var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
+
+                    if (pullDownStoryboard != null)
                     {
-                        storyboard.Begin();
+                        pullDownStoryboard.Begin();
                     }
                     
                     relatedItemsDown = true;
+
+                    relatedActivated = true;
+
                     //HighlightSkeleton(e.Skeleton);
+                    break;
+
+                case "PushUp":
+
+                    if (!relatedActivated)
+                        break;
+                    
+                    var pushUpStoryboard = Resources["TopPushUp"] as Storyboard;
+
+                    if (pushUpStoryboard != null)
+                    {
+                        pushUpStoryboard.Begin();
+                    }
+                    
+                    relatedItemsDown = true;
+
+                    relatedActivated = false;
+
                     break;
                 
                 default:
