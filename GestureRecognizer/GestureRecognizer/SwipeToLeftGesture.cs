@@ -27,9 +27,9 @@ namespace GestureRecognizer
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
             
             if ((handRightPosition.Y < shoulderRightPosition.Y) && // rhand is above rshoulder
-                (handRightPosition.Y < elbowRightPosition.Y) && // rhand is above relbow
+                //(handRightPosition.Y < elbowRightPosition.Y) && // rhand is above relbow
                 //handLeftPosition.Y < spinePosition.Y)
-                (handLeftPosition.Y > elbowLeftPosition.Y))
+                (handLeftPosition.Y > spinePosition.Y))
             {
                 shoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderLeft]);
                 
