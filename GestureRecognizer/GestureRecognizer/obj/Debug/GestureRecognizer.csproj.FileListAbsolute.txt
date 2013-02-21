@@ -6,3 +6,4 @@ C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.pdb
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.dll
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.pdb
+C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.csprojResolveAssemblyReference.cache
