@@ -30,7 +30,7 @@
             MainWindow
             </summary>
         </member>
-        <member name="F:Microsoft.Samples.Kinect.Slideshow.MainWindow.recognitionEngine">
+        <member name="F:Microsoft.Samples.Kinect.Slideshow.MainWindow.activeRecognizer">
             <summary>
             The recognizer being used.
             </summary>
@@ -133,6 +133,12 @@
             <param name="index">The index to use.</param>
             <returns>Corresponding image.</returns>
         </member>
+        <member name="M:Microsoft.Samples.Kinect.Slideshow.MainWindow.CreateRecognizer">
+            <summary>
+            Create a wired-up recognizer for running the slideshow.
+            </summary>
+            <returns>The wired-up recognizer.</returns>
+        </member>
         <member name="M:Microsoft.Samples.Kinect.Slideshow.MainWindow.InitializeNui">
             <summary>
             Handle insertion of Kinect sensor.
@@ -156,6 +162,14 @@
             </summary>
             <param name="sender">The sender.</param>
             <param name="e">The event args.</param>
+        </member>
+        <member name="M:Microsoft.Samples.Kinect.Slideshow.MainWindow.SelectRelatedItem(System.Double,System.Double)">
+            <summary>
+            Uses the current y value to get the associated related item. 
+            Then, switches to related item.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
         </member>
         <member name="M:Microsoft.Samples.Kinect.Slideshow.MainWindow.SelectObject(System.Double,System.Double)">
             <summary>

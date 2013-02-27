@@ -38,8 +38,13 @@ namespace KinectPresentor
             slides.Add(s);
         }
 
-        private Slide getSlide(int index)
+        public Slide getSlide(int index)
         {
+            int actualIndex = index % this.slides.Count();
+            if (actualIndex < 0)
+            {
+                actualIndex += this.slides.Count();
+            }
             return slides.ElementAt(index);
         }
 
@@ -65,6 +70,7 @@ namespace KinectPresentor
     {
         //Need to add video support as well.
         private Image backgroundImage;
+        //private String imageFileName;
         private List<Slide> associatedSlides;
         private List<Animation> animations;
         private Slide parentSlide;
@@ -94,6 +100,14 @@ namespace KinectPresentor
         public void setAssociation(Slide s)
         {
             associatedSlides.Add(s);
+        }
+
+        public void addAssociatedSlides(List<Slide> slides)
+        {
+            foreach (Slide s in slides)
+            {
+                associatedSlides.Add(s);
+            }
         }
 
         public Slide getAssociation(int index)
@@ -140,7 +154,6 @@ namespace KinectPresentor
         {
             return backgroundImage;
         }
-    
     }
 
     public class Animation {

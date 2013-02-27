@@ -144,10 +144,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private bool relatedItemsDown = false;
 
         /// <summary>
+        /// The presentation object that holds all the slides
+        /// </summary>
+        private Presentation p;
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
+            InitializePresentation();
+            
             this.PreviousPicture = this.LoadPicture(this.Index - 1);
             this.Picture = this.LoadPicture(this.Index);
            Debug.Print("INDEX: " + this.Index);
@@ -575,11 +583,54 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void InitializePresentation()
         {
 
-            Presentation p = new Presentation();
+            p = new Presentation();
+            Slide one = new Slide("C:\\Pictures\\Slide1.jpg");
+            Slide two = new Slide("C:\\Pictures\\Slide2.jpg");
+            Slide three = new Slide("C:\\Pictures\\Slide3.jpg");
+            Slide four = new Slide("C:\\Pictures\\Slide4.jpg");
+            Slide five = new Slide("C:\\Pictures\\Slide5.jpg");
+            Slide six = new Slide("C:\\Pictures\\Slide6.jpg");
+            Slide seven = new Slide("C:\\Pictures\\Slide7.jpg");
 
-            Slide one = new Slide("Images/Slide1.jpg");
-   
 
+            List<Slide> group1 = new List<Slide>()
+            {
+                two,
+                four,
+                five,
+            };
+            List<Slide> group2 = new List<Slide>()
+            {
+                three,
+                five,
+                six,
+            };
+            List<Slide> group3 = new List<Slide>()
+            {
+                three,
+                five,
+                seven,
+            };
+            List<Slide> group4 = new List<Slide>()
+            {
+                three,
+                four,
+                six,
+                seven,
+            };
+            List<Slide> group5 = new List<Slide>()
+            {
+                two,
+                four,
+            };
+
+            one.addAssociatedSlides(group1);
+            two.addAssociatedSlides(group2);
+            three.addAssociatedSlides(group5);
+            four.addAssociatedSlides(group2);
+            five.addAssociatedSlides(group4);
+            six.addAssociatedSlides(group3);
+            seven.addAssociatedSlides(group5);
 
         }
 
@@ -747,7 +798,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void SelectRelatedItem(double x, double y)
         {
                 // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-                double SLIDE_WIDTH = ((Grid)(this.Content)).ActualWidth / 4;
+            double SLIDE_WIDTH = 220;//((Grid)(this.Content)).ActualWidth / 4;
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
 
@@ -769,14 +820,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
 
                 Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
-                this.ParentPicture = this.Picture;
-                this.Picture = LoadPicture(selectedSlideIndex);
-
-                // Notify world of change to Index and Picture.
-                if (this.PropertyChanged != null)
+                if (selectedSlideIndex < 5)
                 {
-                    this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
-                    this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
+                    this.ParentPicture = this.Picture;
+                    this.Picture = LoadPicture(selectedSlideIndex);
+
+                    // Notify world of change to Index and Picture.
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
+                    }
                 }
         }
 
