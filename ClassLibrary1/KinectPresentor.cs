@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xaml;
 using System.Text;
-using System.Drawing;
+using System.Diagnostics;
+//using System.Windows.Freezable;
+//using System.Drawing;
 //using Microsoft.DirectX.AudioVideoPlayback;
 
 
@@ -38,6 +43,11 @@ namespace KinectPresentor
             slides.Add(s);
         }
 
+        public int getCurrentIndex()
+        {
+            return currIndex;
+        }
+
         public Slide getSlide(int index)
         {
             int actualIndex = index % this.slides.Count();
@@ -45,7 +55,23 @@ namespace KinectPresentor
             {
                 actualIndex += this.slides.Count();
             }
-            return slides.ElementAt(index);
+            Debug.Assert(actualIndex < this.slides.Count(), "Index is within bounds of path array");
+            return slides.ElementAt(actualIndex);
+        }
+
+        public Slide getCurrentSlide()
+        {
+            return getSlide(this.currIndex);
+        }
+
+        public Slide getPreviousSlide()
+        {
+            return getSlide(this.currIndex - 1);
+        }
+
+        public Slide getNextSlide()
+        {
+            return getSlide(this.currIndex + 1);
         }
 
         public Slide moveToNextSlide()
@@ -60,16 +86,23 @@ namespace KinectPresentor
             return getSlide(this.currIndex);
         }
 
-
-
-
+        public Slide jumpToSlide(int index)
+        {
+            int actualIndex = index % this.slides.Count();
+            if (actualIndex < 0)
+            {
+                actualIndex += this.slides.Count();
+            }
+            this.currIndex = actualIndex;
+            return getSlide(this.currIndex);
+        }
     }
 
 
     public class Slide
     {
         //Need to add video support as well.
-        private Image backgroundImage;
+        private BitmapImage backgroundImage;
         //private String imageFileName;
         private List<Slide> associatedSlides;
         private List<Animation> animations;
@@ -77,7 +110,7 @@ namespace KinectPresentor
 
         public Slide(String imagePath)
         {
-            backgroundImage = Image.FromFile(imagePath);
+            backgroundImage = new BitmapImage(new Uri(imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
         }
@@ -150,7 +183,7 @@ namespace KinectPresentor
             return associatedSlides;
         }
 
-        public Image getImage()
+        public BitmapImage getImage()
         {
             return backgroundImage;
         }

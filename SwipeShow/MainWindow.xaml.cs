@@ -149,19 +149,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private Presentation p;
 
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
             InitializePresentation();
-            
-            this.PreviousPicture = this.LoadPicture(this.Index - 1);
-            this.Picture = this.LoadPicture(this.Index);
-           Debug.Print("INDEX: " + this.Index);
-            this.NextPicture = this.LoadPicture(this.Index + 1);
+
+            this.PreviousPicture = p.getPreviousSlide().getImage();
+            this.Picture = p.getCurrentSlide().getImage();
+            this.NextPicture = p.getNextSlide().getImage();
+            Debug.Print("INDEX: " + this.Index);
             this.ParentPicture = null;
-            //this.RelatedPicture = this.LoadPicture(this.Index - 1);
 
             InitializeComponent();
 
@@ -455,10 +455,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       Index++;
 
                       // Setup corresponding picture if pictures are available.
+                      p.moveToNextSlide();
+                      this.NextPicture = p.getNextSlide().getImage();
                       this.PreviousPicture = this.Picture;
                       this.Picture = this.NextPicture;
-                      this.NextPicture = LoadPicture(Index + 1);
-
+                      
                       // Notify world of change to Index and Picture.
                       if (this.PropertyChanged != null)
                       {
@@ -490,7 +491,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       // Setup corresponding picture if pictures are available.
                       this.NextPicture = this.Picture;
                       this.Picture = this.PreviousPicture;
-                      this.PreviousPicture = LoadPicture(Index - 1);
+                      p.moveToNextSlide();
+                      this.PreviousPicture = p.getPreviousSlide().getImage();
 
                       // Notify world of change to Index and Picture.
                       if (this.PropertyChanged != null)
@@ -631,6 +633,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
             five.addAssociatedSlides(group4);
             six.addAssociatedSlides(group3);
             seven.addAssociatedSlides(group5);
+
+            p.addSlide(one);
+            p.addSlide(two);
+            p.addSlide(three);
+            p.addSlide(four);
+            p.addSlide(five);
+            p.addSlide(six);
+            p.addSlide(seven);
 
         }
 
@@ -823,7 +833,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 if (selectedSlideIndex < 5)
                 {
                     this.ParentPicture = this.Picture;
-                    this.Picture = LoadPicture(selectedSlideIndex);
+                    p.jumpToSlide(selectedSlideIndex);
+                    this.Picture = p.getCurrentSlide().getImage();
 
                     // Notify world of change to Index and Picture.
                     if (this.PropertyChanged != null)

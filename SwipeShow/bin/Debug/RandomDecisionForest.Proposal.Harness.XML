@@ -115,6 +115,11 @@
             True if the related items pane is currently being displayed
             </summary>
         </member>
+        <member name="F:Microsoft.Samples.Kinect.Slideshow.MainWindow.p">
+            <summary>
+            The presentation object that holds all the slides
+            </summary>
+        </member>
         <member name="M:Microsoft.Samples.Kinect.Slideshow.MainWindow.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.Samples.Kinect.Slideshow.MainWindow"/> class.
