@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
+using System.Diagnostics;
 
 namespace GestureRecognizer
 {
@@ -16,12 +17,14 @@ namespace GestureRecognizer
         public GestureType GestureType { get; set; }
         public Skeleton Skeleton { get; set; }
         public bool IsGestureDetected { get; set; }
-
+        private Stopwatch watch;
         private List<GestureBase> gestureCollection = null;
 
         public GestureRecognitionEngine()
         {
+            watch = new Stopwatch();
             this.InitializeGesture();
+            
         }
 
 
@@ -44,7 +47,7 @@ namespace GestureRecognizer
         /// </summary>
         public void StartRecognize()
         {
-
+            Stopwatch watch = new Stopwatch();
             if (this.IsGestureDetected)
             {
                 while (this.SkipFramesAfterGestureIsDetected <= 30)
@@ -58,11 +61,14 @@ namespace GestureRecognizer
             foreach (var item in this.gestureCollection)
             {
                 if (item.CheckForGesture(this.Skeleton))
+                    watch.Start();
                 {
                     if (this.GestureRecognized != null)
+                        watch.Stop();
                     {
                         this.GestureRecognized(this, new GestureEventArgs(RecognitionResult.Success, item.GestureType));
                         this.IsGestureDetected = true;
+                        Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
                     }
                 }
             }
@@ -80,7 +86,7 @@ namespace GestureRecognizer
             this.InitializeGesture();
             this.SkipFramesAfterGestureIsDetected = 0;
             this.IsGestureDetected = false;
-
+            watch = new Stopwatch();
         }
 
 
