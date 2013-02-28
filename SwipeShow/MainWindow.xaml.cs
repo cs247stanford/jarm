@@ -888,7 +888,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void SelectRelatedItem(double x, double y)
         {
                 // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-            double SLIDE_WIDTH = 220;//((Grid)(this.Content)).ActualWidth / 4;
+                double SLIDE_WIDTH = 220;//((Grid)(this.Content)).ActualWidth / 4;
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
 
@@ -903,7 +903,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 // given an x and y, return the slide at that position
                 // for simplicity, let's assume there is no padding between the slides         
-                int selectedSlideIndex =((int)(x) / (int)SLIDE_WIDTH)+1;
+                int selectedSlideIndex =((int)(x) / (int)SLIDE_WIDTH);
                 //if (selectedSlideIndex < 0) selectedSlideIndex = 9;
                 //Slide selectedSlide = relatedSlides[selectedSlideIndex];
 
