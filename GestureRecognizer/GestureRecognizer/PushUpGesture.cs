@@ -46,8 +46,8 @@ namespace GestureRecognizer
                 validateRightPosition = skeleton.Joints[JointType.HandRight].Position;
                 startingRightPosition = skeleton.Joints[JointType.HandRight].Position;
 
-                return true;
                 watch.Start();
+                return true;
             }
 
             return false;
@@ -72,7 +72,7 @@ namespace GestureRecognizer
             {
                 System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
-                Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
+                Debug.WriteLine("watch elapsed time: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
 
