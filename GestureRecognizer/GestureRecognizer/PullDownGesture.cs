@@ -33,7 +33,7 @@ namespace GestureRecognizer
             //System.Diagnostics.Debug.WriteLine("hands: (" + handLeftPosition.Y + "," + handRightPosition.Y + ") && shoulders: (" +
             //    shoulderLeftPosition.Y + "," + shoulderRightPosition.Y + ")");
 
-            if ((handRightPosition.Y > shoulderRightPosition.Y) &&
+            if ((handRightPosition.Y > shoulderRightPosition.Y) ||
                 (handLeftPosition.Y > shoulderLeftPosition.Y))
             {
 
@@ -67,7 +67,7 @@ namespace GestureRecognizer
             double leftDelta = startingLeftPosition.Y - validateLeftPosition.Y;
             double rightDelta = startingRightPosition.Y - validateRightPosition.Y;
 
-            if (leftDelta > 0.2 && rightDelta > 0.2)
+            if (leftDelta > 0.13 && rightDelta > 0.13)
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
                 return true;
@@ -89,7 +89,7 @@ namespace GestureRecognizer
 
             System.Diagnostics.Debug.WriteLine("Attempting validation of base...");
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
+            if ((handRightPosition.Y < shoulderRightPosition.Y) ||
                 (handLeftPosition.Y < shoulderLeftPosition.Y))
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
