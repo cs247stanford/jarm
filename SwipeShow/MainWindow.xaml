@@ -108,7 +108,7 @@
             <Image x:Name="parent" Source="{Binding ParentPicture}" Opacity="0"/>
 
             <Canvas x:Name="RelatedItems" Opacity="0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Black">
-                <Image x:Name="mainImage" Source="C:\Pictures\Slide10c.jpg" Canvas.Left="0" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage" Source="C:\Pictures\Slide0.jpg" Canvas.Left="0" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage2" Source= "C:\Pictures\Slide2.jpg" Canvas.Left="210" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage3" Source= "C:\Pictures\Slide3.jpg" Canvas.Left="420" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage4" Source= "C:\Pictures\Slide4.jpg" Canvas.Left="630" Width ="200" Height ="200"/>

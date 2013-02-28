@@ -906,24 +906,48 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private void MapJointsWithUIElement(Skeleton skeleton)
         {
-            Point rightPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
-            Canvas.SetLeft(RightHandPointer, rightPoint.X);
-            Canvas.SetTop(RightHandPointer, rightPoint.Y);
+            Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
+            Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
+            DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
+            DepthImagePoint handDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.HandRight].Position);
+
+            int elbowZ = elbowDepthPoint.Depth;
+            double elbowX = elbowPoint.X;
+            double elbowY = elbowPoint.Y;
+          
+            int handZ = handDepthPoint.Depth;
+            double handX = handPoint.X;
+            double handY = handPoint.Y;
+
+            double deltaX = elbowZ * ((handX - elbowX) / Math.Abs(handZ - elbowZ));
+            double deltaY = elbowZ * ((handY - elbowY) / Math.Abs(handZ - elbowZ));
+
+            double newX = elbowX + deltaX;
+            double newY = elbowY + deltaY;
+
+            Canvas.SetLeft(RightHandPointer, newX);
+            Canvas.SetTop(RightHandPointer, newY);
            
-            if (!isApproxSamePoint(rightPoint.X, rightPoint.Y))
+            if (!isApproxSamePoint(newX, newY))
             {
-                currentX = rightPoint.X;
-                currentY = rightPoint.Y;
+                currentX = newX;
+                currentY = newY;
                 stopwatch.Restart();
             }
             if (stopwatch.ElapsedMilliseconds >= 2000)
             {
                 Debug.WriteLine("CLICK");
-                SelectObject(rightPoint.X, rightPoint.Y);
+                SelectObject(newX, newY);
                 stopwatch.Restart();
 
             }
 
+        }
+
+        private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
+        {
+            DepthImagePoint depthPoint = this.nui.CoordinateMapper.MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.Resolution640x480Fps30);
+            return depthPoint;
         }
 
         private Point ScalePosition(SkeletonPoint skeletonPoint)
