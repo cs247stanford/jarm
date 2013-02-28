@@ -246,15 +246,22 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     relatedJustDeactivated = true;
 
                     break;
+
+                case "SwipeLeft":
+
+                    Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
+
+                    break;
+
+                case "SwipeRight":
+
+                    Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
+
+                    break;
                 
                 default:
                     break;
 
-            }
-
-            if (recognizedGesture.Equals("PullDown"))
-            {
-                
             }
 
             //System.Diagnostics.Debug.WriteLine(recognizedGesture);
@@ -461,7 +468,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             var recognizer = new Recognizer();
 
            // Wire-up swipe right to manually advance picture.
-              recognizer.SwipeRightDetected += (s, e) =>
+            /*  recognizer.SwipeRightDetected += (s, e) =>
               {
 
                   System.Diagnostics.Debug.WriteLine("Right swipe detected");
@@ -528,10 +535,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
                   }
               };
               
-
+            */
 
                 return recognizer;
-            }
+        }
 
         /// <summary>
         /// Handle insertion of Kinect sensor.
@@ -857,13 +864,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 {
                     this.ParentPicture = this.Picture;
                     p.jumpToSlide(selectedSlideIndex);
+                    this.PreviousPicture = p.getPreviousSlide().getImage();
                     this.Picture = p.getCurrentSlide().getImage();
+                    this.NextPicture = p.getNextSlide().getImage();
 
                     // Notify world of change to Index and Picture.
                     if (this.PropertyChanged != null)
                     {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("PreviousPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("NextPicture"));
                     }
                 }
         }

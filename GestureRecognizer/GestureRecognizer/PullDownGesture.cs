@@ -67,7 +67,7 @@ namespace GestureRecognizer
             double leftDelta = startingLeftPosition.Y - validateLeftPosition.Y;
             double rightDelta = startingRightPosition.Y - validateRightPosition.Y;
 
-            if (leftDelta > 0.13 && rightDelta > 0.13)
+            if (leftDelta > 0.13 || rightDelta > 0.13)
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
                 return true;
