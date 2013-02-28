@@ -108,10 +108,10 @@
             <Image x:Name="parent" Source="{Binding ParentPicture}" Opacity="0"/>
 
             <Canvas x:Name="RelatedItems" Opacity="0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Black">
-                <Image x:Name="mainImage" Source="C:\Pictures\Slide0.jpg" Canvas.Left="0" Width ="200" Height ="200"/>
-                <Image x:Name="mainImage2" Source= "C:\Pictures\Slide2.jpg" Canvas.Left="210" Width ="200" Height ="200"/>
-                <Image x:Name="mainImage3" Source= "C:\Pictures\Slide3.jpg" Canvas.Left="420" Width ="200" Height ="200"/>
-                <Image x:Name="mainImage4" Source= "C:\Pictures\Slide4.jpg" Canvas.Left="630" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage" Source="{Binding RelatedPicture1}" Canvas.Left="0" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage2" Source= "{Binding RelatedPicture2}" Canvas.Left="210" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage3" Source= "{Binding RelatedPicture3}" Canvas.Left="420" Width ="200" Height ="200"/>
+                <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
             </Canvas>
           <!-- <Image x:Name="related" Source="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" Opacity="0"/> -->
          <!--   <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="2,0,0,0"/>
