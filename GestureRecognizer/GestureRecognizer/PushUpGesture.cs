@@ -33,7 +33,7 @@ namespace GestureRecognizer
             //System.Diagnostics.Debug.WriteLine("hands: (" + handLeftPosition.Y + "," + handRightPosition.Y + ") && shoulders: (" +
             //    shoulderLeftPosition.Y + "," + shoulderRightPosition.Y + ")");
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) &&
+            if ((handRightPosition.Y < shoulderRightPosition.Y) ||
                 (handLeftPosition.Y < shoulderLeftPosition.Y))
             {
 
@@ -68,7 +68,7 @@ namespace GestureRecognizer
 
             System.Diagnostics.Debug.WriteLine("I'M HERE GUYS");
 
-            if (leftDelta > 0.2 && rightDelta > 0.2)
+            if (leftDelta > 0.1 || rightDelta > 0.1)
             {
                 System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 return true;
@@ -98,7 +98,7 @@ namespace GestureRecognizer
 
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y > shoulderRightPosition.Y) &&
+            if ((handRightPosition.Y > shoulderRightPosition.Y) ||
                 (handLeftPosition.Y > shoulderLeftPosition.Y))
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
