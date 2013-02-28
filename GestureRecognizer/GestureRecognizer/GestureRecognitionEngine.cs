@@ -17,12 +17,12 @@ namespace GestureRecognizer
         public GestureType GestureType { get; set; }
         public Skeleton Skeleton { get; set; }
         public bool IsGestureDetected { get; set; }
-        private Stopwatch watch;
+        //private Stopwatch watch;
         private List<GestureBase> gestureCollection = null;
 
         public GestureRecognitionEngine()
         {
-            watch = new Stopwatch();
+           // watch = new Stopwatch();
             this.InitializeGesture();
             
         }
@@ -61,10 +61,10 @@ namespace GestureRecognizer
             foreach (var item in this.gestureCollection)
             {
                 if (item.CheckForGesture(this.Skeleton))
-                    watch.Start();
+               //     watch.Start();
                 {
                     if (this.GestureRecognized != null)
-                        watch.Stop();
+             //           watch.Stop();
                     {
                         this.GestureRecognized(this, new GestureEventArgs(RecognitionResult.Success, item.GestureType));
                         this.IsGestureDetected = true;
@@ -86,7 +86,7 @@ namespace GestureRecognizer
             this.InitializeGesture();
             this.SkipFramesAfterGestureIsDetected = 0;
             this.IsGestureDetected = false;
-            watch = new Stopwatch();
+           // watch = new Stopwatch();
         }
 
 
