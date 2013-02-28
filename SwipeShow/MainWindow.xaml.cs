@@ -149,6 +149,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private static Presentation p;
 
 
+        private Queue<Point> pointsQueue;
+        private int POINTS_QUEUE_SIZE = 20;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
@@ -159,6 +162,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             InitializePresentation();
 
             picturePaths = CreatePicturePaths();
+
+            pointsQueue = new Queue<Point>();
 
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
@@ -949,6 +954,29 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return !(Math.Sqrt(Math.Pow(Math.Abs(currentX - x), 2) + Math.Pow(Math.Abs(currentY - y), 2))>APPROX_VALUE);
         }
 
+        private Point getCurrentPoint(Point newPoint)
+        {
+            if (pointsQueue.Count >= POINTS_QUEUE_SIZE)
+            {
+                pointsQueue.Dequeue();
+            }
+            pointsQueue.Enqueue(newPoint);
+           
+            int total = pointsQueue.Count;
+            double sumX = 0.0;
+            double sumY = 0.0;
+            foreach (Point p in pointsQueue)
+            {
+                sumX += p.X;
+                sumY += p.Y;
+            }
+
+            Point currentPoint = new Point((sumX/total), (sumY/total));
+            return currentPoint;
+        }
+
+
+
         private void MapJointsWithUIElement(Skeleton skeleton)
         {
             Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
@@ -964,11 +992,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
             double handX = handPoint.X;
             double handY = handPoint.Y;
 
-            double deltaX = elbowZ * ((handX - elbowX) / Math.Abs(handZ - elbowZ));
-            double deltaY = elbowZ * ((handY - elbowY) / Math.Abs(handZ - elbowZ));
+            double deltaX = elbowZ * ((handX - elbowX) / (Math.Abs(handZ - elbowZ)+1));
+            double deltaY = elbowZ * ((handY - elbowY) / (Math.Abs(handZ - elbowZ)+1));
 
             double newX = elbowX + deltaX;
             double newY = elbowY + deltaY;
+            Point newPoint = new Point(newX, newY);
+          
+            Point currentPoint = getCurrentPoint(newPoint);
 
             Canvas.SetLeft(RightHandPointer, newX);
             Canvas.SetTop(RightHandPointer, newY);
