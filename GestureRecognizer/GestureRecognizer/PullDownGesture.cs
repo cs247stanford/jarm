@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
+using System.Diagnostics;
 
 namespace GestureRecognizer
 {
@@ -14,7 +15,7 @@ namespace GestureRecognizer
         
         private SkeletonPoint validateLeftPosition;
         private SkeletonPoint validateRightPosition;
-        
+        private Stopwatch watch = new Stopwatch();
         private SkeletonPoint startingLeftPosition;
         private SkeletonPoint startingRightPosition;
 
@@ -47,10 +48,11 @@ namespace GestureRecognizer
                 startingRightPosition = skeleton.Joints[JointType.HandRight].Position;
                 
                 System.Diagnostics.Debug.WriteLine("PullDownGesture start condition validated");
+                watch.Restart();
                 return true;
 
             }
-
+            watch.Reset();
             return false;
 
         }
@@ -70,9 +72,15 @@ namespace GestureRecognizer
             if (leftDelta > 0.13 || rightDelta > 0.13)
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
+                watch.Stop();
+                Debug.WriteLine("Time is");
+                Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
+                Debug.WriteLine("=====");
+                if (watch.ElapsedMilliseconds <= 535) return false;
+                Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
+                Debug.WriteLine("*******");
                 return true;
             }
-
             return false;
 
         }
@@ -95,7 +103,7 @@ namespace GestureRecognizer
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
             }
-
+        
             return false;
 
         }
@@ -109,12 +117,13 @@ namespace GestureRecognizer
             if ((validateRightPosition.Y < currentHandRightPosition.Y) ||
                 (validateLeftPosition.Y < currentHandLeftPosition.Y))
             {
+               
                 return false;
             }
 
             validateRightPosition = currentHandRightPosition;
             validateLeftPosition = currentHandLeftPosition;
-            
+            Debug.WriteLine("IsGestureValid");
             return true;
 
         }

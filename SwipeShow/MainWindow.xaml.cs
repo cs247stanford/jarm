@@ -77,11 +77,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         private KinectSensor nui;
 
-        /// <summary>
-        /// Related things
-        /// </summary>
-        private bool relatedActivated = false;
-        private bool relatedJustDeactivated = false;
+
+        // private bool relatedActivated = false;
+        //private bool relatedJustDeactivated = false;
 
         /// <summary>
         /// There is currently no connected sensor.
@@ -192,14 +190,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "PullDown":
 
-                    if (relatedActivated)
-                        break;
+                   // if (relatedActivated)
+                    //    break;
 
-                    if (relatedJustDeactivated)
-                    {
-                        relatedJustDeactivated = false;
-                        break;
-                    }
+  //                  if (relatedJustDeactivated)
+    //                {
+       //                 relatedJustDeactivated = false;
+         //               break;
+           //         }
 
                     List<Slide> associated = p.getCurrentSlide().getAllAssociated();
 
@@ -254,14 +252,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     
                     relatedItemsDown = true;
 
-                    relatedActivated = true;
+                 //   relatedActivated = true;
 
                     break;
 
                 case "PushUp":
 
-                    if (!relatedActivated)
-                        break;
+                   // if (!relatedActivated)
+                     //   break;
                     
                     var pushUpStoryboard = Resources["TopPushUp"] as Storyboard;
 
@@ -272,9 +270,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     
                     relatedItemsDown = true;
 
-                    relatedActivated = false;
+                  //  relatedActivated = false;
 
-                    relatedJustDeactivated = true;
+//                    relatedJustDeactivated = true;
 
                     break;
 
