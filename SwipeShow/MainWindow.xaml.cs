@@ -196,6 +196,32 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         break;
                     }
 
+                    List<Slide> associated = p.getCurrentSlide().getAllAssociated();
+
+                    if (associated.Count > 0)
+                    {
+                        this.RelatedPicture1 = associated[0].getImage();
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture1"));
+                    }
+
+                    if (associated.Count > 1)
+                    {
+                        this.RelatedPicture2 = associated[1].getImage();
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
+                    }
+
+                    if (associated.Count > 2)
+                    {
+                        this.RelatedPicture3 = associated[2].getImage();
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
+                    }
+
+                    if (associated.Count > 3)
+                    {
+                        this.RelatedPicture4 = associated[3].getImage();
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
+                    }
+
                     var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
 
 
@@ -374,11 +400,31 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
        
         /// <summary>
-        /// Gets the previous image displayed.
+        /// Gets the first related image displayed.
         /// </summary>
-        public BitmapImage RelatedPicture { get; private set; }
-        
-        
+        public BitmapImage RelatedPicture1 { get; private set; }
+
+        /// <summary>
+        /// Gets the second related image displayed.
+        /// </summary>
+        public BitmapImage RelatedPicture2 { get; private set; }
+
+        /// <summary>
+        /// Gets the third related image displayed.
+        /// </summary>
+        public BitmapImage RelatedPicture3 { get; private set; }
+
+        /// <summary>
+        /// Gets the fourth related image displayed.
+        /// </summary>
+        public BitmapImage RelatedPicture4 { get; private set; }
+
+        /// <summary>
+        /// Gets the fifth related image displayed.
+        /// </summary>
+        public BitmapImage RelatedPicture5 { get; private set; }
+
+
         /// <summary>
         /// Get list of files to display as pictures.
         /// </summary>
@@ -468,7 +514,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             var recognizer = new Recognizer();
 
            // Wire-up swipe right to manually advance picture.
-            /*  recognizer.SwipeRightDetected += (s, e) =>
+            recognizer.SwipeRightDetected += (s, e) =>
               {
 
                   System.Diagnostics.Debug.WriteLine("Right swipe detected");
@@ -534,8 +580,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                      // HighlightSkeleton(e.Skeleton);
                   }
               };
-              
-            */
+             
 
                 return recognizer;
         }
