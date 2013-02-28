@@ -38,6 +38,11 @@ namespace KinectPresentor
 
         }
 
+        public List<Slide> retrieveSlides()
+        {
+            return slides;
+        }
+
         public void addSlide(Slide s)
         {
             slides.Add(s);
@@ -107,9 +112,11 @@ namespace KinectPresentor
         private List<Slide> associatedSlides;
         private List<Animation> animations;
         private Slide parentSlide;
+        private String imagePath;
 
         public Slide(String imagePath)
         {
+            this.imagePath = imagePath;
             backgroundImage = new BitmapImage(new Uri(imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
@@ -123,6 +130,11 @@ namespace KinectPresentor
         public void removeSlide(Slide s)
         {
             associatedSlides.Remove(s);
+        }
+
+        public String getImagePath()
+        {
+            return this.imagePath;
         }
 
         public void setParent(Slide s)

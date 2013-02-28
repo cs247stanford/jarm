@@ -47,7 +47,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// The paths of the picture files.
         /// </summary>
-        private readonly string[] picturePaths = CreatePicturePaths();
+        private readonly string[] picturePaths; // = CreatePicturePaths();
 
         /// <summary>
         /// Array of arrays of contiguous line segements that represent a skeleton.
@@ -146,7 +146,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// The presentation object that holds all the slides
         /// </summary>
-        private Presentation p;
+        private static Presentation p;
 
 
 
@@ -155,7 +155,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         public MainWindow()
         {
+
             InitializePresentation();
+
+            picturePaths = CreatePicturePaths();
 
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
@@ -375,8 +378,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <returns>Paths to pictures.</returns>
         private static string[] CreatePicturePaths()
         {
+
             var list = new List<string>();
 
+            Debug.WriteLine("count: " + p.retrieveSlides().Count);
+
+            foreach (Slide s in p.retrieveSlides())
+            {
+                list.Add(s.getImagePath());
+            }
+
+            return list.ToArray();
+
+            /*
             var commonPicturesPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonPictures);
             list.AddRange(Directory.GetFiles(commonPicturesPath, "*.jpg", SearchOption.AllDirectories));
             if (list.Count == 0)
@@ -395,6 +409,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
 
             return list.ToArray();
+            */
+
         }
 
         /// <summary>
@@ -586,6 +602,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             p = new Presentation();
+
+            Slide zero = new Slide("C:\\Pictures\\Slide0.jpg");
             Slide one = new Slide("C:\\Pictures\\Slide1.jpg");
             Slide two = new Slide("C:\\Pictures\\Slide2.jpg");
             Slide three = new Slide("C:\\Pictures\\Slide3.jpg");
@@ -594,7 +612,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Slide six = new Slide("C:\\Pictures\\Slide6.jpg");
             Slide seven = new Slide("C:\\Pictures\\Slide7.jpg");
 
-
+            List<Slide> group0 = new List<Slide>()
+            {
+                seven
+            };
             List<Slide> group1 = new List<Slide>()
             {
                 two,
@@ -626,6 +647,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 four,
             };
 
+            zero.addAssociatedSlides(group0);
             one.addAssociatedSlides(group1);
             two.addAssociatedSlides(group2);
             three.addAssociatedSlides(group5);
@@ -634,6 +656,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             six.addAssociatedSlides(group3);
             seven.addAssociatedSlides(group5);
 
+            p.addSlide(zero);
             p.addSlide(one);
             p.addSlide(two);
             p.addSlide(three);
