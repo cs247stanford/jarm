@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
 using System.Diagnostics;
+using Kinect.Toolbox;
+
 
 namespace GestureRecognizer
 {

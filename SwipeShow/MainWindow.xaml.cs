@@ -668,17 +668,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             p = new Presentation();
+            string startupPath = Environment.CurrentDirectory;
+            Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg");
+            Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
+            Slide two = new Slide(startupPath+"\\Pictures\\Slide3.jpg");
+            Slide three = new Slide(startupPath+"\\Pictures\\Slide4.jpg");
+            Slide four = new Slide(startupPath+"\\Pictures\\Slide5.jpg");
+            Slide five = new Slide(startupPath+"\\Pictures\\Slide6.jpg");
+            Slide six = new Slide(startupPath+"\\Pictures\\Slide7.jpg");
+            Slide seven = new Slide(startupPath+"\\Pictures\\Slide1.jpg");
+            Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg");
+            Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg");
 
-            Slide zero = new Slide("C:\\Pictures\\Slide0.jpg");
-            Slide one = new Slide("C:\\Pictures\\Slide1.jpg");
-            Slide two = new Slide("C:\\Pictures\\Slide2.jpg");
-            Slide three = new Slide("C:\\Pictures\\Slide3.jpg");
-            Slide four = new Slide("C:\\Pictures\\Slide4.jpg");
-            Slide five = new Slide("C:\\Pictures\\Slide5.jpg");
-            Slide six = new Slide("C:\\Pictures\\Slide6.jpg");
-            Slide seven = new Slide("C:\\Pictures\\Slide7.jpg");
-            Slide eight = new Slide("C:\\Pictures\\Slide8.jpg");
-            Slide nine = new Slide("C:\\Pictures\\Slide9.jpg");
 
             List<Slide> group0 = new List<Slide>()
             {
