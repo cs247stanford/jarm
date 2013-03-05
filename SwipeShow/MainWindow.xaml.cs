@@ -48,7 +48,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// The paths of the picture files.
         /// </summary>
         private readonly string[] picturePaths; // = CreatePicturePaths();
-
+        private Stopwatch watch = new Stopwatch();
         /// <summary>
         /// Array of arrays of contiguous line segements that represent a skeleton.
         /// </summary>
@@ -78,8 +78,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private KinectSensor nui;
 
 
-        // private bool relatedActivated = false;
-        //private bool relatedJustDeactivated = false;
+         private bool relatedActivated = false;
+        private bool relatedJustDeactivated = false;
 
         /// <summary>
         /// There is currently no connected sensor.
@@ -219,15 +219,20 @@ namespace Microsoft.Samples.Kinect.Slideshow
             switch (recognizedGesture) {
 
                 case "PullDown":
+                    watch.Stop();
+                    if (watch.ElapsedMilliseconds > 2000)
+                    {
+                        if (relatedJustDeactivated)
+                            relatedJustDeactivated = false;
+                    }
+                    if (relatedActivated)
+                        break;
 
-                   // if (relatedActivated)
-                    //    break;
-
-  //                  if (relatedJustDeactivated)
-    //                {
-       //                 relatedJustDeactivated = false;
-         //               break;
-           //         }
+                    if (relatedJustDeactivated)
+                    {
+                        relatedJustDeactivated = false;
+                        break;
+                    }
 
 
 
@@ -247,7 +252,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
   //                  i.Source = imgSrc;
                     
 
-//                    i.Source = new ImageSource("C:\\Users\\RogerChen\\Documents\\GitHub\\jarm\\SwipeShow\\Images\\Slide1.jpg");
+//                   i.Source = new ImageSource("C:\\Users\\RogerChen\\Documents\\GitHub\\jarm\\SwipeShow\\Images\\Slide1.jpg");
 
                     RefreshRelated();
 
@@ -258,16 +263,16 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         pullDownStoryboard.Begin();
                     }
                     
-                    relatedItemsDown = true;
+                  relatedItemsDown = true;
 
-                 //   relatedActivated = true;
+                  relatedActivated = true;
 
                     break;
 
                 case "PushUp":
 
-                   // if (!relatedActivated)
-                     //   break;
+                    if (!relatedActivated)
+                        break;
                     
                     var pushUpStoryboard = Resources["TopPushUp"] as Storyboard;
 
@@ -275,12 +280,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     {
                         pushUpStoryboard.Begin();
                     }
-                    
+                    watch.Restart();
                     relatedItemsDown = true;
 
-                  //  relatedActivated = false;
+                   relatedActivated = false;
 
-//                    relatedJustDeactivated = true;
+                   relatedJustDeactivated = true;
 
                     break;
 
@@ -668,6 +673,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             p = new Presentation();
+            
             string startupPath = Environment.CurrentDirectory;
             Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg");
             Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
