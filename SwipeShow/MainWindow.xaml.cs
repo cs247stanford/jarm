@@ -919,26 +919,29 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 // given an x and y, return the slide at that position
                 // for simplicity, let's assume there is no padding between the slides         
-                int selectedSlideIndex =((int)(x) / (int)SLIDE_WIDTH);
+                int relatedSlideIndex =((int)(x) / (int)SLIDE_WIDTH);
+
                 //if (selectedSlideIndex < 0) selectedSlideIndex = 9;
                 //Slide selectedSlide = relatedSlides[selectedSlideIndex];
 
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
 
-                Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
-                if (selectedSlideIndex < 5)
+                //Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
+                if (relatedSlideIndex < 5)
                 {
+                    int selectedSlideIndex = p.getCurrentSlide().getAllAssociated()[relatedSlideIndex].getIndex();
                     this.ParentPicture = this.Picture;
                     p.jumpToSlide(selectedSlideIndex);
                     this.PreviousPicture = p.getPreviousSlide().getImage();
                     this.Picture = p.getCurrentSlide().getImage();
                     this.NextPicture = p.getNextSlide().getImage();
+                    RefreshRelated();
 
                     // Notify world of change to Index and Picture.
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("PreviousPicture"));
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
+                       //this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("NextPicture"));
                     }

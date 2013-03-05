@@ -82,8 +82,9 @@ namespace KinectPresentor
         public Slide moveToNextSlide()
         {
             this.currIndex += 1;
-            return getSlide(this.currIndex);
+            return getSlide(this.currIndex);        
         }
+
 
         public Slide moveToPreviousSlide()
         {
@@ -113,6 +114,8 @@ namespace KinectPresentor
         private List<Animation> animations;
         private Slide parentSlide;
         private String imagePath;
+        private int index;
+        private static int counter = 0;
 
         public Slide(String imagePath)
         {
@@ -120,6 +123,13 @@ namespace KinectPresentor
             backgroundImage = new BitmapImage(new Uri(imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
+            index = counter;
+            counter++;
+        }
+
+        public int getIndex()
+        {
+            return index;
         }
 
         public void addSlide(Slide s)
