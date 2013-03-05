@@ -148,7 +148,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
 
         private Queue<Point> pointsQueue;
-        private int POINTS_QUEUE_SIZE = 20;
+        //private int POINTS_QUEUE_SIZE = 100;
 
 
         /// <summary>
@@ -181,6 +181,36 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Loaded += this.OnMainWindowLoaded;
         }
 
+        void RefreshRelated()
+        {
+            List<Slide> associated = p.getCurrentSlide().getAllAssociated();
+
+            if (associated.Count > 0)
+            {
+                this.RelatedPicture1 = associated[0].getImage();
+                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture1"));
+            }
+
+            if (associated.Count > 1)
+            {
+                this.RelatedPicture2 = associated[1].getImage();
+                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
+            }
+
+            if (associated.Count > 2)
+            {
+                this.RelatedPicture3 = associated[2].getImage();
+                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
+            }
+
+            if (associated.Count > 3)
+            {
+                this.RelatedPicture4 = associated[3].getImage();
+                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
+            }
+
+        }
+
         void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
         {
 
@@ -199,33 +229,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
          //               break;
            //         }
 
-                    List<Slide> associated = p.getCurrentSlide().getAllAssociated();
 
-                    if (associated.Count > 0)
-                    {
-                        this.RelatedPicture1 = associated[0].getImage();
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture1"));
-                    }
-
-                    if (associated.Count > 1)
-                    {
-                        this.RelatedPicture2 = associated[1].getImage();
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
-                    }
-
-                    if (associated.Count > 2)
-                    {
-                        this.RelatedPicture3 = associated[2].getImage();
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
-                    }
-
-                    if (associated.Count > 3)
-                    {
-                        this.RelatedPicture4 = associated[3].getImage();
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
-                    }
-
-                    var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
 
 
                   //  Uri uri = new Uri("C:\\Pictures\\Slide1.jpg", UriKind.Absolute);
@@ -244,6 +248,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     
 
 //                    i.Source = new ImageSource("C:\\Users\\RogerChen\\Documents\\GitHub\\jarm\\SwipeShow\\Images\\Slide1.jpg");
+
+                    RefreshRelated();
+
+                    var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
 
                     if (pullDownStoryboard != null)
                     {
@@ -520,6 +528,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             recognizer.SwipeRightDetected += (s, e) =>
               {
 
+
+
                   System.Diagnostics.Debug.WriteLine("Right swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
@@ -531,6 +541,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       this.NextPicture = p.getNextSlide().getImage();
                       this.PreviousPicture = this.Picture;
                       this.Picture = this.NextPicture;
+
+                      RefreshRelated();
                       
                       // Notify world of change to Index and Picture.
                       if (this.PropertyChanged != null)
@@ -565,6 +577,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       this.Picture = this.PreviousPicture;
                       p.moveToNextSlide();
                       this.PreviousPicture = p.getPreviousSlide().getImage();
+
+                      RefreshRelated();
 
                       // Notify world of change to Index and Picture.
                       if (this.PropertyChanged != null)
@@ -659,13 +673,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
             p = new Presentation();
 
             Slide zero = new Slide("C:\\Pictures\\Slide0.jpg");
-            Slide one = new Slide("C:\\Pictures\\Slide1.jpg");
-            Slide two = new Slide("C:\\Pictures\\Slide2.jpg");
-            Slide three = new Slide("C:\\Pictures\\Slide3.jpg");
-            Slide four = new Slide("C:\\Pictures\\Slide4.jpg");
-            Slide five = new Slide("C:\\Pictures\\Slide5.jpg");
-            Slide six = new Slide("C:\\Pictures\\Slide6.jpg");
-            Slide seven = new Slide("C:\\Pictures\\Slide7.jpg");
+            Slide one = new Slide("C:\\Pictures\\Slide2.jpg");
+            Slide two = new Slide("C:\\Pictures\\Slide3.jpg");
+            Slide three = new Slide("C:\\Pictures\\Slide4.jpg");
+            Slide four = new Slide("C:\\Pictures\\Slide5.jpg");
+            Slide five = new Slide("C:\\Pictures\\Slide6.jpg");
+            Slide six = new Slide("C:\\Pictures\\Slide7.jpg");
+            Slide seven = new Slide("C:\\Pictures\\Slide1.jpg");
 
             List<Slide> group0 = new List<Slide>()
             {
@@ -952,8 +966,26 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return !(Math.Sqrt(Math.Pow(Math.Abs(currentX - x), 2) + Math.Pow(Math.Abs(currentY - y), 2))>APPROX_VALUE);
         }
 
+        /// <summary>
+        /// Stuff.
+        /// </summary>
+        public Point lastPoint;
+
         private Point getCurrentPoint(Point newPoint)
         {
+
+            if (lastPoint == null)
+            {
+                lastPoint = newPoint;
+                return newPoint;
+            }
+
+            double weightedX = lastPoint.X * 0.8 + newPoint.X * 0.2;
+            double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
+
+            lastPoint = new Point(weightedX, weightedY);
+            return lastPoint;
+            /*
             if (pointsQueue.Count >= POINTS_QUEUE_SIZE)
             {
                 pointsQueue.Dequeue();
@@ -963,14 +995,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
             int total = pointsQueue.Count;
             double sumX = 0.0;
             double sumY = 0.0;
+
+            double multiplier = 0.01;
+
             foreach (Point p in pointsQueue)
             {
-                sumX += p.X;
-                sumY += p.Y;
+                sumX += (p.X * multiplier);
+                sumY += (p.Y * multiplier);
+                multiplier += 0.01;
             }
 
             Point currentPoint = new Point((sumX/total), (sumY/total));
             return currentPoint;
+             */
         }
 
 
@@ -999,19 +1036,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
           
             Point currentPoint = getCurrentPoint(newPoint);
 
-            Canvas.SetLeft(RightHandPointer, newX);
-            Canvas.SetTop(RightHandPointer, newY);
+            Canvas.SetLeft(RightHandPointer, currentPoint.X);
+            Canvas.SetTop(RightHandPointer, currentPoint.Y);
            
-            if (!isApproxSamePoint(newX, newY))
+            if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
-                currentX = newX;
-                currentY = newY;
+                currentX = currentPoint.X;
+                currentY = currentPoint.Y;
                 stopwatch.Restart();
             }
             if (stopwatch.ElapsedMilliseconds >= 2000)
             {
                 Debug.WriteLine("CLICK");
-                SelectObject(newX, newY);
+                SelectObject(currentPoint.X, currentPoint.Y);
                 stopwatch.Restart();
 
             }
