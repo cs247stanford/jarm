@@ -527,9 +527,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
            // Wire-up swipe right to manually advance picture.
             recognizer.SwipeRightDetected += (s, e) =>
               {
-
-
-
                   System.Diagnostics.Debug.WriteLine("Right swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
@@ -537,10 +534,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       Index++;
 
                       // Setup corresponding picture if pictures are available.
-                      p.moveToNextSlide();
                       this.NextPicture = p.getNextSlide().getImage();
                       this.PreviousPicture = this.Picture;
                       this.Picture = this.NextPicture;
+                      p.moveToNextSlide();
 
                       RefreshRelated();
                       
@@ -575,7 +572,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       // Setup corresponding picture if pictures are available.
                       this.NextPicture = this.Picture;
                       this.Picture = this.PreviousPicture;
-                      p.moveToNextSlide();
+                      p.moveToPreviousSlide();
                       this.PreviousPicture = p.getPreviousSlide().getImage();
 
                       RefreshRelated();
@@ -673,13 +670,15 @@ namespace Microsoft.Samples.Kinect.Slideshow
             p = new Presentation();
 
             Slide zero = new Slide("C:\\Pictures\\Slide0.jpg");
-            Slide one = new Slide("C:\\Pictures\\Slide2.jpg");
-            Slide two = new Slide("C:\\Pictures\\Slide3.jpg");
-            Slide three = new Slide("C:\\Pictures\\Slide4.jpg");
-            Slide four = new Slide("C:\\Pictures\\Slide5.jpg");
-            Slide five = new Slide("C:\\Pictures\\Slide6.jpg");
-            Slide six = new Slide("C:\\Pictures\\Slide7.jpg");
-            Slide seven = new Slide("C:\\Pictures\\Slide1.jpg");
+            Slide one = new Slide("C:\\Pictures\\Slide1.jpg");
+            Slide two = new Slide("C:\\Pictures\\Slide2.jpg");
+            Slide three = new Slide("C:\\Pictures\\Slide3.jpg");
+            Slide four = new Slide("C:\\Pictures\\Slide4.jpg");
+            Slide five = new Slide("C:\\Pictures\\Slide5.jpg");
+            Slide six = new Slide("C:\\Pictures\\Slide6.jpg");
+            Slide seven = new Slide("C:\\Pictures\\Slide7.jpg");
+            Slide eight = new Slide("C:\\Pictures\\Slide8.jpg");
+            Slide nine = new Slide("C:\\Pictures\\Slide9.jpg");
 
             List<Slide> group0 = new List<Slide>()
             {
@@ -724,6 +723,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             five.addAssociatedSlides(group4);
             six.addAssociatedSlides(group3);
             seven.addAssociatedSlides(group5);
+            eight.addAssociatedSlides(group3);
+            nine.addAssociatedSlides(group0);
 
             p.addSlide(zero);
             p.addSlide(one);
@@ -733,6 +734,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             p.addSlide(five);
             p.addSlide(six);
             p.addSlide(seven);
+            p.addSlide(eight);
+            p.addSlide(nine);
+
 
         }
 
