@@ -949,6 +949,24 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 }
         }
 
+
+        private void animateSelection(double x, double y)
+        {
+            if (relatedItemsDown && y < RelatedItems.ActualHeight)
+            {
+                double SLIDE_WIDTH = 220;
+                int relatedSlideIndex = ((int)(x) / (int)SLIDE_WIDTH);
+                if (relatedSlideIndex < 2)  //TEMPORARY.... SHOULD BE < 5
+                {
+                    var animateRelatedItem = Resources["AnimateRelatedItem" + relatedSlideIndex] as Storyboard;
+                    if (animateRelatedItem != null)
+                    {
+                        animateRelatedItem.Begin();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Selects object at current x, y
         /// </summary>
@@ -1045,22 +1063,24 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Point currentPoint = getCurrentPoint(newPoint);
 
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
-            Canvas.SetTop(RightHandPointer, currentPoint.Y);
-           
+            Canvas.SetTop(RightHandPointer, currentPoint.Y); 
+
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
                 currentY = currentPoint.Y;
                 stopwatch.Restart();
+                //clear selection
+                //start selection
+                animateSelection(currentPoint.X, currentPoint.Y);
             }
-            if (stopwatch.ElapsedMilliseconds >= 2000)
+            else if (stopwatch.ElapsedMilliseconds >= 2000)
             {
                 Debug.WriteLine("CLICK");
                 SelectObject(currentPoint.X, currentPoint.Y);
                 stopwatch.Restart();
 
             }
-
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)

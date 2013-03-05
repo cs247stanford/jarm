@@ -89,6 +89,16 @@
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="AnimateRelatedItem1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mainImage">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.3"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="mainImage">
+                <EasingThicknessKeyFrame KeyTime="0" Value="0,500,0,-500"/>
+                <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
         <Style TargetType="{x:Type Image}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
