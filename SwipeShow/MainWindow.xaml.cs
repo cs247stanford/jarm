@@ -21,7 +21,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
     using Microsoft.Samples.Kinect.SwipeGestureRecognizer;
     using GestureRecognizer;
     using KinectPresentor;
-    //using System.Drawing;
+    using System.Drawing;
     
     /*
      * public form1() { InitializeComponent();}
@@ -147,7 +147,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private static Presentation p;
 
 
-        private Queue<Point> pointsQueue;
+        private Queue<System.Drawing.Point> pointsQueue;
         //private int POINTS_QUEUE_SIZE = 100;
 
 
@@ -161,7 +161,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             picturePaths = CreatePicturePaths();
 
-            pointsQueue = new Queue<Point>();
+            pointsQueue = new Queue<System.Drawing.Point>();
 
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
@@ -673,7 +673,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             p = new Presentation();
-            
+            //this.CreateGraphics();
             string startupPath = Environment.CurrentDirectory;
             Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg");
             Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
@@ -983,9 +983,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// Stuff.
         /// </summary>
-        public Point lastPoint;
+        public System.Drawing.Point lastPoint;
 
-        private Point getCurrentPoint(Point newPoint)
+        private System.Drawing.Point getCurrentPoint(System.Drawing.Point newPoint)
         {
 
             if (lastPoint == null)
@@ -996,8 +996,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double weightedX = lastPoint.X * 0.8 + newPoint.X * 0.2;
             double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
-
-            lastPoint = new Point(weightedX, weightedY);
+            lastPoint = new System.Drawing.Point((int)weightedX, (int)weightedY);
             return lastPoint;
             /*
             if (pointsQueue.Count >= POINTS_QUEUE_SIZE)
@@ -1028,8 +1027,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private void MapJointsWithUIElement(Skeleton skeleton)
         {
-            Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
-            Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
+           System.Drawing.Point  leftHandPoint = this.ScalePosition(skeleton.Joints[JointType.HandLeft].Position);
+            System.Drawing.Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
+            System.Drawing.Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
+            System.Drawing.Point waistPoint = this.ScalePosition(skeleton.Joints[JointType.HipLeft].Position);
             DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint handDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.HandRight].Position);
 
@@ -1046,13 +1047,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double newX = elbowX + deltaX;
             double newY = elbowY + deltaY;
-            Point newPoint = new Point(newX, newY);
+            System.Drawing.Point newPoint = new System.Drawing.Point((int)newX, (int)newY);
           
-            Point currentPoint = getCurrentPoint(newPoint);
+            System.Drawing.Point currentPoint = getCurrentPoint(newPoint);
 
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
-           
+            
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
@@ -1075,11 +1076,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return depthPoint;
         }
 
-        private Point ScalePosition(SkeletonPoint skeletonPoint)
+        private System.Drawing.Point ScalePosition(SkeletonPoint skeletonPoint)
         {
-
+   
             DepthImagePoint depthPoint = this.nui.CoordinateMapper.MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.Resolution640x480Fps30);
-            return new Point(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640, depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480);
+            return new System.Drawing.Point((int)(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640), (int)(depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480));
 
         }
 
@@ -1112,7 +1113,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 if (skeleton.TrackingState == SkeletonTrackingState.Tracked)
                 {
                     // Draw a background for the next pass.
-                    this.DrawStickMan(skeleton, Brushes.WhiteSmoke, 7);
+                    this.DrawStickMan(skeleton, System.Windows.Media.Brushes.WhiteSmoke, 7);
                 }
             }
 
@@ -1122,8 +1123,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 if (skeleton.TrackingState == SkeletonTrackingState.Tracked)
                 {
                     // Pick a brush, Red for a skeleton that has recently gestures, black for the nearest, gray otherwise.
-                    var brush = DateTime.UtcNow < this.highlightTime && skeleton.TrackingId == this.highlightId ? Brushes.Red :
-                        skeleton.TrackingId == this.nearestId ? Brushes.Black : Brushes.Gray;
+                    System.Windows.Media.Brush brush = DateTime.UtcNow < this.highlightTime && skeleton.TrackingId == this.highlightId ? System.Windows.Media.Brushes.Red :
+                        skeleton.TrackingId == this.nearestId ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.Gray;
 
                     // Draw the individual skeleton.
                     this.DrawStickMan(skeleton, brush, 3);
@@ -1137,7 +1138,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="skeleton">The skeleton to draw.</param>
         /// <param name="brush">The brush to use.</param>
         /// <param name="thickness">This thickness of the stroke.</param>
-        private void DrawStickMan(Skeleton skeleton, Brush brush, int thickness)
+        private void DrawStickMan(Skeleton skeleton, System.Windows.Media.Brush brush, int thickness)
         {
             Debug.Assert(skeleton.TrackingState == SkeletonTrackingState.Tracked, "The skeleton is being tracked.");
 
@@ -1172,16 +1173,16 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="skeleton">The skeleton.</param>
         /// <param name="jointType">The joint to project.</param>
         /// <returns>The projected point.</returns>
-        private Point GetJointPoint(Skeleton skeleton, JointType jointType)
+        private System.Drawing.Point GetJointPoint(Skeleton skeleton, JointType jointType)
         {
             var joint = skeleton.Joints[jointType];
 
             // Points are centered on the StickMen canvas and scaled according to its height allowing
             // approximately +/- 1.5m from center line.
-            var point = new Point
+            var point = new System.Drawing.Point
             {
-                X = (StickMen.Width / 2) + (StickMen.Height * joint.Position.X / 3),
-                Y = (StickMen.Width / 2) - (StickMen.Height * joint.Position.Y / 3)
+                X = (int)((StickMen.Width / 2) + (StickMen.Height * joint.Position.X / 3)),
+                Y = (int)((StickMen.Width / 2) - (StickMen.Height * joint.Position.Y / 3))
             };
 
             return point;

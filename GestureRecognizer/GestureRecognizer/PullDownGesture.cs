@@ -76,7 +76,7 @@ namespace GestureRecognizer
                 Debug.WriteLine("Time is");
                 Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
                 Debug.WriteLine("=====");
-                if (watch.ElapsedMilliseconds <= 300) return false;
+                if (watch.ElapsedMilliseconds <= 200) return false;
                 Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
                 Debug.WriteLine("*******");
                 return true;
