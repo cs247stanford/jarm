@@ -934,7 +934,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
 
                 //Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
-                if (relatedSlideIndex < 5)
+                if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count)
                 {
                     int selectedSlideIndex = p.getCurrentSlide().getAllAssociated()[relatedSlideIndex].getIndex();
                     this.ParentPicture = this.Picture;
@@ -943,6 +943,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     this.Picture = p.getCurrentSlide().getImage();
                     this.NextPicture = p.getNextSlide().getImage();
                     RefreshRelated();
+
+                    var removeRelatedItem = Resources["RemoveRelatedItem"] as Storyboard;
+                    if (removeRelatedItem != null)
+                    {
+                        removeRelatedItem.Begin();
+                    }
 
                     // Notify world of change to Index and Picture.
                     if (this.PropertyChanged != null)
@@ -962,13 +968,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 double SLIDE_WIDTH = 220;
                 int relatedSlideIndex = ((int)(x) / (int)SLIDE_WIDTH);
-                if (relatedSlideIndex < 2)  //TEMPORARY.... SHOULD BE < 5
+                var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
+                if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count)  //TEMPORARY.... SHOULD BE < 5
                 {
-                    var animateRelatedItem = Resources["AnimateRelatedItem" + relatedSlideIndex] as Storyboard;
+                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * relatedSlideIndex);
                     if (animateRelatedItem != null)
                     {
                         animateRelatedItem.Begin();
                     }
+                }
+                else
+                {
+                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * -1);
                 }
             }
         }
@@ -1002,9 +1013,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// Stuff.
         /// </summary>
         public Point lastPoint;
+        /// <summary>
+        /// Stuff.
+        /// </summary>
+        public Point lastLastPoint;
 
         private Point getCurrentPoint(Point newPoint)
         {
+            if (lastLastPoint == null)
+            {
+                lastLastPoint = newPoint;
+                return newPoint;
+            }
 
             if (lastPoint == null)
             {
@@ -1012,8 +1032,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 return newPoint;
             }
 
-            double weightedX = lastPoint.X * 0.8 + newPoint.X * 0.2;
-            double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
+            double weightedX = lastLastPoint.X * 0.3 + lastPoint.X * 0.6 + newPoint.X * 0.1;
+            double weightedY = lastLastPoint.Y * 0.3 + lastPoint.Y * 0.6 + newPoint.Y * 0.1;
+            //double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
 
             lastPoint = new Point(weightedX, weightedY);
             return lastPoint;

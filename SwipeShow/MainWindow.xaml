@@ -89,15 +89,12 @@
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimateRelatedItem1">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mainImage">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.3"/>
-            </DoubleAnimationUsingKeyFrames>
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="mainImage">
-                <EasingThicknessKeyFrame KeyTime="0" Value="0,500,0,-500"/>
-                <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
-            </ThicknessAnimationUsingKeyFrames>
+        <Storyboard x:Key="AnimateRelatedItem">
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Height" From="20" To="180" Duration="0:0:2" />
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0" To="0.7" Duration="0:0:2" />
+        </Storyboard>
+        <Storyboard x:Key="RemoveRelatedItem">
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0.7" To="0" Duration="0:0:2" />
         </Storyboard>
         <Style TargetType="{x:Type Image}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -122,6 +119,7 @@
                 <Image x:Name="mainImage2" Source= "{Binding RelatedPicture2}" Canvas.Left="210" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage3" Source= "{Binding RelatedPicture3}" Canvas.Left="420" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
+                <Canvas x:Name="relatedImageOverlay" Canvas.Left="0" Width="200" Height="180" Background="Pink" Opacity="0" Margin="0 20 0 0"/>
             </Canvas>
           <!-- <Image x:Name="related" Source="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" Opacity="0"/> -->
          <!--   <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="2,0,0,0"/>
