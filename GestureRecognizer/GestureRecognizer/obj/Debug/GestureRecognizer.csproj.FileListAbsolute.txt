@@ -2,8 +2,16 @@ c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\Gestu
 c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.pdb
 c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.dll
 c:\users\rogerchen\documents\visual studio 2012\Projects\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.pdb
+<<<<<<< HEAD
+C:\Users\Roger Chen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.dll
+C:\Users\Roger Chen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.pdb
+C:\Users\Roger Chen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.csprojResolveAssemblyReference.cache
+C:\Users\Roger Chen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.dll
+C:\Users\Roger Chen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.pdb
+=======
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.dll
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\bin\Debug\GestureRecognizer.pdb
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.csprojResolveAssemblyReference.cache
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.dll
 C:\Users\RogerChen\Documents\GitHub\jarm\GestureRecognizer\GestureRecognizer\obj\Debug\GestureRecognizer.pdb
+>>>>>>> 9797e79f16f76e67d5343a603ef71bb57a7f4fd1
