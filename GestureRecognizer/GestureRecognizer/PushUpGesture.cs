@@ -5,19 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
 using System.Diagnostics;
+using Kinect.Toolbox;
+
 
 namespace GestureRecognizer
 {
     public class PushUpGesture : GestureBase
     {
 
-        public PushUpGesture() : base(GestureType.PushUp) { 
+        public PushUpGesture() : base(GestureType.PushUp) { }
         private SkeletonPoint validateLeftPosition;
         private SkeletonPoint validateRightPosition;
         private Stopwatch watch  = new Stopwatch();
         private SkeletonPoint startingLeftPosition;
         private SkeletonPoint startingRightPosition;
-        private 
         private float leftShoulderDiff;
         private float rightShoulderDiff;
 
@@ -46,7 +47,7 @@ namespace GestureRecognizer
                 validateRightPosition = skeleton.Joints[JointType.HandRight].Position;
                 startingRightPosition = skeleton.Joints[JointType.HandRight].Position;
 
-                watch.Start();
+                watch.Restart();
                 return true;
             }
 
@@ -72,6 +73,7 @@ namespace GestureRecognizer
             {
                 System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
+                if (watch.ElapsedMilliseconds > 800 || watch.ElapsedMilliseconds < 400) return false;
                 Debug.WriteLine("watch elapsed time: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
@@ -131,6 +133,5 @@ namespace GestureRecognizer
             return true;
 
         }
-
     }
 }
