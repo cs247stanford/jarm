@@ -132,7 +132,7 @@
             <TextBlock Text="No Kinect available" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBlock Text="{Binding DisconnectedReason}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" />
             <Canvas x:Name="PointerCanvas">
-                <Ellipse Canvas.Left="0" Canvas.Top="0" Fill="Red" Height="15" Name="RightHandPointer" Width="15" />
+                <Ellipse Canvas.Left="0" Canvas.Top="0" Fill="Blue" Height="15" Name="RightHandPointer" Width="15" />
             </Canvas>
         </Grid>
         <StatusBar Grid.Row="3" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
