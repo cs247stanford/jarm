@@ -34,8 +34,7 @@ namespace GestureRecognizer
             //System.Diagnostics.Debug.WriteLine("hands: (" + handLeftPosition.Y + "," + handRightPosition.Y + ") && shoulders: (" +
             //    shoulderLeftPosition.Y + "," + shoulderRightPosition.Y + ")");
 
-            if ((handRightPosition.Y > shoulderRightPosition.Y) ||
-                (handLeftPosition.Y > shoulderLeftPosition.Y))
+            if ((handRightPosition.Y > shoulderRightPosition.Y))
             {
 
                 rightShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderRight]);
@@ -97,8 +96,7 @@ namespace GestureRecognizer
 
             System.Diagnostics.Debug.WriteLine("Attempting validation of base...");
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) ||
-                (handLeftPosition.Y < shoulderLeftPosition.Y))
+            if ((handRightPosition.Y < shoulderRightPosition.Y))
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
@@ -114,8 +112,7 @@ namespace GestureRecognizer
             var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
             var currentHandLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
             
-            if ((validateRightPosition.Y < currentHandRightPosition.Y) ||
-                (validateLeftPosition.Y < currentHandLeftPosition.Y))
+            if ((validateRightPosition.Y < currentHandRightPosition.Y))
             {
                
                 return false;
