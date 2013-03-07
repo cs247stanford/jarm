@@ -942,6 +942,15 @@ namespace Microsoft.Samples.Kinect.Slideshow
                        //this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("NextPicture"));
+
+                        var pushUpStoryboard = Resources["TopPushUp"] as Storyboard;
+
+                        if (pushUpStoryboard != null)
+                        {
+                            pushUpStoryboard.Begin();
+                        }
+
+
                     }
                 }
         }
@@ -1172,8 +1181,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             DepthImagePoint depthPoint = this.nui.CoordinateMapper.MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.Resolution640x480Fps30);
-            return new Point(depthPoint.X, depthPoint.Y);
-            //return new Point(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640, depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480);
+            //return new Point(depthPoint.X, depthPoint.Y);
+            return new Point(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640, depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480);
 
         }
 
