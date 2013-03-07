@@ -34,8 +34,7 @@ namespace GestureRecognizer
             //System.Diagnostics.Debug.WriteLine("hands: (" + handLeftPosition.Y + "," + handRightPosition.Y + ") && shoulders: (" +
             //    shoulderLeftPosition.Y + "," + shoulderRightPosition.Y + ")");
 
-            if ((handRightPosition.Y < shoulderRightPosition.Y) ||
-                (handLeftPosition.Y < shoulderLeftPosition.Y))
+            if ((handRightPosition.Y < shoulderRightPosition.Y))
             {
 
                 rightShoulderDiff = GestureHelper.GetJointDistance(skeleton.Joints[JointType.HandRight], skeleton.Joints[JointType.ShoulderRight]);
@@ -69,11 +68,11 @@ namespace GestureRecognizer
 
             System.Diagnostics.Debug.WriteLine("I'M HERE GUYS");
 
-            if (leftDelta > 0.2 || rightDelta > 0.2)
+            if (rightDelta > 0.08)
             {
                 System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
-                if (watch.ElapsedMilliseconds > 800 || watch.ElapsedMilliseconds < 400) return false;
+                if (watch.ElapsedMilliseconds >1500 || watch.ElapsedMilliseconds < 200) return false;
                 Debug.WriteLine("watch elapsed time: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
@@ -102,8 +101,7 @@ namespace GestureRecognizer
 
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            if ((handRightPosition.Y > shoulderRightPosition.Y) ||
-                (handLeftPosition.Y > shoulderLeftPosition.Y))
+            if ((handRightPosition.Y > shoulderRightPosition.Y))
             {
                 System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
@@ -119,8 +117,7 @@ namespace GestureRecognizer
             var currentHandRightPosition = skeleton.Joints[JointType.HandRight].Position;
             var currentHandLeftPosition = skeleton.Joints[JointType.HandLeft].Position;
 
-            if ((validateRightPosition.Y > currentHandRightPosition.Y) ||
-                (validateLeftPosition.Y > currentHandLeftPosition.Y))
+            if ((validateRightPosition.Y > currentHandRightPosition.Y))
             {
                 return false;
             }
