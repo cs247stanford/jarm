@@ -123,12 +123,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// Current x value of pointer
         /// </summary>
-        private double currentX = 0.0;
+        private double currentX = 600;
 
         /// <summary>
         /// Current y value of pointer
         /// </summary>
-        private double currentY = 0.0;
+        private double currentY = 500;
 
         /// <summary>
         /// Threshold distance at which user is determined to be pointing at a different point than before
