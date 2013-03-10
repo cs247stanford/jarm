@@ -166,7 +166,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
             this.NextPicture = p.getNextSlide().getImage();
-            //Debug.Print("INDEX: " + this.Index);
             this.ParentPicture = null;
 
             InitializeComponent();
@@ -179,6 +178,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             // Wire-up window loaded event.
             Loaded += this.OnMainWindowLoaded;
+
+            GetVideo(p.getCurrentSlide());
+
         }
 
         void RefreshRelated()
@@ -376,6 +378,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
         }
 
+
+        /// <summary>
+        /// Gets the video
+        /// </summary>
+        public MediaElement myVideo { get; private set; }
+
         /// <summary>
         /// Gets the previous image displayed.
         /// </summary>
@@ -525,7 +533,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       this.NextPicture = p.getNextSlide().getImage();
                       this.PreviousPicture = this.Picture;
                       this.Picture = this.NextPicture;
-                      p.moveToNextSlide();
+                      p.moveToNextSlide();    
+                      GetVideo(p.getCurrentSlide());
 
                       RefreshRelated();
                       
@@ -562,6 +571,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                       this.Picture = this.PreviousPicture;
                       p.moveToPreviousSlide();
                       this.PreviousPicture = p.getPreviousSlide().getImage();
+                      GetVideo(p.getCurrentSlide());
 
                       RefreshRelated();
 
@@ -658,9 +668,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
             p = new Presentation();
             //this.CreateGraphics();
             string startupPath = Environment.CurrentDirectory;
+            Debug.WriteLine(startupPath);
             Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg");
-            Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
+            Slide one = new Slide(startupPath + "\\Pictures\\Wildlife.wmv");
+            //Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
             Slide two = new Slide(startupPath+"\\Pictures\\Slide3.jpg");
+            //Slide two = new Slide(startupPath+"\\Pictures\\Wildlife.wmv");
             Slide three = new Slide(startupPath+"\\Pictures\\Slide4.jpg");
             Slide four = new Slide(startupPath+"\\Pictures\\Slide5.jpg");
             Slide five = new Slide(startupPath+"\\Pictures\\Slide6.jpg");
@@ -677,7 +690,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             };
             List<Slide> group1 = new List<Slide>()
             {
-                two,
+                //two,
+                three,
                 four,
                 five,
             };
@@ -702,7 +716,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             };
             List<Slide> group5 = new List<Slide>()
             {
-                two,
+                //two,
+                three,
                 four,
             };
 
@@ -927,6 +942,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     this.Picture = p.getCurrentSlide().getImage();
                     this.NextPicture = p.getNextSlide().getImage();
                     RefreshRelated();
+                    GetVideo(p.getCurrentSlide());
 
                     var removeRelatedItem = Resources["RemoveRelatedItem"] as Storyboard;
                     if (removeRelatedItem != null)
@@ -992,6 +1008,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
             else
             {
+                if (p.getCurrentSlide().hasVideo())
+                {
+                    myVideoX.Play();
+                }
                 //any other objects that could be selected (media, etc).
             }
         }
@@ -1269,6 +1289,26 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void GetVideo(Slide slide)
+        {
+            if (p.getCurrentSlide().hasVideo())
+            {
+                Debug.WriteLine("HAS VIDEO");
+                myVideoX.Source = new Uri(slide.getVideoPath());
+                myVideoX.Opacity = 1;
+                //myVideoX.Play();
+            }
+            else if (!p.getCurrentSlide().hasVideo())
+            {
+                Debug.WriteLine("NO VIDEO");
+                myVideoX.Opacity = 0;
+            }
+        }
+
 
         /// <summary>
         /// Convert skeleton joint to a point on the StickMen canvas.
