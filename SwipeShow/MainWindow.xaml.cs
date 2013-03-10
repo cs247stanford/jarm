@@ -958,23 +958,23 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private void animateSelection(double x, double y)
         {
+            var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
                 double SLIDE_WIDTH = 220;
                 int relatedSlideIndex = ((int)(x) / (int)SLIDE_WIDTH);
-                var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
                 if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count)  //TEMPORARY.... SHOULD BE < 5
                 {
-                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * relatedSlideIndex);
+                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * relatedSlideIndex - 10 * (relatedSlideIndex));
                     if (animateRelatedItem != null)
                     {
-                        animateRelatedItem.Begin();
+                        animateRelatedItem.Begin(this, true);
                     }
                 }
-                else
-                {
-                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * -1);
-                }
+            }
+            else
+            {
+                animateRelatedItem.Stop(this);
             }
         }
 
