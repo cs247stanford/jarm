@@ -114,17 +114,42 @@ namespace KinectPresentor
         private List<Animation> animations;
         private Slide parentSlide;
         private String imagePath;
+        private bool isVideoSlide = false;
+        private String videoPath;
         private int index;
         private static int counter = 0;
 
-        public Slide(String imagePath)
+        public Slide(String ip)
         {
-            this.imagePath = imagePath;
-            backgroundImage = new BitmapImage(new Uri(imagePath));
+            if (ip.Substring(ip.Length - 3).ToLower() == "wmv")
+            {
+                this.isVideoSlide = true;
+                this.videoPath = ip;
+                this.imagePath = "C:\\Users\\Roger Chen\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\blank.jpg";  //"bin\\Debug\\Pictures\\blank.jpg";
+            }
+            else
+            {
+                this.isVideoSlide = false;
+                this.videoPath = null;
+                this.imagePath = ip;
+                Debug.WriteLine(ip);
+
+            }
+            backgroundImage = new BitmapImage(new Uri(this.imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
             index = counter;
             counter++;
+        }
+
+        public bool hasVideo()
+        {
+            return this.isVideoSlide;
+        }
+
+        public String getVideoPath()
+        {
+            return this.videoPath;
         }
 
         public int getIndex()
