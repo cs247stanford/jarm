@@ -113,7 +113,7 @@
             <Image x:Name="previous" Source="{Binding PreviousPicture}" Opacity="0"/>
             <Image x:Name="current" Source="{Binding Picture}"/>
             <Image x:Name="parent" Source="{Binding ParentPicture}" Opacity="0"/>
-            <Image x:Name="RelatedItemsTab" Source="C:\\Pictures\\tab.PNG" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" />
+            <!--<Image x:Name="RelatedItemsTab" Source="C:\\Pictures\\tab.PNG" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" />-->
             <Canvas x:Name="RelatedItems" Opacity="0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Black">
                 <Image x:Name="mainImage" Source="{Binding RelatedPicture1}" Canvas.Left="0" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage2" Source= "{Binding RelatedPicture2}" Canvas.Left="210" Width ="200" Height ="200"/>
