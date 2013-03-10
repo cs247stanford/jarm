@@ -1,7 +1,9 @@
 ﻿<Window x:Name="window" x:Class="Microsoft.Samples.Kinect.Slideshow.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Slide Show" Height="735" Width="850" >
+        <!--Title="Slide Show" Height="735" Width="850" >-->
+        Title="Slide Show" Height="1000" Width="1200" >
+
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -130,7 +132,7 @@
             <TextBlock Text="No Kinect available" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBlock Text="{Binding DisconnectedReason}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" />
             <Canvas x:Name="PointerCanvas">
-                <Ellipse Canvas.Left="0" Canvas.Top="0" Fill="Blue" Height="15" Name="RightHandPointer" Width="15" />
+                <Ellipse Canvas.Top="500" Canvas.Left="600" Fill="Blue" Stroke="White" StrokeThickness="2" Width="20" Height="20" Name="RightHandPointer"/>
             </Canvas>
         </Grid>
         <StatusBar Grid.Row="3" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
