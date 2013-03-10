@@ -163,7 +163,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             InitializePresentation();
-            InitializePalette();
+            //InitializePalette();
             picturePaths = CreatePicturePaths();
 
             pointsQueue = new Queue<Point>();
@@ -1094,8 +1094,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
 
 
-            double weightedX = lastLastPoint.X * 0.3 + lastPoint.X * 0.6 + newPoint.X * 0.1; // this seems to work nicely
-            double weightedY = lastLastPoint.Y * 0.3 + lastPoint.Y * 0.6 + newPoint.Y * 0.1; // this seems to work nicely
+            double weightedX =   lastPoint.X * 0.7 + newPoint.X * 0.3; // this seems to work nicely
+            double weightedY =   lastPoint.Y * 0.7 + newPoint.Y * 0.3; // this seems to work nicely
             //double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
 
             lastPoint = new Point(weightedX, weightedY);
@@ -1194,8 +1194,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             //this.Content = myImage;
             ////END DRAWING TEST
 
-
-           
+            Point hipPoint = this.ScalePosition(skeleton.Joints[JointType.ShoulderLeft].Position);
+            Point leftHandPoint = this.ScalePosition(skeleton.Joints[JointType.HandLeft].Position);
             Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
             Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
@@ -1215,9 +1215,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
             double newX = elbowX + deltaX;
             double newY = elbowY + deltaY;
             Point newPoint = new Point((int)newX, (int)newY);
-          
+            Line l = new Line();
+            l.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            l.X1 = lastPoint.X;
+            l.Y1 = lastPoint.Y;
             Point currentPoint = getCurrentPoint(newPoint);
-
+            l.X2 = currentPoint.X;
+            l.Y2 = currentPoint.Y;
+            l.StrokeThickness = 4;
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
@@ -1238,13 +1243,15 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
            // DrawPixel(currentPoint.X, currentPoint.Y);
             Ellipse p = new Ellipse();
-            p.SetValue(Canvas.LeftProperty, currentPoint.X);
-            p.SetValue(Canvas.TopProperty, currentPoint.Y);
-            p.Width = 5;
-            p.Height = 5;
-            p.Fill = new SolidColorBrush() { Color = Colors.Green, Opacity = 0.75f };
+            if (leftHandPoint.Y < hipPoint.Y)
+            {
+                canvas.Children.Add(l);
 
-            canvas.Children.Add(p);
+            } 
+            Debug.WriteLine(l.X1);
+            Debug.WriteLine(l.X2);
+            Debug.WriteLine(l.Y1);
+            Debug.WriteLine(l.Y2);
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
