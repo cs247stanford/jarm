@@ -21,7 +21,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
     using Microsoft.Samples.Kinect.SwipeGestureRecognizer;
     using GestureRecognizer;
     using KinectPresentor;
-    using System.Drawing;
     
     /*
      * public form1() { InitializeComponent();}
@@ -78,7 +77,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private KinectSensor nui;
 
 
-         private bool relatedActivated = false;
+        private bool relatedActivated = false;
         private bool relatedJustDeactivated = false;
 
         /// <summary>
@@ -146,8 +145,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         private static Presentation p;
 
+        private BitmapImage blankImage;
 
-        private Queue<System.Drawing.Point> pointsQueue;
+        private Queue<Point> pointsQueue;
         //private int POINTS_QUEUE_SIZE = 100;
 
 
@@ -161,12 +161,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             picturePaths = CreatePicturePaths();
 
-            pointsQueue = new Queue<System.Drawing.Point>();
+            pointsQueue = new Queue<Point>();
 
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
             this.NextPicture = p.getNextSlide().getImage();
-            Debug.Print("INDEX: " + this.Index);
+            //Debug.Print("INDEX: " + this.Index);
             this.ParentPicture = null;
 
             InitializeComponent();
@@ -183,31 +183,34 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         void RefreshRelated()
         {
+
             List<Slide> associated = p.getCurrentSlide().getAllAssociated();
 
             if (associated.Count > 0)
-            {
                 this.RelatedPicture1 = associated[0].getImage();
-                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture1"));
-            }
+            else
+                this.RelatedPicture1 = blankImage;
 
             if (associated.Count > 1)
-            {
                 this.RelatedPicture2 = associated[1].getImage();
-                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
-            }
+            else
+                this.RelatedPicture2 = blankImage;
 
             if (associated.Count > 2)
-            {
                 this.RelatedPicture3 = associated[2].getImage();
-                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
-            }
+            else
+                this.RelatedPicture3 = blankImage;
 
             if (associated.Count > 3)
-            {
                 this.RelatedPicture4 = associated[3].getImage();
-                this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
-            }
+            else
+                this.RelatedPicture4 = blankImage;
+
+            this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture1"));
+            this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
+            this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
+            this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
+
 
         }
 
@@ -233,26 +236,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         relatedJustDeactivated = false;
                         break;
                     }
-
-
-
-
-                  //  Uri uri = new Uri("C:\\Pictures\\Slide1.jpg", UriKind.Absolute);
-                   // ImageSource imgSrc = new BitmapImage(uri);
-                   // Image i = new Image();
-                   // i.Source = imgSrc;
-                   // this.mainImage = i;
-                   // this.PropertyChanged(this, new PropertyChangedEventArgs("mImage"));
-
-
-
-
-    //                Image i = Resources["RelatedItem1"] as Image;
- 
-  //                  i.Source = imgSrc;
-                    
-
-//                   i.Source = new ImageSource("C:\\Users\\RogerChen\\Documents\\GitHub\\jarm\\SwipeShow\\Images\\Slide1.jpg");
 
                     RefreshRelated();
 
@@ -291,13 +274,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "SwipeLeft":
 
-                    Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
+                    //Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
 
                     break;
 
                 case "SwipeRight":
 
-                    Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
+                    //Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
 
                     break;
                 
@@ -450,7 +433,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             var list = new List<string>();
 
-            Debug.WriteLine("count: " + p.retrieveSlides().Count);
+            //Debug.WriteLine("count: " + p.retrieveSlides().Count);
 
             foreach (Slide s in p.retrieveSlides())
             {
@@ -532,7 +515,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
            // Wire-up swipe right to manually advance picture.
             recognizer.SwipeRightDetected += (s, e) =>
               {
-                  System.Diagnostics.Debug.WriteLine("Right swipe detected");
+                  //System.Diagnostics.Debug.WriteLine("Right swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
                   {
@@ -568,7 +551,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
               recognizer.SwipeLeftDetected += (s, e) =>
               {
 
-                  System.Diagnostics.Debug.WriteLine("Left swipe detected");
+                  //System.Diagnostics.Debug.WriteLine("Left swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
                   {
@@ -686,6 +669,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg");
             Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg");
 
+            blankImage = new BitmapImage(new Uri(startupPath + "\\Pictures\\Blank.jpg"));
 
             List<Slide> group0 = new List<Slide>()
             {
@@ -760,7 +744,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             try
             {
                 path = Directory.GetCurrentDirectory();
-                Debug.WriteLine(path);
+                //Debug.WriteLine(path);
             }
             catch (Exception ef) { 
                 Debug.WriteLine(ef);
@@ -915,7 +899,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
 
-                Debug.Print("In select related item");
+                //Debug.Print("In select related item");
 
 
                 //List<Slide> relatedSlides = new List<Slide>;
@@ -934,7 +918,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 //int newIndex = IndexFromXValue(selectedSlideIndex);
 
                 //Debug.WriteLine("SELECT ITEM AT " + selectedSlideIndex);
-                if (relatedSlideIndex < 5)
+                if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count && relatedActivated)
                 {
                     int selectedSlideIndex = p.getCurrentSlide().getAllAssociated()[relatedSlideIndex].getIndex();
                     this.ParentPicture = this.Picture;
@@ -944,6 +928,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     this.NextPicture = p.getNextSlide().getImage();
                     RefreshRelated();
 
+                    var removeRelatedItem = Resources["RemoveRelatedItem"] as Storyboard;
+                    if (removeRelatedItem != null)
+                    {
+                        removeRelatedItem.Begin();
+                    }
+
                     // Notify world of change to Index and Picture.
                     if (this.PropertyChanged != null)
                     {
@@ -951,8 +941,40 @@ namespace Microsoft.Samples.Kinect.Slideshow
                        //this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("NextPicture"));
+
+                        var pushUpStoryboard = Resources["TopPushUp"] as Storyboard;
+
+                        if (pushUpStoryboard != null)
+                        {
+                            pushUpStoryboard.Begin();
+                        }
+
+
                     }
                 }
+        }
+
+
+        private void animateSelection(double x, double y)
+        {
+            if (relatedItemsDown && y < RelatedItems.ActualHeight)
+            {
+                double SLIDE_WIDTH = 220;
+                int relatedSlideIndex = ((int)(x) / (int)SLIDE_WIDTH);
+                var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
+                if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count)  //TEMPORARY.... SHOULD BE < 5
+                {
+                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * relatedSlideIndex);
+                    if (animateRelatedItem != null)
+                    {
+                        animateRelatedItem.Begin();
+                    }
+                }
+                else
+                {
+                    Canvas.SetLeft(relatedImageOverlay, SLIDE_WIDTH * -1);
+                }
+            }
         }
 
         /// <summary>
@@ -962,7 +984,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectObject(double x, double y)
         {
-            Debug.Print("In select object");
+            //Debug.Print("In select object");
       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
@@ -983,10 +1005,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// Stuff.
         /// </summary>
-        public System.Drawing.Point lastPoint;
+        public Point lastPoint;
+        /// <summary>
+        /// Stuff.
+        /// </summary>
+        public Point lastLastPoint;
 
-        private System.Drawing.Point getCurrentPoint(System.Drawing.Point newPoint)
+        private Point getCurrentPoint(Point newPoint)
         {
+            if (lastLastPoint == null)
+            {
+                lastLastPoint = newPoint;
+                return newPoint;
+            }
 
             if (lastPoint == null)
             {
@@ -994,9 +1025,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 return newPoint;
             }
 
-            double weightedX = lastPoint.X * 0.8 + newPoint.X * 0.2;
-            double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
-            lastPoint = new System.Drawing.Point((int)weightedX, (int)weightedY);
+
+            double weightedX = lastLastPoint.X * 0.3 + lastPoint.X * 0.6 + newPoint.X * 0.1; // this seems to work nicely
+            double weightedY = lastLastPoint.Y * 0.3 + lastPoint.Y * 0.6 + newPoint.Y * 0.1; // this seems to work nicely
+            //double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
+
+            lastPoint = new Point(weightedX, weightedY);
             return lastPoint;
             /*
             if (pointsQueue.Count >= POINTS_QUEUE_SIZE)
@@ -1027,10 +1061,75 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private void MapJointsWithUIElement(Skeleton skeleton)
         {
-           System.Drawing.Point  leftHandPoint = this.ScalePosition(skeleton.Joints[JointType.HandLeft].Position);
-            System.Drawing.Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
-            System.Drawing.Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
-            System.Drawing.Point waistPoint = this.ScalePosition(skeleton.Joints[JointType.HipLeft].Position);
+
+            //// START DRAWING TEST
+            //RectangleGeometry myRectangleGeometry = new RectangleGeometry();
+            //myRectangleGeometry.Rect = new Rect(0, 0, 50, 50);
+            //EllipseGeometry myEllipseGeometry = new EllipseGeometry();
+            //myEllipseGeometry.Center = new Point(75, 75);
+            //myEllipseGeometry.RadiusX = 50;
+            //myEllipseGeometry.RadiusY = 50;
+            //LineGeometry myLineGeometry = new LineGeometry();
+            //myLineGeometry.StartPoint = new Point(75, 75);
+            //myLineGeometry.EndPoint = new Point(75, 0);
+
+            //// Create a GeometryGroup and add the geometries to it.
+            //GeometryGroup myGeometryGroup = new GeometryGroup();
+            //myGeometryGroup.Children.Add(myRectangleGeometry);
+            //myGeometryGroup.Children.Add(myEllipseGeometry);
+            //myGeometryGroup.Children.Add(myLineGeometry);
+
+            //// Create a GeometryDrawing and use the GeometryGroup to specify 
+            //// its geometry.
+            //GeometryDrawing myGeometryDrawing = new GeometryDrawing();
+            //myGeometryDrawing.Geometry = myGeometryGroup;
+
+            //// Add the GeometryDrawing to a DrawingGroup.
+            //DrawingGroup myDrawingGroup = new DrawingGroup();
+            //myDrawingGroup.Children.Add(myGeometryDrawing);
+
+            //// Create a Pen to add to the GeometryDrawing created above.
+            //Pen myPen = new Pen();
+            //myPen.Thickness = 10;
+            //myPen.LineJoin = PenLineJoin.Round;
+            //myPen.EndLineCap = PenLineCap.Round;
+
+            //// Create a gradient to use as a value for the Pen's Brush property.
+            //GradientStop firstStop = new GradientStop();
+            //firstStop.Offset = 0.0;
+            //Color c1 = new Color();
+            //c1.A = 255;
+            //c1.R = 204;
+            //c1.G = 204;
+            //c1.B = 255;
+            //firstStop.Color = c1;
+            //GradientStop secondStop = new GradientStop();
+            //secondStop.Offset = 1.0;
+            //secondStop.Color = Colors.Purple;
+
+            //LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush();
+            //myLinearGradientBrush.GradientStops.Add(firstStop);
+            //myLinearGradientBrush.GradientStops.Add(secondStop);
+
+            //myPen.Brush = myLinearGradientBrush;
+            //myGeometryDrawing.Pen = myPen;
+
+            //// Create an Image and set its DrawingImage to the Geometry created above.
+            //Image myImage = new Image();
+            //myImage.Stretch = Stretch.None;
+            //myImage.Margin = new Thickness(10);
+
+            //DrawingImage myDrawingImage = new DrawingImage();
+            //myDrawingImage.Drawing = myDrawingGroup;
+            //myImage.Source = myDrawingImage;
+
+            //this.Content = myImage;
+            ////END DRAWING TEST
+
+
+
+            Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
+            Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint handDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.HandRight].Position);
 
@@ -1047,27 +1146,29 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double newX = elbowX + deltaX;
             double newY = elbowY + deltaY;
-            System.Drawing.Point newPoint = new System.Drawing.Point((int)newX, (int)newY);
+            Point newPoint = new Point((int)newX, (int)newY);
           
-            System.Drawing.Point currentPoint = getCurrentPoint(newPoint);
+            Point currentPoint = getCurrentPoint(newPoint);
 
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
-            Canvas.SetTop(RightHandPointer, currentPoint.Y);
-            
+            Canvas.SetTop(RightHandPointer, currentPoint.Y); 
+
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
                 currentY = currentPoint.Y;
                 stopwatch.Restart();
+                //clear selection
+                //start selection
+                animateSelection(currentPoint.X, currentPoint.Y);
             }
-            if (stopwatch.ElapsedMilliseconds >= 2000)
+            else if (stopwatch.ElapsedMilliseconds >= 2000)
             {
-                Debug.WriteLine("CLICK");
+                //Debug.WriteLine("CLICK");
                 SelectObject(currentPoint.X, currentPoint.Y);
                 stopwatch.Restart();
 
             }
-
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
@@ -1076,11 +1177,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
             return depthPoint;
         }
 
-        private System.Drawing.Point ScalePosition(SkeletonPoint skeletonPoint)
+        private Point ScalePosition(SkeletonPoint skeletonPoint)
         {
    
             DepthImagePoint depthPoint = this.nui.CoordinateMapper.MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.Resolution640x480Fps30);
-            return new System.Drawing.Point((int)(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640), (int)(depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480));
+
+            //return new Point(depthPoint.X, depthPoint.Y);
+            return new Point(depthPoint.X * 1.4 * ((Grid)(this.Content)).ActualWidth / 640, depthPoint.Y * 1.4 * ((Grid)(this.Content)).ActualHeight / 480);
 
         }
 
