@@ -50,6 +50,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         static WriteableBitmap writeableBitmap;
         static Window w;
         static Image i;
+        //private Canvas canvas = new Canvas();
         private readonly string[] picturePaths; // = CreatePicturePaths();
         private Stopwatch watch = new Stopwatch();
         /// <summary>
@@ -672,7 +673,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Slide seven = new Slide(startupPath+"\\Pictures\\Slide1.jpg");
             Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg");
             Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg");
-
+            canvas = new Canvas();
+            Canvas.SetLeft(canvas, 0);
+            Canvas.SetTop(canvas, 0);
             blankImage = new BitmapImage(new Uri(startupPath + "\\Pictures\\Blank.jpg"));
 
             List<Slide> group0 = new List<Slide>()
@@ -1234,6 +1237,14 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             }
            // DrawPixel(currentPoint.X, currentPoint.Y);
+            Ellipse p = new Ellipse();
+            p.SetValue(Canvas.LeftProperty, currentPoint.X);
+            p.SetValue(Canvas.TopProperty, currentPoint.Y);
+            p.Width = 5;
+            p.Height = 5;
+            p.Fill = new SolidColorBrush() { Color = Colors.Green, Opacity = 0.75f };
+
+            canvas.Children.Add(p);
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
