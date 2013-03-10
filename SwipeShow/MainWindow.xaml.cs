@@ -46,6 +46,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// The paths of the picture files.
         /// </summary>
+        /// 
+        static WriteableBitmap writeableBitmap;
+        static Window w;
+        static Image i;
         private readonly string[] picturePaths; // = CreatePicturePaths();
         private Stopwatch watch = new Stopwatch();
         /// <summary>
@@ -1127,7 +1131,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             ////END DRAWING TEST
 
 
-
+           
             Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
             Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
@@ -1151,8 +1155,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Point currentPoint = getCurrentPoint(newPoint);
 
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
-            Canvas.SetTop(RightHandPointer, currentPoint.Y); 
-
+            Canvas.SetTop(RightHandPointer, currentPoint.Y);
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
