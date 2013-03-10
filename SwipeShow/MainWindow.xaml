@@ -124,7 +124,7 @@
             </Canvas>
             <!--<MediaElement x:Name="myVideoX" Source="{Binding myVideo}" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
             -->
-            <MediaElement x:Name ="myVideoX" Source="C:\\Users\\Roger Chen\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\Wildlife.wmv" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
+            <MediaElement x:Name ="myVideoX" Source="C:\\Users\\Hongxia\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\Wildlife.wmv" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
                 Opacity="1"/>
             <!-- <Image x:Name="related" Source="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" Opacity="0"/> -->
          <!--   <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="2,0,0,0"/>

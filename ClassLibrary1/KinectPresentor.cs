@@ -125,7 +125,7 @@ namespace KinectPresentor
             {
                 this.isVideoSlide = true;
                 this.videoPath = ip;
-                this.imagePath = "C:\\Users\\Roger Chen\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\blank.jpg";  //"bin\\Debug\\Pictures\\blank.jpg";
+                this.imagePath = "C:\\Users\\Hongxia\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\blank.jpg";  //"bin\\Debug\\Pictures\\blank.jpg";
             }
             else
             {
