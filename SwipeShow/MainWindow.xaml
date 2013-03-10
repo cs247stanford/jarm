@@ -66,11 +66,7 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0.8"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.8"/>
-                <!--<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>-->
             </DoubleAnimationUsingKeyFrames>
-            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-            </DoubleAnimationUsingKeyFrames> -->
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="RelatedItems">
                 <EasingThicknessKeyFrame KeyTime="0" Value="0,-500,0,500"/>
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
@@ -80,11 +76,7 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
-                <!-- <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>-->
             </DoubleAnimationUsingKeyFrames>
-            <!-- <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RelatedItems">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-            </DoubleAnimationUsingKeyFrames> -->
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="RelatedItems">
                 <EasingThicknessKeyFrame KeyTime="0" Value="0,500,0,-500"/>
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
@@ -122,16 +114,9 @@
                 <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
                 <Canvas x:Name="relatedImageOverlay" Canvas.Left="0" Width="200" Height="180" Background="Pink" Opacity="0" Margin="0 20 0 0"/>
             </Canvas>
-            <!--<MediaElement x:Name="myVideoX" Source="{Binding myVideo}" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
-            -->
-            <MediaElement x:Name ="myVideoX" Source="C:\\Users\\Roger Chen\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\Wildlife.wmv" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
+            <MediaElement x:Name ="myVideoX" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
                 Opacity="1"/>
-            <!-- <Image x:Name="related" Source="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" Opacity="0"/> -->
-         <!--   <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="2,0,0,0"/>
-            <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="0,-2,0,0"/>
-            <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Margin="0,2,0,0"/>
-            <TextBlock Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="96" FontWeight="Bold" Foreground="White"/>
-          --><Canvas x:Name="StickMen" Width="200" Height="150" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <Canvas x:Name="StickMen" Width="200" Height="150" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <TextBlock Text="No Kinect available" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBlock Text="{Binding DisconnectedReason}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" />
             <Canvas x:Name="PointerCanvas">

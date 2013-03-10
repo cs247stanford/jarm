@@ -6,11 +6,6 @@ using System.Linq;
 using System.Xaml;
 using System.Text;
 using System.Diagnostics;
-//using System.Windows.Freezable;
-//using System.Drawing;
-//using Microsoft.DirectX.AudioVideoPlayback;
-
-
 
 
 namespace KinectPresentor
@@ -109,7 +104,6 @@ namespace KinectPresentor
     {
         //Need to add video support as well.
         private BitmapImage backgroundImage;
-        //private String imageFileName;
         private List<Slide> associatedSlides;
         private List<Animation> animations;
         private Slide parentSlide;
@@ -119,34 +113,39 @@ namespace KinectPresentor
         private int index;
         private static int counter = 0;
 
-        public Slide(String ip)
+        /// <summary>
+        /// Takes in a string representing the imagePath and the videoPath.
+        /// imagePath is required (set as blank.jpg if there is none),
+        /// videoPath can be blank.
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <param name="videoPath"></param>
+        public Slide(String imagePath, String videoPath)
         {
-            if (ip.Substring(ip.Length - 3).ToLower() == "wmv")
-            {
-                this.isVideoSlide = true;
-                this.videoPath = ip;
-                this.imagePath = "C:\\Users\\Roger Chen\\Documents\\GitHub\\jarm\\SwipeShow\\bin\\Debug\\Pictures\\blank.jpg";  //"bin\\Debug\\Pictures\\blank.jpg";
-            }
-            else
-            {
-                this.isVideoSlide = false;
-                this.videoPath = null;
-                this.imagePath = ip;
-                Debug.WriteLine(ip);
-
-            }
+            this.isVideoSlide =  (videoPath.Length>3 && videoPath.Substring(videoPath.Length - 3).ToLower() == "wmv");
+            this.videoPath = videoPath;
+            this.isVideoSlide = false;
+            this.imagePath = imagePath;
             backgroundImage = new BitmapImage(new Uri(this.imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
             index = counter;
             counter++;
         }
-
+        
+        /// <summary>
+        /// Returns whether or not there is a video set for the slide
+        /// </summary>
+        /// <returns></returns>
         public bool hasVideo()
         {
             return this.isVideoSlide;
         }
 
+        /// <summary>
+        /// Returns the file path of the video
+        /// </summary>
+        /// <returns></returns>
         public String getVideoPath()
         {
             return this.videoPath;

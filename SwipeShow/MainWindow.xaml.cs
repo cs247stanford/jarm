@@ -46,7 +46,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// The paths of the picture files.
         /// </summary>
-        private readonly string[] picturePaths; // = CreatePicturePaths();
+        private readonly string[] picturePaths; 
         private Stopwatch watch = new Stopwatch();
         /// <summary>
         /// Array of arrays of contiguous line segements that represent a skeleton.
@@ -147,8 +147,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private BitmapImage blankImage;
 
-        private Queue<Point> pointsQueue;
         //private int POINTS_QUEUE_SIZE = 100;
+
+        private bool videoPlaying;
 
 
         /// <summary>
@@ -158,11 +159,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             InitializePresentation();
-
             picturePaths = CreatePicturePaths();
-
-            pointsQueue = new Queue<Point>();
-
+            videoPlaying = false;
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
             this.NextPicture = p.getNextSlide().getImage();
@@ -290,14 +288,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     break;
 
             }
-
-            //System.Diagnostics.Debug.WriteLine(recognizedGesture);
-
-            
-
-
-            //MessageBox.Show(e.GestureType.ToString());
-
         }
 
         /// <summary>
@@ -449,28 +439,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
 
             return list.ToArray();
-
-            /*
-            var commonPicturesPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonPictures);
-            list.AddRange(Directory.GetFiles(commonPicturesPath, "*.jpg", SearchOption.AllDirectories));
-            if (list.Count == 0)
-            {
-                list.AddRange(Directory.GetFiles(commonPicturesPath, "*.png", SearchOption.AllDirectories));
-            }
-
-            if (list.Count == 0)
-            {
-                var myPicturesPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                list.AddRange(Directory.GetFiles(myPicturesPath, "*.jpg", SearchOption.AllDirectories));
-                if (list.Count == 0)
-                {
-                    list.AddRange(Directory.GetFiles(commonPicturesPath, "*.png", SearchOption.AllDirectories));
-                }
-            }
-
-            return list.ToArray();
-            */
-
         }
 
         /// <summary>
@@ -669,18 +637,16 @@ namespace Microsoft.Samples.Kinect.Slideshow
             //this.CreateGraphics();
             string startupPath = Environment.CurrentDirectory;
             Debug.WriteLine(startupPath);
-            Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg");
-            Slide one = new Slide(startupPath + "\\Pictures\\Wildlife.wmv");
-            //Slide one = new Slide(startupPath+"\\Pictures\\Slide2.jpg");
-            Slide two = new Slide(startupPath+"\\Pictures\\Slide3.jpg");
-            //Slide two = new Slide(startupPath+"\\Pictures\\Wildlife.wmv");
-            Slide three = new Slide(startupPath+"\\Pictures\\Slide4.jpg");
-            Slide four = new Slide(startupPath+"\\Pictures\\Slide5.jpg");
-            Slide five = new Slide(startupPath+"\\Pictures\\Slide6.jpg");
-            Slide six = new Slide(startupPath+"\\Pictures\\Slide7.jpg");
-            Slide seven = new Slide(startupPath+"\\Pictures\\Slide1.jpg");
-            Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg");
-            Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg");
+            Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg", "");
+            Slide one = new Slide(startupPath + "\\Pictures\\blank.jpg", startupPath + "\\Pictures\\Wildlife.wmv");
+            Slide two = new Slide(startupPath+"\\Pictures\\Slide3.jpg", "");
+            Slide three = new Slide(startupPath+"\\Pictures\\Slide4.jpg", "");
+            Slide four = new Slide(startupPath+"\\Pictures\\Slide5.jpg", "");
+            Slide five = new Slide(startupPath+"\\Pictures\\Slide6.jpg", "");
+            Slide six = new Slide(startupPath+"\\Pictures\\Slide7.jpg", "");
+            Slide seven = new Slide(startupPath+"\\Pictures\\Slide1.jpg", "");
+            Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg", "");
+            Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg", "");
 
             blankImage = new BitmapImage(new Uri(startupPath + "\\Pictures\\Blank.jpg"));
 
@@ -954,7 +920,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("PreviousPicture"));
-                       //this.PropertyChanged(this, new PropertyChangedEventArgs("ParentPicture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("Picture"));
                         this.PropertyChanged(this, new PropertyChangedEventArgs("NextPicture"));
 
@@ -1010,7 +975,16 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 if (p.getCurrentSlide().hasVideo())
                 {
-                    myVideoX.Play();
+                    if (videoPlaying)
+                    {
+                        myVideoX.Pause();
+                        videoPlaying = false;
+                    }
+                    else
+                    {
+                        myVideoX.Play();
+                        videoPlaying = true;
+                    }
                 }
                 //any other objects that could be selected (media, etc).
             }
@@ -1048,33 +1022,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double weightedX = lastLastPoint.X * 0.3 + lastPoint.X * 0.6 + newPoint.X * 0.1; // this seems to work nicely
             double weightedY = lastLastPoint.Y * 0.3 + lastPoint.Y * 0.6 + newPoint.Y * 0.1; // this seems to work nicely
-            //double weightedY = lastPoint.Y * 0.8 + newPoint.Y * 0.2;
 
             lastPoint = new Point(weightedX, weightedY);
             return lastPoint;
-            /*
-            if (pointsQueue.Count >= POINTS_QUEUE_SIZE)
-            {
-                pointsQueue.Dequeue();
-            }
-            pointsQueue.Enqueue(newPoint);
-           
-            int total = pointsQueue.Count;
-            double sumX = 0.0;
-            double sumY = 0.0;
-
-            double multiplier = 0.01;
-
-            foreach (Point p in pointsQueue)
-            {
-                sumX += (p.X * multiplier);
-                sumY += (p.Y * multiplier);
-                multiplier += 0.01;
-            }
-
-            Point currentPoint = new Point((sumX/total), (sumY/total));
-            return currentPoint;
-             */
+         
         }
 
 
@@ -1300,11 +1251,15 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 Debug.WriteLine("HAS VIDEO");
                 myVideoX.Source = new Uri(slide.getVideoPath());
                 myVideoX.Opacity = 1;
-                //myVideoX.Play();
             }
             else if (!p.getCurrentSlide().hasVideo())
             {
                 Debug.WriteLine("NO VIDEO");
+                if (videoPlaying)
+                {
+                    myVideoX.Pause();
+                    videoPlaying = false;
+                }
                 myVideoX.Opacity = 0;
             }
         }
