@@ -1,7 +1,8 @@
 ﻿<Window x:Name="window" x:Class="Microsoft.Samples.Kinect.Slideshow.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Slide Show" Height="735" Width="850" >
+        Title="Slide Show" Height="1000" Width="1200" >
+
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -89,15 +90,12 @@
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimateRelatedItem1">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mainImage">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.3"/>
-            </DoubleAnimationUsingKeyFrames>
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="mainImage">
-                <EasingThicknessKeyFrame KeyTime="0" Value="0,500,0,-500"/>
-                <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="0"/>
-            </ThicknessAnimationUsingKeyFrames>
+        <Storyboard x:Key="AnimateRelatedItem">
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Height" From="20" To="180" Duration="0:0:2" />
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0" To="0.7" Duration="0:0:2" />
+        </Storyboard>
+        <Storyboard x:Key="RemoveRelatedItem">
+            <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0.7" To="0" Duration="0:0:2" />
         </Storyboard>
         <Style TargetType="{x:Type Image}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -116,12 +114,13 @@
             <Image x:Name="previous" Source="{Binding PreviousPicture}" Opacity="0"/>
             <Image x:Name="current" Source="{Binding Picture}"/>
             <Image x:Name="parent" Source="{Binding ParentPicture}" Opacity="0"/>
-            <Image x:Name="RelatedItemsTab" Source="C:\\Pictures\\tab.PNG" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" />
+            <!--<Image x:Name="RelatedItemsTab" Source="C:\\Pictures\\tab.PNG" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" />-->
             <Canvas x:Name="RelatedItems" Opacity="0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Black">
                 <Image x:Name="mainImage" Source="{Binding RelatedPicture1}" Canvas.Left="0" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage2" Source= "{Binding RelatedPicture2}" Canvas.Left="210" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage3" Source= "{Binding RelatedPicture3}" Canvas.Left="420" Width ="200" Height ="200"/>
                 <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
+                <Canvas x:Name="relatedImageOverlay" Canvas.Left="0" Width="200" Height="180" Background="Pink" Opacity="0" Margin="0 20 0 0"/>
             </Canvas>
             <!--<MediaElement x:Name="myVideoX" Source="{Binding myVideo}" Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
             -->
@@ -136,7 +135,7 @@
             <TextBlock Text="No Kinect available" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBlock Text="{Binding DisconnectedReason}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" />
             <Canvas x:Name="PointerCanvas">
-                <Ellipse Canvas.Left="0" Canvas.Top="0" Fill="Blue" Height="15" Name="RightHandPointer" Width="15" />
+                <Ellipse Canvas.Top="500" Canvas.Left="600" Fill="Green" Stroke="White" StrokeThickness="5" Width="25" Height="25" Name="RightHandPointer"/>
             </Canvas>
         </Grid>
         <StatusBar Grid.Row="3" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
