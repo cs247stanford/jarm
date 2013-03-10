@@ -1025,11 +1025,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <summary>
         /// Stuff.
         /// </summary>
-        public Point lastPoint;
+        public Point lastPoint = new Point(600, 500);
         /// <summary>
         /// Stuff.
         /// </summary>
-        public Point lastLastPoint;
+        public Point lastLastPoint = new Point(600, 500);
 
         private Point getCurrentPoint(Point newPoint)
         {
