@@ -167,7 +167,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.PreviousPicture = p.getPreviousSlide().getImage();
             this.Picture = p.getCurrentSlide().getImage();
             this.NextPicture = p.getNextSlide().getImage();
-            Debug.Print("INDEX: " + this.Index);
+            //Debug.Print("INDEX: " + this.Index);
             this.ParentPicture = null;
 
             InitializeComponent();
@@ -275,13 +275,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "SwipeLeft":
 
-                    Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
+                    //Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
 
                     break;
 
                 case "SwipeRight":
 
-                    Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
+                    //Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
 
                     break;
                 
@@ -434,7 +434,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             var list = new List<string>();
 
-            Debug.WriteLine("count: " + p.retrieveSlides().Count);
+            //Debug.WriteLine("count: " + p.retrieveSlides().Count);
 
             foreach (Slide s in p.retrieveSlides())
             {
@@ -516,7 +516,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
            // Wire-up swipe right to manually advance picture.
             recognizer.SwipeRightDetected += (s, e) =>
               {
-                  System.Diagnostics.Debug.WriteLine("Right swipe detected");
+                  //System.Diagnostics.Debug.WriteLine("Right swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
                   {
@@ -552,7 +552,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
               recognizer.SwipeLeftDetected += (s, e) =>
               {
 
-                  System.Diagnostics.Debug.WriteLine("Left swipe detected");
+                  //System.Diagnostics.Debug.WriteLine("Left swipe detected");
 
                   if (e.Skeleton.TrackingId == nearestId)
                   {
@@ -745,7 +745,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             try
             {
                 path = Directory.GetCurrentDirectory();
-                Debug.WriteLine(path);
+                //Debug.WriteLine(path);
             }
             catch (Exception ef) { 
                 Debug.WriteLine(ef);
@@ -900,7 +900,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
 
-                Debug.Print("In select related item");
+                //Debug.Print("In select related item");
 
 
                 //List<Slide> relatedSlides = new List<Slide>;
@@ -985,7 +985,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectObject(double x, double y)
         {
-            Debug.Print("In select object");
+            //Debug.Print("In select object");
       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
@@ -1164,7 +1164,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
             else if (stopwatch.ElapsedMilliseconds >= 2000)
             {
-                Debug.WriteLine("CLICK");
+                //Debug.WriteLine("CLICK");
                 SelectObject(currentPoint.X, currentPoint.Y);
                 stopwatch.Restart();
 

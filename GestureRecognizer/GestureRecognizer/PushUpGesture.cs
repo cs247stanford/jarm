@@ -66,14 +66,14 @@ namespace GestureRecognizer
             double leftDelta = Math.Abs(startingLeftPosition.Y - validateLeftPosition.Y);
             double rightDelta = Math.Abs(startingRightPosition.Y - validateRightPosition.Y);
 
-            System.Diagnostics.Debug.WriteLine("I'M HERE GUYS");
+            //System.Diagnostics.Debug.WriteLine("I'M HERE GUYS");
 
             if (rightDelta > 0.08)
             {
-                System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
+                //System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
                 if (watch.ElapsedMilliseconds >1500 || watch.ElapsedMilliseconds < 200) return false;
-                Debug.WriteLine("watch elapsed time: " + watch.ElapsedMilliseconds.ToString());
+                Debug.WriteLine("Watch elapsed time for pull down: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
 
@@ -103,7 +103,7 @@ namespace GestureRecognizer
 
             if ((handRightPosition.Y > shoulderRightPosition.Y))
             {
-                System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
+                //System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
             }
 

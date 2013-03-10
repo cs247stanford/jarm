@@ -94,11 +94,11 @@ namespace GestureRecognizer
 
             var spinePosition = skeleton.Joints[JointType.Spine].Position;
 
-            System.Diagnostics.Debug.WriteLine("Attempting validation of base...");
+            //System.Diagnostics.Debug.WriteLine("Attempting validation of base...");
 
             if ((handRightPosition.Y < shoulderRightPosition.Y))
             {
-                System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
+                //System.Diagnostics.Debug.WriteLine("PullDownGesture validated");
                 return true;
             }
         
@@ -120,7 +120,7 @@ namespace GestureRecognizer
 
             validateRightPosition = currentHandRightPosition;
             validateLeftPosition = currentHandLeftPosition;
-            Debug.WriteLine("IsGestureValid");
+            //Debug.WriteLine("IsGestureValid");
             return true;
 
         }
