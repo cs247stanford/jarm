@@ -162,7 +162,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         {
 
             InitializePresentation();
-
+            InitializePalette();
             picturePaths = CreatePicturePaths();
 
             pointsQueue = new Queue<Point>();
@@ -735,7 +735,67 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         }
 
+        private void InitializePalette()
+        {
+            Debug.WriteLine("Pallette initialized");
+            i = new Image();
+            RenderOptions.SetBitmapScalingMode(i, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetEdgeMode(i, EdgeMode.Aliased);
 
+            w = new Window();
+            w.Content = i;
+            w.Show();
+
+            writeableBitmap = new WriteableBitmap(
+                (int)w.ActualWidth,
+                (int)w.ActualHeight,
+                96,
+                96,
+                PixelFormats.Bgr32,
+                null);
+
+            i.Source = writeableBitmap;
+
+            i.Stretch = Stretch.None;
+            i.HorizontalAlignment = HorizontalAlignment.Left;
+            i.VerticalAlignment = VerticalAlignment.Top;
+           // writeableBitmap.AddDirtyRect(new Int32Rect(300, 300, 20, 20));
+        }
+
+
+        static void DrawPixel(double x , double y)
+        {
+            int column = (int) x;
+            int row = (int)y;
+
+            // Reserve the back buffer for updates.
+            writeableBitmap.Lock();
+
+            unsafe
+            {
+                // Get a pointer to the back buffer. 
+                int pBackBuffer = (int)writeableBitmap.BackBuffer;
+                Debug.WriteLine("pback buffer is");
+                Debug.WriteLine(pBackBuffer);
+                // Find the address of the pixel to draw.
+                pBackBuffer += row * writeableBitmap.BackBufferStride;
+                pBackBuffer += column * 4;
+
+                // Compute the pixel's color. 
+                int color_data = 255 << 16; // R
+                color_data |= 128 << 8;   // G
+                color_data |= 255 << 0;   // B 
+
+                // Assign the color data to the pixel.
+                *((int*)pBackBuffer) = color_data;
+            }
+
+            // Specify the area of the bitmap that changed.
+            writeableBitmap.AddDirtyRect(new Int32Rect(column, row, 1, 1));
+
+            // Release the back buffer and make it available for display.
+            writeableBitmap.Unlock();
+        }
         /// <summary>
         /// Window loaded actions to initialize Kinect handling.
         /// </summary>
@@ -1172,6 +1232,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 stopwatch.Restart();
 
             }
+           // DrawPixel(currentPoint.X, currentPoint.Y);
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
