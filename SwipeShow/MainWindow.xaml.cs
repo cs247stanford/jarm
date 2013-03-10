@@ -762,7 +762,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
            // writeableBitmap.AddDirtyRect(new Int32Rect(300, 300, 20, 20));
         }
 
-
+        /*
         static void DrawPixel(double x , double y)
         {
             int column = (int) x;
@@ -796,6 +796,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             // Release the back buffer and make it available for display.
             writeableBitmap.Unlock();
         }
+        */
         /// <summary>
         /// Window loaded actions to initialize Kinect handling.
         /// </summary>
