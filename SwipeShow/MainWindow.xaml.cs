@@ -647,7 +647,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Slide seven = new Slide(startupPath+"\\Pictures\\Slide1.jpg", "");
             Slide eight = new Slide(startupPath+"\\Pictures\\Slide8.jpg", "");
             Slide nine = new Slide(startupPath+"\\Pictures\\Slide9.jpg", "");
-
+            canvas = new Canvas();
+            Canvas.SetLeft(canvas, 0);
+            Canvas.SetTop(canvas, 0);
             blankImage = new BitmapImage(new Uri(startupPath + "\\Pictures\\Blank.jpg"));
 
             List<Slide> group0 = new List<Slide>()
@@ -712,7 +714,41 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         }
 
+        /*
+        static void DrawPixel(double x , double y)
+        {
+            int column = (int) x;
+            int row = (int)y;
 
+            // Reserve the back buffer for updates.
+            writeableBitmap.Lock();
+
+            unsafe
+            {
+                // Get a pointer to the back buffer. 
+                int pBackBuffer = (int)writeableBitmap.BackBuffer;
+                Debug.WriteLine("pback buffer is");
+                Debug.WriteLine(pBackBuffer);
+                // Find the address of the pixel to draw.
+                pBackBuffer += row * writeableBitmap.BackBufferStride;
+                pBackBuffer += column * 4;
+
+                // Compute the pixel's color. 
+                int color_data = 255 << 16; // R
+                color_data |= 128 << 8;   // G
+                color_data |= 255 << 0;   // B 
+
+                // Assign the color data to the pixel.
+                *((int*)pBackBuffer) = color_data;
+            }
+
+            // Specify the area of the bitmap that changed.
+            writeableBitmap.AddDirtyRect(new Int32Rect(column, row, 1, 1));
+
+            // Release the back buffer and make it available for display.
+            writeableBitmap.Unlock();
+        }
+        */
         /// <summary>
         /// Window loaded actions to initialize Kinect handling.
         /// </summary>
@@ -1097,8 +1133,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             //this.Content = myImage;
             ////END DRAWING TEST
 
-
-
+            Point hipPoint = this.ScalePosition(skeleton.Joints[JointType.ShoulderLeft].Position);
+            Point leftHandPoint = this.ScalePosition(skeleton.Joints[JointType.HandLeft].Position);
             Point handPoint = this.ScalePosition(skeleton.Joints[JointType.HandRight].Position);
             Point elbowPoint = this.ScalePosition(skeleton.Joints[JointType.ElbowRight].Position);
             DepthImagePoint elbowDepthPoint = this.getDepthPoint(skeleton.Joints[JointType.ElbowRight].Position);
@@ -1118,12 +1154,16 @@ namespace Microsoft.Samples.Kinect.Slideshow
             double newX = elbowX + deltaX;
             double newY = elbowY + deltaY;
             Point newPoint = new Point((int)newX, (int)newY);
-          
+            Line l = new Line();
+            l.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            l.X1 = lastPoint.X;
+            l.Y1 = lastPoint.Y;
             Point currentPoint = getCurrentPoint(newPoint);
-
+            l.X2 = currentPoint.X;
+            l.Y2 = currentPoint.Y;
+            l.StrokeThickness = 4;
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
-            Canvas.SetTop(RightHandPointer, currentPoint.Y); 
-
+            Canvas.SetTop(RightHandPointer, currentPoint.Y);
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
@@ -1140,6 +1180,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 stopwatch.Restart();
 
             }
+           // DrawPixel(currentPoint.X, currentPoint.Y);
+            Ellipse p = new Ellipse();
+            if (leftHandPoint.Y < hipPoint.Y)
+            {
+                canvas.Children.Add(l);
+
+            } 
+            Debug.WriteLine(l.X1);
+            Debug.WriteLine(l.X2);
+            Debug.WriteLine(l.Y1);
+            Debug.WriteLine(l.Y2);
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)

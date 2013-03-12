@@ -119,6 +119,9 @@
             <Canvas x:Name="StickMen" Width="200" Height="150" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <TextBlock Text="No Kinect available" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBlock Text="{Binding DisconnectedReason}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Foreground="Red" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" />
+            <Canvas x:Name="annotateCanvas">
+                <Canvas Canvas.Left="0" Canvas.Top="0" Background="Transparent"  Height="735" Name="canvas" Width="850"/>
+            </Canvas>
             <Canvas x:Name="PointerCanvas">
                 <Ellipse Canvas.Top="500" Canvas.Left="600" Fill="Green" Stroke="White" StrokeThickness="5" Width="25" Height="25" Name="RightHandPointer"/>
             </Canvas>
