@@ -1171,23 +1171,36 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
 
             // INSERT ALL THE CODE HERE
+            SetLowerHotspot(currentPoint.X, currentPoint.Y);
 
-            if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
+            if (HotCorner_LowerLeft.Opacity > 0.7)
             {
-                currentX = currentPoint.X;
-                currentY = currentPoint.Y;
-                stopwatch.Restart();
-                //clear selection
-                //start selection
-                animateSelection(currentPoint.X, currentPoint.Y);
+                Loader_LowerLeft.Opacity = 0.8;
+                SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
             }
-            else if (stopwatch.ElapsedMilliseconds >= 2000)
-            {
-                //Debug.WriteLine("CLICK");
-                SelectObject(currentPoint.X, currentPoint.Y);
-                stopwatch.Restart();
 
+            else
+            {
+                Loader_LowerLeft.Opacity = 0;
             }
+
+
+                if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
+                {
+                    currentX = currentPoint.X;
+                    currentY = currentPoint.Y;
+                    stopwatch.Restart();
+                    //clear selection
+                    //start selection
+                    animateSelection(currentPoint.X, currentPoint.Y);
+                }
+                else if (stopwatch.ElapsedMilliseconds >= 2000)
+                {
+                    //Debug.WriteLine("CLICK");
+                    SelectObject(currentPoint.X, currentPoint.Y);
+                    stopwatch.Restart();
+
+                }
            // DrawPixel(currentPoint.X, currentPoint.Y);
             Ellipse p = new Ellipse();
             if (leftHandPoint.Y < hipPoint.Y)
@@ -1324,7 +1337,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         }
 
 
-        private double DistanceFromLowerHotspot(double x, double y)
+        private void SetLowerHotspot(double x, double y)
         {
 
             double hotspotX = 0;
@@ -1332,11 +1345,34 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
 
-            if (distance > 200)
+            if (distance > 250)
             {
-
-
+                HotCorner_LowerLeft.Opacity = 0;
             }
+
+            else
+            {
+                HotCorner_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+            }
+
+        }
+
+
+        private void SetLowerLoader(double time)
+        {
+
+            double scaledTime = 200 * time;
+
+
+            Canvas.SetLeft(Loader_LowerLeft, scaledTime);
+
+            if (time < 0.5)
+                Canvas.SetBottom(Loader_LowerLeft, Math.Sqrt(Math.Pow(140,2) - Math.Pow(scaledTime, 2)));
+            else
+                Canvas.SetBottom(Loader_LowerLeft, 0.6 * Math.Sqrt(Math.Pow(140, 2) - Math.Pow(scaledTime, 2)));
+
+            if (time > 1)
+                Loader_LowerLeft.Opacity = 0;
 
         }
 
