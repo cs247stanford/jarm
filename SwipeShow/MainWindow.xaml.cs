@@ -211,6 +211,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
 
+            canvas.Children.Clear();
 
         }
 
@@ -274,13 +275,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "SwipeLeft":
 
-                    //Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
+                    Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
 
                     break;
 
                 case "SwipeRight":
 
-                    //Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
+                    Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
 
                     break;
                 
@@ -638,7 +639,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             string startupPath = Environment.CurrentDirectory;
             Debug.WriteLine(startupPath);
             Slide zero = new Slide(startupPath+"\\Pictures\\Slide0.jpg", "");
-            Slide one = new Slide(startupPath + "\\Pictures\\blank.jpg", startupPath + "\\Pictures\\Wildlife.wmv");
+            Slide one = new Slide(startupPath + "\\Pictures\\video.jpg", startupPath + "\\Pictures\\Wildlife.wmv");
             Slide two = new Slide(startupPath+"\\Pictures\\Slide3.jpg", "");
             Slide three = new Slide(startupPath+"\\Pictures\\Slide4.jpg", "");
             Slide four = new Slide(startupPath+"\\Pictures\\Slide5.jpg", "");
@@ -1001,26 +1002,30 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectObject(double x, double y)
         {
-            //Debug.Print("In select object");
-      
+            Debug.WriteLine("In select object");
+       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
                 SelectRelatedItem(x, y);
             }
             else
             {
+                Debug.WriteLine("Entered else, should start video now");
                 if (p.getCurrentSlide().hasVideo())
+                    
                 {
-                    if (videoPlaying)
+                    Debug.WriteLine("This slide actually has video");
+                    /*if (videoPlaying)
                     {
                         myVideoX.Pause();
                         videoPlaying = false;
-                    }
-                    else
-                    {
+                    }*/
+                   // else
+                    //{
+                    Debug.WriteLine("playing video");
                         myVideoX.Play();
                         videoPlaying = true;
-                    }
+                    //}
                 }
                 //any other objects that could be selected (media, etc).
             }
@@ -1164,6 +1169,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             l.StrokeThickness = 4;
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
+
+            // INSERT ALL THE CODE HERE
+
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
@@ -1313,6 +1321,23 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 }
                 myVideoX.Opacity = 0;
             }
+        }
+
+
+        private double DistanceFromLowerHotspot(double x, double y)
+        {
+
+            double hotspotX = 0;
+            double hotspotY = 800;
+
+            double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
+
+            if (distance > 200)
+            {
+
+
+            }
+
         }
 
 

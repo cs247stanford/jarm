@@ -68,11 +68,11 @@ namespace GestureRecognizer
 
             //System.Diagnostics.Debug.WriteLine("I'M HERE GUYS");
 
-            if (rightDelta > 0.08)
+            if (rightDelta > 0.13)
             {
                 //System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
-                if (watch.ElapsedMilliseconds >1500 || watch.ElapsedMilliseconds < 200) return false;
+                if (watch.ElapsedMilliseconds >1000 || watch.ElapsedMilliseconds < 200) return false;
                 Debug.WriteLine("Watch elapsed time for pull down: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
