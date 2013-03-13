@@ -210,8 +210,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture2"));
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
-
-
+            this.PropertyChanged(this, new PropertyChangedEventArgs("PlayButton"));
         }
 
         void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
@@ -371,6 +370,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         /// <summary>
         /// Gets the video
+        /// </summary>
+        public BitmapImage PlayButton { get; private set; }
+
+        /// <summary>
+        /// Has the pause button Image
         /// </summary>
         public MediaElement myVideo { get; private set; }
 
@@ -650,6 +654,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             canvas = new Canvas();
             Canvas.SetLeft(canvas, 0);
             Canvas.SetTop(canvas, 0);
+            this.PlayButton = new BitmapImage(new Uri(startupPath + "\\Pictures\\play_button.png"));
             blankImage = new BitmapImage(new Uri(startupPath + "\\Pictures\\Blank.jpg"));
 
             List<Slide> group0 = new List<Slide>()
@@ -1302,6 +1307,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 Debug.WriteLine("HAS VIDEO");
                 myVideoX.Source = new Uri(slide.getVideoPath());
                 myVideoX.Opacity = 1;
+                playButton.Opacity = 1;
             }
             else if (!p.getCurrentSlide().hasVideo())
             {
