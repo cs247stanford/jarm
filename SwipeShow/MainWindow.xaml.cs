@@ -981,6 +981,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void animateSelection(double x, double y)
         {
             var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
+            var animatePlayButton = Resources["AnimatePlayButton"] as Storyboard;
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
                 double SLIDE_WIDTH = 220;
@@ -994,11 +995,46 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     }
                 }
             }
-            else
+            else if (isInPlayButton(x, y))
+            {
+                if (animatePlayButton != null)
+                {
+                    animatePlayButton.Begin(this, true);
+                    }
+                }
+             else
             {
                 animateRelatedItem.Stop(this);
+                animatePlayButton.Stop(this);
             }
         }
+          
+
+        private bool isInPlayButton(double x, double y)
+        {
+            return ((x > (1200 - PlayButton.Width) / 2.0) && (y > (1200 - PlayButton.Height) / 2.0)
+                && (x < (1200 + PlayButton.Width) / 2.0) && (y < (1200 + PlayButton.Height) / 2.0));
+        }
+
+
+        private void pauseVideo()
+        {
+            Debug.WriteLine("This slide actually has video");
+            myVideoX.Pause();
+            videoPlaying = false;
+            playButton.Opacity = 1;
+        }
+
+        private void playVideo()
+        {         
+            Debug.WriteLine("playing video");
+            playButton.Opacity = 0;
+            myVideoX.Play();
+            videoPlaying = true;
+           
+        }
+
+
 
         /// <summary>
         /// Selects object at current x, y
@@ -1013,27 +1049,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 SelectRelatedItem(x, y);
             }
-            else
+            else if (isInPlayButton(x, y))
             {
-                Debug.WriteLine("Entered else, should start video now");
-                if (p.getCurrentSlide().hasVideo())
-                    
+                Debug.WriteLine("should start video now");
+                if (p.getCurrentSlide().hasVideo())      
                 {
-                    Debug.WriteLine("This slide actually has video");
-                    /*if (videoPlaying)
+                    if (videoPlaying)
                     {
-                        myVideoX.Pause();
-                        videoPlaying = false;
-                        playButton.Opacity = 1;
-
-                    }*/
-                    // else
-                    //{
-                    Debug.WriteLine("playing video");
-                    playButton.Opacity = 0;
-                    myVideoX.Play();
-                    videoPlaying = true;
-                    //}
+                        pauseVideo();
+                    }
+                    else
+                    {
+                        playVideo();
+                    }
                 }
                 //any other objects that could be selected (media, etc).
             }
