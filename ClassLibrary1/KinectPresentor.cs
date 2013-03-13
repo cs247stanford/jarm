@@ -126,6 +126,7 @@ namespace KinectPresentor
             this.videoPath = videoPath;
             //this.isVideoSlide = false;
             this.imagePath = imagePath;
+            Debug.WriteLine(this.imagePath);
             backgroundImage = new BitmapImage(new Uri(this.imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();
