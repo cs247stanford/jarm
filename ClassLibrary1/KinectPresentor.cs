@@ -124,8 +124,9 @@ namespace KinectPresentor
         {
             this.isVideoSlide =  (videoPath.Length>3 && videoPath.Substring(videoPath.Length - 3).ToLower() == "wmv");
             this.videoPath = videoPath;
-            this.isVideoSlide = false;
+            //this.isVideoSlide = false;
             this.imagePath = imagePath;
+            Debug.WriteLine(this.imagePath);
             backgroundImage = new BitmapImage(new Uri(this.imagePath));
             associatedSlides = new List<Slide>();
             animations = new List<Animation>();

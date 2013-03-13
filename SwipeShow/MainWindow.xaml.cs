@@ -211,6 +211,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture3"));
             this.PropertyChanged(this, new PropertyChangedEventArgs("RelatedPicture4"));
             this.PropertyChanged(this, new PropertyChangedEventArgs("PlayButton"));
+            canvas.Children.Clear();
         }
 
         void recognitionEngine_GestureRecognized(object sender, GestureEventArgs e)
@@ -273,13 +274,13 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 case "SwipeLeft":
 
-                    //Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
+                    Debug.WriteLine("SWIPED LEFT :DDDDDDDDDDDDDDDDDDDDDD");
 
                     break;
 
                 case "SwipeRight":
 
-                    //Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
+                    Debug.WriteLine("SWIPED RIGHT DDDDDDDDDDDDDDDDDDDDD:");
 
                     break;
                 
@@ -1006,26 +1007,33 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="y"></param>
         private void SelectObject(double x, double y)
         {
-            //Debug.Print("In select object");
-      
+            Debug.WriteLine("In select object");
+       
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
                 SelectRelatedItem(x, y);
             }
             else
             {
+                Debug.WriteLine("Entered else, should start video now");
                 if (p.getCurrentSlide().hasVideo())
+                    
                 {
-                    if (videoPlaying)
+                    Debug.WriteLine("This slide actually has video");
+                    /*if (videoPlaying)
                     {
                         myVideoX.Pause();
                         videoPlaying = false;
-                    }
-                    else
-                    {
-                        myVideoX.Play();
-                        videoPlaying = true;
-                    }
+                        playButton.Opacity = 1;
+
+                    }*/
+                    // else
+                    //{
+                    Debug.WriteLine("playing video");
+                    playButton.Opacity = 0;
+                    myVideoX.Play();
+                    videoPlaying = true;
+                    //}
                 }
                 //any other objects that could be selected (media, etc).
             }
@@ -1169,6 +1177,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             l.StrokeThickness = 4;
             Canvas.SetLeft(RightHandPointer, currentPoint.X);
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
+
+            // INSERT ALL THE CODE HERE
+
             if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
             {
                 currentX = currentPoint.X;
@@ -1321,6 +1332,23 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
         }
 
+
+        /*private double DistanceFromLowerHotspot(double x, double y)
+        {
+
+            double hotspotX = 0;
+            double hotspotY = 800;
+
+            double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
+
+            if (distance > 200)
+            {
+
+
+            }
+
+        }
+        */
 
         /// <summary>
         /// Convert skeleton joint to a point on the StickMen canvas.
