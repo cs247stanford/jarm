@@ -87,8 +87,8 @@
             <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0" To="0.7" Duration="0:0:2" />
         </Storyboard>
         <Storyboard x:Key="AnimatePlayButton">
-            <DoubleAnimation Storyboard.TargetName="playButton" Storyboard.TargetProperty="Height" From="20" To="180" Duration="0:0:2" />
-            <DoubleAnimation Storyboard.TargetName="playButton" Storyboard.TargetProperty="Opacity" From="0" To="0.7" Duration="0:0:2" />
+            <DoubleAnimation Storyboard.TargetName="playButtonOverlay" Storyboard.TargetProperty="Height" From="20" To="180" Duration="0:0:2" />
+            <DoubleAnimation Storyboard.TargetName="playButtonOverlay" Storyboard.TargetProperty="Opacity" From="0" To="0.7" Duration="0:0:2" />
         </Storyboard>
         <Storyboard x:Key="RemoveRelatedItem">
             <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0.7" To="0" Duration="0:0:2" />
@@ -118,10 +118,12 @@
                 <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
                 <Canvas x:Name="relatedImageOverlay" Canvas.Left="0" Width="200" Height="180" Background="Pink" Opacity="0" Margin="0 20 0 0"/>
             </Canvas>
-            <Canvas x:Name="playButtonOverlay" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="300" Background="Black" Opacity="0"/>
-            <Image x:Name="playButton" Source="{Binding PlayButton}" VerticalAlignment="Center" HorizontalAlignment="Center" Width ="300" Height ="300" Opacity="0"/>
-            <MediaElement x:Name="myVideoX" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
-                Opacity="1"/>      
+            <Canvas x:Name="VideoCanvas" Opacity="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent">
+                <MediaElement x:Name="myVideoX" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" Opacity="0"/>
+                <Rectangle x:Name="playButtonOverlay" Canvas.Left="460" Canvas.Top="400" Width="280" Height="280" Fill="Black" Opacity="0" />
+                <Image x:Name="playButton" Source="{Binding PlayButton}" Canvas.Left="450" Canvas.Top="350" Width="300" Height="300" Opacity="0"/>
+            </Canvas>
+
             <Canvas x:Name="HotCorners">
                 <Image x:Name="HotCorner_LowerLeft" Source="C:\\Pictures\\hover.png" Width="400" Canvas.Bottom="-200" Canvas.Left="-200" Opacity="0" />
                 <Image x:Name="Loader_LowerLeft" Source="C:\\Pictures\\loader.png" Canvas.Bottom="125" Canvas.Left="0" Opacity="0"/> <!-- CURRENTLY HIDDEN -->

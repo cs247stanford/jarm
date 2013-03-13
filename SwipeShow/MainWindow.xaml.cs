@@ -995,7 +995,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     }
                 }
             }
-            else if (isInPlayButton(x, y))
+            else if (p.getCurrentSlide().hasVideo() && isInPlayButton(x, y))
             {
                 if (animatePlayButton != null)
                 {
@@ -1012,22 +1012,25 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private bool isInPlayButton(double x, double y)
         {
-            return ((x > (1200 - PlayButton.Width) / 2.0) && (y > (1200 - PlayButton.Height) / 2.0)
-                && (x < (1200 + PlayButton.Width) / 2.0) && (y < (1200 + PlayButton.Height) / 2.0));
+            return ((x > (1200 - PlayButton.Width) / 2.0) && (y > (1000 - PlayButton.Height) / 2.0)
+                && (x < (1200 + PlayButton.Width) / 2.0) && (y < (1000 + PlayButton.Height) / 2.0));
         }
 
 
         private void pauseVideo()
         {
-            Debug.WriteLine("This slide actually has video");
+            /*Debug.WriteLine("This slide actually has video");
             myVideoX.Pause();
             videoPlaying = false;
-            playButton.Opacity = 1;
+            playButton.Opacity = 1;*/
+            playButtonOverlay.Opacity = 0;
+
         }
 
         private void playVideo()
         {         
             Debug.WriteLine("playing video");
+            playButtonOverlay.Opacity = 0;
             playButton.Opacity = 0;
             myVideoX.Play();
             videoPlaying = true;
@@ -1054,6 +1057,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 Debug.WriteLine("should start video now");
                 if (p.getCurrentSlide().hasVideo())      
                 {
+                    //playButtonOverlay.Opacity = 0;
                     if (videoPlaying)
                     {
                         pauseVideo();
@@ -1370,11 +1374,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     videoPlaying = false;
                 }
                 myVideoX.Opacity = 0;
+                playButton.Opacity = 0;
             }
         }
 
 
-        private double DistanceFromLowerHotspot(double x, double y)
+        private void SetLowerHotspot(double x, double y)
         {
 
             double hotspotX = 0;
