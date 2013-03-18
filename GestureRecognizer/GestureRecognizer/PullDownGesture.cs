@@ -70,7 +70,7 @@ namespace GestureRecognizer
 
             if (rightDelta > 0.13)
             {
-                System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
+                //System.Diagnostics.Debug.WriteLine("PullDownGesture end condition validated");
                 watch.Stop();
                 Debug.WriteLine("Time is");
                 Debug.WriteLine(watch.ElapsedMilliseconds.ToString());
