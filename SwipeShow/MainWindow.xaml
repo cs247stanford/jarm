@@ -122,11 +122,11 @@
                 <Image x:Name="mainImage4" Source= "{Binding RelatedPicture4}" Canvas.Left="630" Width ="200" Height ="200"/>
                 <Canvas x:Name="relatedImageOverlay" Canvas.Left="0" Width="200" Height="180" Background="Pink" Opacity="0" Margin="0 20 0 0"/>
             </Canvas>
-            <Canvas x:Name="VideoCanvas" Opacity="1" Background="Transparent" Height="{Binding ElementName=current, Path=ActualHeight}" Width="{Binding ElementName=current, Path=ActualWidth}">
-                <MediaElement x:Name="myVideoX" LoadedBehavior="Manual" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" UnloadedBehavior="Stop" Stretch="Fill" Opacity="0"/>
-                <Rectangle x:Name="playButtonOverlay" Canvas.Left="0" Canvas.Top="0" Width="260" Height="260" Fill="Black" Opacity="0" />
+            <Grid x:Name="VideoCanvas" Opacity="1" Background="Transparent" Height="{Binding ElementName=current, Path=ActualHeight}" Width="{Binding ElementName=current, Path=ActualWidth}">
+                <MediaElement x:Name="myVideoX" LoadedBehavior="Manual" VerticalAlignment="Center" HorizontalAlignment="Center" UnloadedBehavior="Stop" Stretch="Uniform" Opacity="0"/>
+                <Rectangle x:Name="playButtonOverlay" VerticalAlignment="Center" HorizontalAlignment="Center" Width="260" Height="260" Fill="Black" Opacity="0" />
                 <Image x:Name="playButton" Source="{Binding PlayButton}" Canvas.Left="0" Canvas.Top="0" Width="300" Height="300" Opacity="0"/>
-            </Canvas>
+            </Grid>
 
             <Canvas x:Name="HotCorners">
                 <!-- Height="{Binding ElementName=current, Path=ActualHeight}" Width="{Binding ElementName=current, Path=ActualWidth}"-->
