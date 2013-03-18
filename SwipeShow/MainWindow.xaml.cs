@@ -47,7 +47,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// The paths of the picture files.
         /// </summary>
         private readonly string[] picturePaths; 
-        private Stopwatch watch = new Stopwatch();
+        //private Stopwatch watch = new Stopwatch();
         /// <summary>
         /// Array of arrays of contiguous line segements that represent a skeleton.
         /// </summary>
@@ -241,7 +241,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     {
                         pushUpStoryboard.Begin();
                     }
-                    watch.Restart();
+                    //watch.Restart();
                     relatedItemsDown = false;
                     relatedActivated = false;
                     relatedJustDeactivated = true;
@@ -981,6 +981,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         {
                             pushUpStoryboard.Begin();
                             relatedItemsDown = false;
+                            relatedActivated = false;
                         }
 
 
@@ -1151,6 +1152,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 Debug.WriteLine("SELECTING TOP CORNER");
                 topRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                Debug.WriteLine("STOPPED THE ANIMATION");
+                justSelectedHotspot = true;
                 HotCorner_UpperRight.Opacity = 0;
                 LoadRelatedSlides();
             }
@@ -1158,6 +1161,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 Debug.WriteLine("SELECTING Bottom CORNER");
                 lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                justSelectedHotspot = true;
                 HotCorner_LowerLeft.Opacity = 0;
                 SetAnnotationMode();
                 //LoadRelatedSlides();
@@ -1166,24 +1170,26 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         enum SlideElem {related1, related2, related3, related4, none, playButton, lowerLeftHotCorner, upperRightHotCorner }
         private SlideElem currObj = SlideElem.none;
+        private bool justSelectedHotspot = false;
 
         //Returns true if the newest point is within APPROX_VALUE distance of the current x, y
         private bool SetNewSelectionPoint(double x, double y)
         {
             SlideElem newObj = SlideElem.none;
             if (p.getCurrentSlide().hasVideo() && isInPlayButton(x,y)) newObj = SlideElem.playButton;
-            else if (relatedItemsDown && y < RelatedItems.ActualHeight) {
+            else if (relatedItemsDown && y < RelatedItems.ActualHeight && !inAnnotationMode) {
                 newObj = (SlideElem)((int)(x) / (int)SLIDE_WIDTH);
             }
             else if (SetLowerHotspot(x, y)) {
                 newObj = SlideElem.lowerLeftHotCorner;
             }
-            else if (SetUpperHotspot(x, y))
+            else if (!inAnnotationMode && SetUpperHotspot(x, y))
             {
                 newObj = SlideElem.upperRightHotCorner;
             }
             if (!currObj.Equals(newObj))
             {
+                justSelectedHotspot = false;
                 if(currObj.Equals(SlideElem.upperRightHotCorner)) {
                     topRT.BeginAnimation(RotateTransform.AngleProperty, null);     
                 }
@@ -1333,12 +1339,11 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
 
             // INSERT ALL THE CODE HERE
-            if (inAnnotationMode)
-            {
-                SetLowerHotspot(currentPoint.X, currentPoint.Y);
-                SetUpperHotspot(currentPoint.X, currentPoint.Y);
-            }
-            else if (SetNewSelectionPoint(currentPoint.X, currentPoint.Y))
+     
+               // SetLowerHotspot(currentPoint.X, currentPoint.Y);
+                //SetUpperHotspot(currentPoint.X, currentPoint.Y);
+            
+                if (SetNewSelectionPoint(currentPoint.X, currentPoint.Y))
                 {
                     currentX = currentPoint.X;
                     currentY = currentPoint.Y;
@@ -1353,7 +1358,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 }
 
-                if (HotCorner_LowerLeft.Opacity > 0)
+               /* if (HotCorner_LowerLeft.Opacity > 0)
                 {
                     Loader_LowerLeft.Opacity = 0.8;
                     //SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
@@ -1361,6 +1366,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 else
                 {
                     Loader_LowerLeft.Opacity = 0;
+                    if (lowerRT != null) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
+
                 }
                 if (HotCorner_UpperRight.Opacity > 0)
                 {
@@ -1372,13 +1379,10 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 {
                     //if (topRight != null) topRight.Stop();
                     if (topRT!=null) topRT.BeginAnimation(RotateTransform.AngleProperty, null);
-                    if (lowerRT != null) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
 
                     //Debug.WriteLine("less");
                     Loader_UpperRight.Opacity = 0;
-                    Loader_LowerLeft.Opacity = 0;
-
-                }
+                }*/
 
            // DrawPixel(currentPoint.X, currentPoint.Y);
             Ellipse p = new Ellipse();
@@ -1537,14 +1541,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 HotCorner_LowerLeft.Opacity = 0;
                 Loader_LowerLeft.Opacity = 0;
-                if (lowerRT != null) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                if (lowerRT != null && !justSelectedHotspot) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
                 return false;
             }
 
             else
             {
-                HotCorner_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
-                Loader_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+                if (!justSelectedHotspot)
+                {
+                    HotCorner_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+                    Loader_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+                }
                 return true;
             }
 
@@ -1562,14 +1569,17 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 HotCorner_UpperRight.Opacity = 0;
                 Loader_UpperRight.Opacity = 0;
-                if (topRT!=null) topRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                if (topRT!=null && !justSelectedHotspot) topRT.BeginAnimation(RotateTransform.AngleProperty, null);
                 return false;
             }
 
             else
             {
-                HotCorner_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
-                Loader_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
+                if (!justSelectedHotspot)
+                {
+                    HotCorner_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
+                    Loader_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
+                }
                 return true;
             }
 
@@ -1633,19 +1643,22 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
 
         private void LoadRelatedSlides() {
-              watch.Stop();
+            Debug.WriteLine("LOADING SLIDES");
+            /*watch.Stop();
             if (watch.ElapsedMilliseconds > 2000)
             {
                 if (relatedJustDeactivated)
                     relatedJustDeactivated = false;
-            }
+            }*/
+            if (relatedActivated) Debug.WriteLine("RELATED ACTIVATED");
             if (relatedActivated)
                 return;
 
             if (relatedJustDeactivated)
             {
                 relatedJustDeactivated = false;
-                return;
+                Debug.WriteLine("RELATED JUST ACTIVATED");
+                //return;
             }
 
             RefreshRelated();
