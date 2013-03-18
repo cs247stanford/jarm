@@ -77,6 +77,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private KinectSensor nui;
 
 
+
         private bool relatedActivated = false;
         private bool relatedJustDeactivated = false;
 
@@ -130,15 +131,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// </summary>
         private double currentY = 500;
 
-        /// <summary>
-        /// Threshold distance at which user is determined to be pointing at a different point than before
-        /// </summary>
-        private double APPROX_VALUE = 50;
+       
+       // private double APPROX_VALUE = 50;
 
         /// <summary>
         /// True if the related items pane is currently being displayed
         /// </summary>
         private bool relatedItemsDown = false;
+
+        /// <summary>
+        /// True if currently in AnnotationMode
+        /// </summary>
+        private bool inAnnotationMode = false;
+
 
         /// <summary>
         /// The presentation object that holds all the slides
@@ -178,7 +183,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Loaded += this.OnMainWindowLoaded;
 
             GetVideo(p.getCurrentSlide());
-
+           
         }
 
         void RefreshRelated()
@@ -222,34 +227,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
             switch (recognizedGesture) {
 
                 case "PullDown":
-                    watch.Stop();
-                    if (watch.ElapsedMilliseconds > 2000)
-                    {
-                        if (relatedJustDeactivated)
-                            relatedJustDeactivated = false;
-                    }
-                    if (relatedActivated)
-                        break;
-
-                    if (relatedJustDeactivated)
-                    {
-                        relatedJustDeactivated = false;
-                        break;
-                    }
-
-                    RefreshRelated();
-
-                    var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
-
-                    if (pullDownStoryboard != null)
-                    {
-                        pullDownStoryboard.Begin();
-                    }
-                    
-                  relatedItemsDown = true;
-
-                  relatedActivated = true;
-
+                   
                     break;
 
                 case "PushUp":
@@ -368,6 +346,25 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
         }
 
+        /// <summary>
+        /// where to put the play button
+        /// </summary>
+        public double VideoHorizCenter { get; private set; }
+
+        /// <summary>
+        /// where to put the play button
+        /// </summary>
+        public double VideoVertCenter { get; private set; }
+
+        /// <summary>
+        /// where to put the play button overlay
+        /// </summary>
+        public double VideoVertOverlay{ get; private set; }
+
+        /// <summary>
+        /// where to put the play button overlay
+        /// </summary>
+        public double VideoHorizOverlay { get; private set; }
 
         /// <summary>
         /// Gets the video
@@ -811,6 +808,19 @@ namespace Microsoft.Samples.Kinect.Slideshow
             };
         }
 
+        private void SetSizes()
+        {
+            /*VideoCanvas.Height = current.ActualHeight;
+            VideoCanvas.Width = current.ActualWidth;
+            HotCorners.Height = current.ActualHeight;
+            HotCorners.Width = current.ActualWidth;
+            PointerCanvas.Width = current.ActualWidth;
+            PointerCanvas.Height = current.ActualHeight;
+            annotateCanvas.Height = current.ActualHeight;
+            annotateCanvas.Width = current.ActualWidth;*/
+        }
+
+
         /// <summary>
         /// Handler for skeleton ready handler.
         /// </summary>
@@ -818,6 +828,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         /// <param name="e">The event args.</param>
         private void OnSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
+            SetSizes();
             // Get the frame.
             using (var frame = e.OpenSkeletonFrame())
             {
@@ -905,7 +916,8 @@ namespace Microsoft.Samples.Kinect.Slideshow
         }
 
 
-       
+
+        private double SLIDE_WIDTH = 220;//((Grid)(this.Content)).ActualWidth / 4;
 
 
         
@@ -918,7 +930,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
         private void SelectRelatedItem(double x, double y)
         {
                 // assume that the related slides are in an array filling up a horizontal bar at the top of the screen
-                double SLIDE_WIDTH = 220;//((Grid)(this.Content)).ActualWidth / 4;
+
                 //Debug.WriteLine("WINDOW: " + SLIDE_WIDTH);
 
 
@@ -977,14 +989,43 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 }
         }
 
+        Storyboard topRight = null;
+        Storyboard bottomLeft = null;
 
-        private void animateSelection(double x, double y)
+
+        private void animateSelection(double x, double y, SlideElem obj)
         {
+            if (obj.Equals(SlideElem.upperRightHotCorner))
+            {
+                Debug.WriteLine("GOT HOT CORNER");
+                Duration duration = new Duration(TimeSpan.FromSeconds(2));
+                var da = new DoubleAnimation(360, 180, duration);
+                var rt = new RotateTransform();
+                Loader_UpperRight.RenderTransform = rt;
+                Loader_UpperRight.RenderTransformOrigin = new Point(0.5, 0.5);
+                topRight = Resources["RotateRect"] as Storyboard;
+                topRight.Duration = duration;
+                topRight.Children.Add(da);
+                Storyboard.SetTarget(da, Loader_UpperRight);
+                Storyboard.SetTargetProperty(da, new PropertyPath("(Image.RenderTransform).(RotateTransform.Angle)"));
+                topRight.Begin();
+            }
+
+            //da.RepeatBehavior = RepeatBehavior.Forever;
+            //rt.BeginAnimation(RotateTransform.AngleProperty, da);
+
+
+
+
+
+
             var animateRelatedItem = Resources["AnimateRelatedItem"] as Storyboard;
             var animatePlayButton = Resources["AnimatePlayButton"] as Storyboard;
             if (relatedItemsDown && y < RelatedItems.ActualHeight)
             {
-                double SLIDE_WIDTH = 220;
+                
+
+                //double SLIDE_WIDTH = 220;
                 int relatedSlideIndex = ((int)(x) / (int)SLIDE_WIDTH);
                 if (relatedSlideIndex < p.getCurrentSlide().getAllAssociated().Count)  //TEMPORARY.... SHOULD BE < 5
                 {
@@ -999,21 +1040,26 @@ namespace Microsoft.Samples.Kinect.Slideshow
             {
                 if (animatePlayButton != null)
                 {
-                    animatePlayButton.Begin(this, true);
-                    }
+                 animatePlayButton.Begin(this, true);
                 }
-             else
+            }
+            else
             {
-                animateRelatedItem.Stop(this);
-                animatePlayButton.Stop(this);
+                if (animatePlayButton != null)
+                {
+                    animateRelatedItem.Stop(this);
+                    animatePlayButton.Stop(this);
+                    animatePlayButton.FillBehavior = FillBehavior.Stop;
+                }
+
             }
         }
           
 
         private bool isInPlayButton(double x, double y)
         {
-            return ((x > (1200 - PlayButton.Width) / 2.0) && (y > (1000 - PlayButton.Height) / 2.0)
-                && (x < (1200 + PlayButton.Width) / 2.0) && (y < (1000 + PlayButton.Height) / 2.0));
+            return ((x > (VideoCanvas.ActualWidth - PlayButton.Width) / 2.0) && (y > (VideoCanvas.ActualHeight - PlayButton.Height) / 2.0)
+                && (x < (VideoCanvas.ActualWidth + PlayButton.Width) / 2.0) && (y < (768 + VideoCanvas.ActualHeight) / 2.0));
         }
 
 
@@ -1033,8 +1079,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
             playButtonOverlay.Opacity = 0;
             playButton.Opacity = 0;
             myVideoX.Play();
+            playButtonOverlay.Opacity = 0;
             videoPlaying = true;
-           
+            playButtonOverlay.Opacity = 0;           
         }
 
 
@@ -1057,7 +1104,6 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 Debug.WriteLine("should start video now");
                 if (p.getCurrentSlide().hasVideo())      
                 {
-                    //playButtonOverlay.Opacity = 0;
                     if (videoPlaying)
                     {
                         pauseVideo();
@@ -1067,15 +1113,47 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         playVideo();
                     }
                 }
+
+              
                 //any other objects that could be selected (media, etc).
+            }
+
+            else if (currObj.Equals(SlideElem.upperRightHotCorner))
+            {
+                if (topRight != null) topRight.Stop();
             }
         }
 
+        enum SlideElem {related1, related2, related3, related4, none, playButton, lowerLeftHotCorner, upperRightHotCorner }
+        private SlideElem currObj = SlideElem.none;
+
         //Returns true if the newest point is within APPROX_VALUE distance of the current x, y
-        private bool isApproxSamePoint(double x, double y)
+        private bool SetNewSelectionPoint(double x, double y)
         {
-            return !(Math.Sqrt(Math.Pow(Math.Abs(currentX - x), 2) + Math.Pow(Math.Abs(currentY - y), 2))>APPROX_VALUE);
+            SlideElem newObj = SlideElem.none;
+            if (p.getCurrentSlide().hasVideo() && isInPlayButton(x,y)) newObj = SlideElem.playButton;
+            else if (relatedItemsDown && y < RelatedItems.ActualHeight) {
+                newObj = (SlideElem)((int)(x) / (int)SLIDE_WIDTH);
+            }
+            else if (SetLowerHotspot(x, y)) {
+                newObj = SlideElem.lowerLeftHotCorner;
+            }
+            else if (SetUpperHotspot(x, y))
+            {
+                newObj = SlideElem.upperRightHotCorner;
+            }
+            if (!currObj.Equals(newObj))
+            {
+                if (topRight != null) topRight.Stop();
+                if (bottomLeft != null) bottomLeft.Stop();
+                currObj = newObj;
+                animateSelection(x, y, currObj);
+                return true;
+            }
+            return false;
         }
+
+
 
         /// <summary>
         /// Stuff.
@@ -1211,47 +1289,60 @@ namespace Microsoft.Samples.Kinect.Slideshow
             Canvas.SetTop(RightHandPointer, currentPoint.Y);
 
             // INSERT ALL THE CODE HERE
-            SetLowerHotspot(currentPoint.X, currentPoint.Y);
-
-            if (HotCorner_LowerLeft.Opacity > 0.7)
+            if (inAnnotationMode)
             {
-                Loader_LowerLeft.Opacity = 0.8;
-                SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
+                SetLowerHotspot(currentPoint.X, currentPoint.Y);
+                SetUpperHotspot(currentPoint.X, currentPoint.Y);
             }
-
-            else
-            {
-                Loader_LowerLeft.Opacity = 0;
-            }
-
-
-                if (!isApproxSamePoint(currentPoint.X, currentPoint.Y))
+            else if (SetNewSelectionPoint(currentPoint.X, currentPoint.Y))
                 {
                     currentX = currentPoint.X;
                     currentY = currentPoint.Y;
                     stopwatch.Restart();
-                    //clear selection
-                    //start selection
-                    animateSelection(currentPoint.X, currentPoint.Y);
+                    Debug.WriteLine("NEW POINT: " + (int)currObj);
                 }
                 else if (stopwatch.ElapsedMilliseconds >= 2000)
                 {
-                    //Debug.WriteLine("CLICK");
+                    Debug.WriteLine("CLICK: " + (int)currObj);
                     SelectObject(currentPoint.X, currentPoint.Y);
                     stopwatch.Restart();
 
                 }
+
+                if (HotCorner_LowerLeft.Opacity > 0.7)
+                {
+                    Loader_LowerLeft.Opacity = 0.8;
+                    SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
+                }
+                else
+                {
+                    Loader_LowerLeft.Opacity = 0;
+                }
+                if (HotCorner_UpperRight.Opacity > 0.5)
+                {
+                    Loader_UpperRight.Opacity = 0.8;
+                    Debug.WriteLine("more");
+                    //SetUpperLoader(stopwatch.ElapsedMilliseconds / 1000.0);
+                }
+                else
+                {
+                    if (topRight != null) topRight.Stop();
+                    Debug.WriteLine("less");
+                    Loader_UpperRight.Opacity = 0;
+                }
+
            // DrawPixel(currentPoint.X, currentPoint.Y);
             Ellipse p = new Ellipse();
-            if (leftHandPoint.Y < hipPoint.Y)
+            //if (leftHandPoint.Y < hipPoint.Y)
+            if(inAnnotationMode && leftHandPoint.Y < hipPoint.Y)
             {
                 canvas.Children.Add(l);
 
             } 
-            Debug.WriteLine(l.X1);
+            /*Debug.WriteLine(l.X1);
             Debug.WriteLine(l.X2);
             Debug.WriteLine(l.Y1);
-            Debug.WriteLine(l.Y2);
+            Debug.WriteLine(l.Y2);*/
         }
 
         private DepthImagePoint getDepthPoint(SkeletonPoint skeletonPoint)
@@ -1361,6 +1452,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
             if (p.getCurrentSlide().hasVideo())
             {
                 Debug.WriteLine("HAS VIDEO");
+                Canvas.SetTop(playButton, (VideoCanvas.ActualHeight - playButton.ActualHeight) / 2);
+                Canvas.SetLeft(playButton, (VideoCanvas.ActualWidth - playButton.ActualWidth) / 2);
+                Canvas.SetTop(playButtonOverlay, Canvas.GetTop(playButton) + 30);
+                Canvas.SetLeft(playButtonOverlay, Canvas.GetLeft(playButton) + 15);
+
+                Debug.WriteLine("HEIGHT: " + VideoCanvas.ActualHeight);
                 myVideoX.Source = new Uri(slide.getVideoPath());
                 myVideoX.Opacity = 1;
                 playButton.Opacity = 1;
@@ -1379,26 +1476,51 @@ namespace Microsoft.Samples.Kinect.Slideshow
         }
 
 
-        private void SetLowerHotspot(double x, double y)
+        private bool SetLowerHotspot(double x, double y)
         {
 
-            double hotspotX = 0;
-            double hotspotY = 800;
+            double hotspotX = 0;//Canvas.GetLeft(HotCorners);
+            double hotspotY = window.ActualHeight;//800; //Canvas.GetBottom(HotCorners);
 
             double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
 
             if (distance > 250)
             {
                 HotCorner_LowerLeft.Opacity = 0;
+                return false;
             }
 
             else
             {
                 HotCorner_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+                return true;
             }
 
         }
-       
+
+
+        private bool SetUpperHotspot(double x, double y)
+        {
+
+            double hotspotX = window.ActualWidth;//HotCorners.ActualWidth;//window.ActualWidth - current.Margin.Right;
+            double hotspotY = 0;
+
+            double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
+
+            if (distance > 250)
+            {
+                HotCorner_UpperRight.Opacity = 0;
+                return false;
+            }
+
+            else
+            {
+                HotCorner_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
+                return true;
+            }
+
+        }
+
 
         private void SetLowerLoader(double time)
         {
@@ -1413,8 +1535,79 @@ namespace Microsoft.Samples.Kinect.Slideshow
             else
                 Canvas.SetBottom(Loader_LowerLeft, 0.6 * Math.Sqrt(Math.Pow(140, 2) - Math.Pow(scaledTime, 2)));
 
-            if (time > 1)
+            if (time > 1) {
                 Loader_LowerLeft.Opacity = 0;
+                SetAnnotationMode();
+                //LoadRelatedSlides();
+            }
+        }
+
+        private void SetUpperLoader(double time)
+        {
+
+            double scaledTime = 200 * time;
+
+
+            Canvas.SetRight(Loader_UpperRight, scaledTime);
+
+            if (time < 0.5)
+                Canvas.SetTop(Loader_UpperRight, Math.Sqrt(Math.Pow(140, 2) - Math.Pow(scaledTime, 2)));
+            else
+                Canvas.SetTop(Loader_UpperRight, 0.6 * Math.Sqrt(Math.Pow(140, 2) - Math.Pow(scaledTime, 2)));
+
+            if (time > 1)
+            {
+                Loader_UpperRight.Opacity = 0;
+                LoadRelatedSlides();
+            }
+        }
+
+
+        private void SetAnnotationMode()
+        {
+            if (inAnnotationMode)
+            {
+                inAnnotationMode = false;
+                RightHandPointer.Fill = System.Windows.Media.Brushes.Green;
+            }
+            else
+            {
+                inAnnotationMode = true;
+                RightHandPointer.Fill = System.Windows.Media.Brushes.LightSteelBlue;
+            }
+        }
+
+
+        private void LoadRelatedSlides() {
+              watch.Stop();
+            if (watch.ElapsedMilliseconds > 2000)
+            {
+                if (relatedJustDeactivated)
+                    relatedJustDeactivated = false;
+            }
+            if (relatedActivated)
+                return;
+
+            if (relatedJustDeactivated)
+            {
+                relatedJustDeactivated = false;
+                return;
+            }
+
+            RefreshRelated();
+
+            var pullDownStoryboard = Resources["TopPullDown"] as Storyboard;
+
+            if (pullDownStoryboard != null)
+            {
+                pullDownStoryboard.Begin();
+            }
+
+            relatedItemsDown = true;
+
+            relatedActivated = true;
+
+
 
         }
 
