@@ -147,7 +147,7 @@
                 </Image>
                     <!-- CURRENTLY HIDDEN -->
 
-                <Rectangle x:Name="rect1" Height="100" Width="200" Canvas.Left="300" Canvas.Top="200" RenderTransformOrigin="0.5, 0.5" Fill="Black" Opacity="1">
+                <Rectangle x:Name="rect1" Height="100" Width="200" Canvas.Left="300" Canvas.Top="200" RenderTransformOrigin="0.5, 0.5" Fill="Black" Opacity="0">
                     <Rectangle.RenderTransform>
                         <RotateTransform/>
                     </Rectangle.RenderTransform>  
