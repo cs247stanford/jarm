@@ -242,11 +242,9 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         pushUpStoryboard.Begin();
                     }
                     watch.Restart();
-                    relatedItemsDown = true;
-
-                   relatedActivated = false;
-
-                   relatedJustDeactivated = true;
+                    relatedItemsDown = false;
+                    relatedActivated = false;
+                    relatedJustDeactivated = true;
 
                     break;
 
@@ -982,6 +980,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                         if (pushUpStoryboard != null)
                         {
                             pushUpStoryboard.Begin();
+                            relatedItemsDown = false;
                         }
 
 
@@ -989,26 +988,56 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 }
         }
 
-        Storyboard topRight = null;
-        Storyboard bottomLeft = null;
+        RotateTransform topRT = null;
+        DoubleAnimation topDA = null;
+        RotateTransform lowerRT = null;
+        DoubleAnimation lowerDA = null;
+
+        private void InitializeRT()
+        {
+
+            Debug.WriteLine("GOT HOT CORNER");
+            Loader_UpperRight.Opacity = 1;
+            Duration duration = new Duration(TimeSpan.FromSeconds(2));
+            topDA = new DoubleAnimation(360, 180, duration);
+            topRT = new RotateTransform();
+            Loader_UpperRight.RenderTransform = topRT;
+            Loader_UpperRight.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            Loader_LowerLeft.Opacity = 1;
+            duration = new Duration(TimeSpan.FromSeconds(2));
+            lowerDA = new DoubleAnimation(0, 180, duration);
+            lowerRT = new RotateTransform();
+            Loader_LowerLeft.RenderTransform = lowerRT;
+            Loader_LowerLeft.RenderTransformOrigin = new Point(0.5, 0.5);
+            /*topRight = Resources["RotateRect"] as Storyboard;
+            topRight.Duration = duration;
+            topRight.Children.Add(da);
+            Storyboard.SetTarget(da, Loader_UpperRight);
+            Storyboard.SetTargetProperty(da, new PropertyPath("(Image.RenderTransform).(RotateTransform.Angle)"));
+            topRight.Begin();*/
+        }
+
 
 
         private void animateSelection(double x, double y, SlideElem obj)
         {
             if (obj.Equals(SlideElem.upperRightHotCorner))
             {
-                Debug.WriteLine("GOT HOT CORNER");
-                Duration duration = new Duration(TimeSpan.FromSeconds(2));
-                var da = new DoubleAnimation(360, 180, duration);
-                var rt = new RotateTransform();
-                Loader_UpperRight.RenderTransform = rt;
-                Loader_UpperRight.RenderTransformOrigin = new Point(0.5, 0.5);
-                topRight = Resources["RotateRect"] as Storyboard;
-                topRight.Duration = duration;
-                topRight.Children.Add(da);
-                Storyboard.SetTarget(da, Loader_UpperRight);
-                Storyboard.SetTargetProperty(da, new PropertyPath("(Image.RenderTransform).(RotateTransform.Angle)"));
-                topRight.Begin();
+                if (topRT == null)
+                {
+                    InitializeRT();
+                }
+                topRT.BeginAnimation(RotateTransform.AngleProperty, topDA);      
+            }
+
+            if (obj.Equals(SlideElem.lowerLeftHotCorner))
+            {
+                if (lowerRT == null)
+                {
+                    InitializeRT();
+                }
+                lowerRT.BeginAnimation(RotateTransform.AngleProperty, lowerDA);
             }
 
             //da.RepeatBehavior = RepeatBehavior.Forever;
@@ -1120,7 +1149,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             else if (currObj.Equals(SlideElem.upperRightHotCorner))
             {
-                if (topRight != null) topRight.Stop();
+                Debug.WriteLine("SELECTING TOP CORNER");
+                topRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                HotCorner_UpperRight.Opacity = 0;
+                LoadRelatedSlides();
+            }
+            else if (currObj.Equals(SlideElem.lowerLeftHotCorner))
+            {
+                Debug.WriteLine("SELECTING Bottom CORNER");
+                lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                HotCorner_LowerLeft.Opacity = 0;
+                SetAnnotationMode();
+                //LoadRelatedSlides();
             }
         }
 
@@ -1144,8 +1184,12 @@ namespace Microsoft.Samples.Kinect.Slideshow
             }
             if (!currObj.Equals(newObj))
             {
-                if (topRight != null) topRight.Stop();
-                if (bottomLeft != null) bottomLeft.Stop();
+                if(currObj.Equals(SlideElem.upperRightHotCorner)) {
+                    topRT.BeginAnimation(RotateTransform.AngleProperty, null);     
+                }
+               else if(currObj.Equals(SlideElem.lowerLeftHotCorner)) {
+                   lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);     
+                }
                 currObj = newObj;
                 animateSelection(x, y, currObj);
                 return true;
@@ -1301,7 +1345,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                     stopwatch.Restart();
                     Debug.WriteLine("NEW POINT: " + (int)currObj);
                 }
-                else if (stopwatch.ElapsedMilliseconds >= 2000)
+                else if (stopwatch.ElapsedMilliseconds >= 2000 && !currObj.Equals(SlideElem.none))
                 {
                     Debug.WriteLine("CLICK: " + (int)currObj);
                     SelectObject(currentPoint.X, currentPoint.Y);
@@ -1309,26 +1353,31 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
                 }
 
-                if (HotCorner_LowerLeft.Opacity > 0.7)
+                if (HotCorner_LowerLeft.Opacity > 0)
                 {
                     Loader_LowerLeft.Opacity = 0.8;
-                    SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
+                    //SetLowerLoader(stopwatch.ElapsedMilliseconds / 1000.0);
                 }
                 else
                 {
                     Loader_LowerLeft.Opacity = 0;
                 }
-                if (HotCorner_UpperRight.Opacity > 0.5)
+                if (HotCorner_UpperRight.Opacity > 0)
                 {
                     Loader_UpperRight.Opacity = 0.8;
-                    Debug.WriteLine("more");
+                    //Debug.WriteLine("more");
                     //SetUpperLoader(stopwatch.ElapsedMilliseconds / 1000.0);
                 }
                 else
                 {
-                    if (topRight != null) topRight.Stop();
-                    Debug.WriteLine("less");
+                    //if (topRight != null) topRight.Stop();
+                    if (topRT!=null) topRT.BeginAnimation(RotateTransform.AngleProperty, null);
+                    if (lowerRT != null) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
+
+                    //Debug.WriteLine("less");
                     Loader_UpperRight.Opacity = 0;
+                    Loader_LowerLeft.Opacity = 0;
+
                 }
 
            // DrawPixel(currentPoint.X, currentPoint.Y);
@@ -1457,7 +1506,7 @@ namespace Microsoft.Samples.Kinect.Slideshow
                 Canvas.SetTop(playButtonOverlay, Canvas.GetTop(playButton) + 30);
                 Canvas.SetLeft(playButtonOverlay, Canvas.GetLeft(playButton) + 15);
 
-                Debug.WriteLine("HEIGHT: " + VideoCanvas.ActualHeight);
+                //Debug.WriteLine("HEIGHT: " + VideoCanvas.ActualHeight);
                 myVideoX.Source = new Uri(slide.getVideoPath());
                 myVideoX.Opacity = 1;
                 playButton.Opacity = 1;
@@ -1484,15 +1533,18 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
             double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
 
-            if (distance > 250)
+            if (distance > 220)
             {
                 HotCorner_LowerLeft.Opacity = 0;
+                Loader_LowerLeft.Opacity = 0;
+                if (lowerRT != null) lowerRT.BeginAnimation(RotateTransform.AngleProperty, null);
                 return false;
             }
 
             else
             {
                 HotCorner_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
+                Loader_LowerLeft.Opacity = Math.Abs(1 - ((distance) / 250));
                 return true;
             }
 
@@ -1501,21 +1553,23 @@ namespace Microsoft.Samples.Kinect.Slideshow
 
         private bool SetUpperHotspot(double x, double y)
         {
-
             double hotspotX = window.ActualWidth;//HotCorners.ActualWidth;//window.ActualWidth - current.Margin.Right;
             double hotspotY = 0;
 
             double distance = Math.Sqrt(Math.Pow(hotspotX - x, 2) + Math.Pow(hotspotY - y, 2));
 
-            if (distance > 250)
+            if (distance > 220)
             {
                 HotCorner_UpperRight.Opacity = 0;
+                Loader_UpperRight.Opacity = 0;
+                if (topRT!=null) topRT.BeginAnimation(RotateTransform.AngleProperty, null);
                 return false;
             }
 
             else
             {
                 HotCorner_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
+                Loader_UpperRight.Opacity = Math.Abs(1 - ((distance) / 250));
                 return true;
             }
 

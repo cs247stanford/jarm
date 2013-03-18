@@ -93,10 +93,11 @@
         <Storyboard x:Key="RemoveRelatedItem">
             <DoubleAnimation Storyboard.TargetName="relatedImageOverlay" Storyboard.TargetProperty="Opacity" From="0.7" To="0" Duration="0:0:2" />
         </Storyboard>
-        <Storyboard x:Key="RotateRect">
+        <Storyboard x:Key="RotateTopRect">
            <!-- <DoubleAnimation Storyboard.TargetName="rect1" Storyboard.TargetProperty="RotateTransform.Angle" To="-360" Duration="0:0:1" RepeatBehavior="Forever"/>-->
         </Storyboard>
-      <Style TargetType="{x:Type Image}">
+        <Storyboard x:Key="RotateBottomRect" />
+            <Style TargetType="{x:Type Image}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
     </Window.Resources>
@@ -127,13 +128,19 @@
                 <Image x:Name="playButton" Source="{Binding PlayButton}" Canvas.Left="0" Canvas.Top="0" Width="300" Height="300" Opacity="0"/>
             </Canvas>
 
-            <Canvas x:Name="HotCorners"> <!-- Height="{Binding ElementName=current, Path=ActualHeight}" Width="{Binding ElementName=current, Path=ActualWidth}"-->
+            <Canvas x:Name="HotCorners">
+                <!-- Height="{Binding ElementName=current, Path=ActualHeight}" Width="{Binding ElementName=current, Path=ActualWidth}"-->
                 <!-- Lower Left-->
-                <Image x:Name="HotCorner_LowerLeft" Source="C:\\Pictures\\circle.png" Width="400" Canvas.Bottom="-200" Canvas.Left="-200" Opacity="0" />
-                <Image x:Name="Loader_LowerLeft" Source="C:\\Pictures\\lower_left.png" Width="400" Canvas.Bottom="-200" Canvas.Left="-200"  Opacity="1"/> <!-- CURRENTLY HIDDEN -->
+                <Image x:Name="HotCorner_LowerLeft" Source="C:\\Pictures\\circle.png" Height="400" Width="400" Canvas.Bottom="-200" Canvas.Left="-200" Opacity="0" />
+                <Image x:Name="Loader_LowerLeft" Source="C:\\Pictures\\lower_left.png" Height="400" Width="400" Canvas.Bottom="-200" Canvas.Left="-200" RenderTransformOrigin="0.5, 0.5" Opacity="1">
+                <!-- CURRENTLY HIDDEN -->
+                <Image.RenderTransform>
+                    <RotateTransform/>
+                </Image.RenderTransform>
+                </Image>
                 <!-- Upper Right-->
                 <Image x:Name="HotCorner_UpperRight" Source="C:\\Pictures\\circle.png" Height="400" Width="400" Canvas.Top="-200" Canvas.Right="-200" Opacity="0" />
-                <Image x:Name="Loader_UpperRight" Source="C:\\Pictures\\upper_right.png"  Height="400" Width="400" Canvas.Top="-200" Canvas.Right="-200" RenderTransformOrigin="0, 1" Opacity="1">
+                <Image x:Name="Loader_UpperRight" Source="C:\\Pictures\\upper_right.png"  Height="400" Width="400" Canvas.Top="-200" Canvas.Right="-200" RenderTransformOrigin="0.5, 0.5" Opacity="1">
                     <Image.RenderTransform>
                         <RotateTransform/>
                     </Image.RenderTransform>

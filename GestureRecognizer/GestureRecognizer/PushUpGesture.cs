@@ -73,7 +73,7 @@ namespace GestureRecognizer
                 //System.Diagnostics.Debug.WriteLine("PushUpGesture end condition validated");
                 watch.Stop();
                 if (watch.ElapsedMilliseconds >1000 || watch.ElapsedMilliseconds < 200) return false;
-                Debug.WriteLine("Watch elapsed time for pull down: " + watch.ElapsedMilliseconds.ToString());
+                //Debug.WriteLine("Watch elapsed time for pull down: " + watch.ElapsedMilliseconds.ToString());
                 return true;
             }
 
